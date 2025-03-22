@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaUserCircle } from 'react-icons/fa';
+import { CiMenuBurger } from "react-icons/ci";
+
 import { thunkLogout } from "../../redux/session";
 
 
@@ -56,11 +58,19 @@ function ProfileButton() {
 
 
 
-  
+
   return (
     <>
-      <button onClick={toggleMenu}>
+      <button
+      className="menu-button"
+      onClick={toggleMenu}
+      >
+        <div className='menu-icon'>
+        <CiMenuBurger />
+        </div>
+        <div className='user-icon' >
         <FaUserCircle />
+        </div>
       </button>
       {showMenu && (
         <ul className={"profile-dropdown"} ref={ulRef}>
@@ -72,8 +82,14 @@ function ProfileButton() {
                 <button onClick={logout}>Log Out</button>
               </li>
             </>
-          ) : (
-            <>
+          )
+
+          :
+
+          (
+            <div
+            className="auth-container"
+            >
               <OpenModalMenuItem
                 itemText="Log In"
                 onItemClick={closeMenu}
@@ -84,7 +100,9 @@ function ProfileButton() {
                 onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}
               />
-            </>
+            </div>
+
+
           )}
         </ul>
       )}
