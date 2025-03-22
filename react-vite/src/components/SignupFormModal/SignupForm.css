@@ -1,0 +1,28 @@
+h1{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+
+
+}
+
+.signup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    margin: 15px, 15px, 15px, 15px;
+    box-shadow:black 5px;
+    border-color: black;
+    border:black 5px fill;
+
+}
+
+.inputs{
+    display: flex;
+    margin-bottom: 5px;
+    width: 375px;
+}
+
+button{
+    border-radius: 5px;
+
+}
