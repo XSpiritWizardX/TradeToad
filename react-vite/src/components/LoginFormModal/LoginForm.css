@@ -1,0 +1,53 @@
+h1 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+label {
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.login-container {
+    width: 400px;
+    height: 230px;
+   border-radius: 10px;
+}
+
+.input {
+    width: 372px;
+    margin-bottom: 8px;
+    margin:10px, 10px;
+    border-color: black;
+}
+
+
+button {
+    margin-top: 10px;
+    height: 40px;
+    border-color: black;
+
+}
+
+
+button:hover{
+    cursor: pointer;
+}
+
+
+.demo-log-in {
+    color: teal;
+    background-color: white;
+    text-decoration: underline;
+    margin: 2% auto;
+    cursor: pointer;
+}

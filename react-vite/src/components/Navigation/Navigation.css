@@ -1,3 +1,39 @@
-.profile-dropdown {
+/* .profile-dropdown {
   position: absolute;
+} */
+
+
+
+
+.nav-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
 }
+
+.home-image {
+
+  z-index: 1;
+  width: 100px;
+  height: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 1px 0px 0px gray;
+  z-index: 2;
+
+  width:98vw;
+
+}
+
+.create-a-spot {
+padding: 16px;
+font-style:oblique;
+text-decoration: none;
+color: rgb(0, 118, 182);
+font-size: large;
+}
+
