@@ -1,12 +1,18 @@
-.profile-dropdown {
+
+
+.profile-dropdown{
     display: visible;
+
     width: 150px;
     /* position is fixed because otherwise its side by side */
     position: fixed;
     top: 80px;
+    right: 20px;
     border-radius: 10px;
   z-index: 1;
-  background-color: rgb(236, 153, 153);
+
+  color: white;
+  border: 2px solid #FFC857;
 }
 .profile-dropdown.hidden {
     display: none;
@@ -26,6 +32,13 @@
 
 
 
+
+
+
+
+
+
+
 .menu-button {
   /* position: fixed; */
   z-index: 1;
@@ -36,19 +49,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 4px 6px #FFC857;
     transition: transform 0.2s ease, background-color 0.3s ease;
+    background-color: white;
   }
 
 
   .menu-icon {
     padding:10px,10px;
     margin:10px;
+    background-color: white;
+    color: white;
   }
 
   .user-icon{
     padding:10px,10px;
     margin:10px;
+    background-color: white;
+    color: white;
   }
 
   .menu-button:hover {
@@ -58,6 +76,17 @@
   .menu-button:active {
     background-color: #bbb;
   }
+
+
+
+
+
+
+
+
+
+
+
 
 .account-info {
   display: flex;

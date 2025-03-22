@@ -39,6 +39,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 
 #modal-background {
@@ -52,8 +53,7 @@
 
 #modal-content {
   position: absolute;
-  background-color: white;
+  background-color: rgb(0, 0, 0);
   border-radius: 10px;
-  border: 6px solid black;
+  border: 6px solid #FFC857;
 }
-

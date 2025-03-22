@@ -15,6 +15,7 @@ form {
     justify-content: flex-start;
     margin: 10px;
     border-radius: 10px;
+    color: white;
 }
 
 .login-container {
@@ -28,13 +29,16 @@ form {
     margin-bottom: 8px;
     margin:10px, 10px;
     border-color: black;
+    color: white;
+    background-color: gold;
 }
 
 
 button {
     margin-top: 10px;
     height: 40px;
-    border-color: black;
+    color: white;
+    background-color: green;
 
 }
 

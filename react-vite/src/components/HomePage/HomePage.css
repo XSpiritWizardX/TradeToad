@@ -1,0 +1,51 @@
+.page {
+    background-color: black;
+    height: 90vh;
+}
+
+h1{
+    color: white;
+}
+
+h3{
+    color: white;
+}
+
+h5{
+    color: white;
+}
+.resources{
+    color: white;
+    cursor: pointer;
+}
+
+.textz{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+img{
+    display: flex;
+    justify-self: center;
+    height: 400px;
+
+}
+
+p{
+    display: flex;
+    justify-self: center;
+    color: white;
+}
+
+.foot{
+    display: flex;
+    /* justify-content: start; */
+    align-items: center;
+    flex-direction: column;
+    margin-top: 15%;
+    border-top: 2px solid white;
+
+    /* padding-bottom: 5px; */
+}

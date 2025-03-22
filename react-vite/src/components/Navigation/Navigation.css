@@ -1,10 +1,9 @@
 
-
 .nav-bar {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-
+  background-color: white;
 }
 
 .home-image {
@@ -20,8 +19,33 @@
   box-shadow: 0px 1px 0px 0px gray;
   z-index: 2;
 
+  background-color: #000000;
   width:98vw;
 
+}
+
+.search-icon{
+  height: 80%;
+  width: 3%;
+}
+
+
+.search-text-input{
+  width: 30%;
+  height: 3vh;
+  background-color: white;
+  box-shadow: 2px 4px 6px #FFC857;
+}
+
+.search-container{
+  display: flex;
+  width: 80%;
+  height: 50%;
+  align-self: center;
+}
+
+*{
+  background-color: black;
 }
 
 /* .create-a-spot {

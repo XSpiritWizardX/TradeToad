@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
+import HomePage from '../components/HomePage/HomePage';
 import Layout from './Layout';
 
 export const router = createBrowserRouter([
@@ -9,16 +10,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element:
-        <html>
-          <h1>Welcome To Trade Toad!</h1>
-          <h3>
-            This is the home page for logged out users.
-            index.jsx
-          </h3>
-        </html>
-
-        ,
+        element:<HomePage/>,
       },
       {
         path: "login",
