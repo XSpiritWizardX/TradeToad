@@ -1,0 +1,7 @@
+/* change the input text to white */
+.login-form input,
+.login-form label,
+.login-form p,
+.login-form button {
+  color: white;
+}
