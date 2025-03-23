@@ -48,12 +48,14 @@
   right: 0;
   left: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  /* background-color: rgba(0, 0, 0, 0.7); */
+  background-color: white;
+  opacity: 30%;
 }
 
 #modal-content {
   position: absolute;
-  background-color: rgb(0, 0, 0);
+
   border-radius: 10px;
   border: 6px solid #FFC857;
 }

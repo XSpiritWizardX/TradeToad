@@ -1,5 +1,7 @@
 h1{
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    justify-self: center;
 
 
 }
@@ -19,10 +21,11 @@ h1{
 .inputs{
     display: flex;
     margin-bottom: 5px;
-    width: 375px;
+    /* width: 375px; */
+
 }
 
 button{
     border-radius: 5px;
-
+    font-size: large;
 }

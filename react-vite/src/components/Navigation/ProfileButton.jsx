@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaUserCircle } from 'react-icons/fa';
-import { CiMenuBurger } from "react-icons/ci";
+// import { CiMenuBurger } from "react-icons/ci";
 
 import { thunkLogout } from "../../redux/session";
 
@@ -66,11 +66,13 @@ function ProfileButton() {
       className="menu-button"
       onClick={toggleMenu}
       >
-        <div className='menu-icon'>
+        {/* <div className='menu-icon'>
         <CiMenuBurger />
-        </div>
+        </div> */}
         <div className='user-icon' >
-        <FaUserCircle />
+        <FaUserCircle
+        className="user-circle"
+        />
         </div>
       </button>
       {showMenu && (

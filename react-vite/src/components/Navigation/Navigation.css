@@ -4,7 +4,10 @@
   justify-content: flex-end;
   align-items: center;
   background-color: white;
+
 }
+
+
 
 .home-image {
 
@@ -18,15 +21,17 @@
   justify-content: space-between;
   box-shadow: 0px 1px 0px 0px gray;
   z-index: 2;
-
-  background-color: #000000;
+  /* position: fixed; */
   width:98vw;
-
+  border-bottom: 1px solid gray;
 }
 
 .search-icon{
-  height: 80%;
-  width: 3%;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-self: flex-end;
+  padding-right: 6px;
 }
 
 
@@ -55,3 +60,20 @@ text-decoration: none;
 color: rgb(0, 118, 182);
 font-size: large;
 } */
+
+
+@media screen and (max-width:515px) {
+
+  .search-icon{
+    height: 30px;
+    width: 30px;
+  }
+
+  .search-text-input{
+    width: 50%;
+    height: 3vh;
+    background-color: white;
+    box-shadow: 2px 4px 6px #FFC857;
+  }
+
+}
