@@ -151,3 +151,11 @@
     color:white;
     background-color: darkgray;
   }
+
+
+
+  @media screen and (max-width:515px) {
+    .menu-button{
+      margin-right: 3%;
+    }
+  }

@@ -368,7 +368,60 @@ user's information.
 
 
 
+<!--
 
+Portfolio
+
+GET portfolio -- view portfolio                            (/api/portfolio)
+POST portfolio -- create new portfolio                     (/api/portfolio)    ?!?!?!?!?!?
+PATCH portfolio -- add fake money                          (/api/portfolio)
+DELETE portfolio -- delete portfolio                       (/api/portfolio)    ?!?!?!?!?!?
+
+
+
+
+Stock Details
+
+GET stock details   -- api call to real time market        (/api/stocks/:stockId)
+POST stocks  -- Buy stocks and add it to portfolio         (/api/portfolio/stocks/:stockId)
+   -_- open market position
+PATCH stocks -- Increase or Decrease market position,      (/api/portfolio/stocks/:stockId)
+   shares , equity.... Update amount of stocks to
+   purchase or sell -_- update market position
+DELETE stocks -- close position on stock                    (/api/portfolio/stocks/:stockId)
+
+
+
+
+Watchlist
+
+GET watched stocks -- returns a list of watched stocks      (/api/watchlist)
+POST watched stock -- add stock to watchlist                (/api/watchlist)
+DELETE watched stock -- Removes stock from watchlist        (/api/watchlist/stocks/:stockId)
+
+
+
+
+Search
+
+GET Specific Stock -- filter stocks by name                 (/api/stocks)
+GET Stock Deatails -- Stock details from specific stock     (/api/stocks/:stockId)
+
+
+
+
+## Bonus
+Transactions
+
+GET Transaction history -- returns a list of all            (/api/transactions)
+  transactions ordered by dates and times
+POST Transaction -- order stocks at specific                (/api/transactions)
+  times/frequencies.
+DELETE Transactions -- cancel orders/transactions           (/api/transactions/:transactionId)
+
+
+
+ -->
 
 
 
@@ -376,6 +429,10 @@ user's information.
 
 
 ## STOCKS
+
+
+
+
 
 ### Get all Stocks
 
@@ -410,14 +467,22 @@ Returns all the stocks.
 
 
 
+
+
+
+
+
+
+
+
 ### Get all Stocks owned by the Current User
 |PORTFOLIO|
-Returns all the spots owned (created) by the current user.
+Returns all the stocks owned (created) by the current user.
 
 * Require Authentication: true
 * Request
   * Method: GET
-  * Route path: /api/portfolio
+  * Route path: /api/portfolio/stocks
   * Body: none
 
 * Successful Response
@@ -452,6 +517,13 @@ Returns all the spots owned (created) by the current user.
       }
     }
     ```
+
+
+
+
+
+
+
 
 ### Get details of a Stock from an id
 
@@ -492,11 +564,7 @@ Returns the details of a stock specified by its id.
       "message": "Stock couldn't be found"
     }
     ```
-
-
-
-
-### Buy a Stock
+ ### Buy a Stock
 
 Creates and returns a new stock.
 
@@ -504,7 +572,7 @@ Creates and returns a new stock.
 * Require validations
 * Request
   * Method: POST
-  * Route path: /api/portfolio/stocks ?? maybe
+  * Route path: /api/portfolio/stocks/:stockId
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -583,92 +651,39 @@ Creates and returns a new stock.
 
 
 
-### STOPPING POINT
+### Edit a Stock
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Add an Image to a Spot based on the Spot's id
-
-Create and return a new image for a spot specified by id.
+Updates user position and returns user portfolio.
 
 * Require Authentication: true
-* Require proper authorization: Spot must belong to the current user
+* Require proper authorization: Stock must belong to the current user
 * Request
-  * Method: POST
-  * Route path: /api/spots/:spotId/images
+  * Method: PATCH
+  * Route path: /api/portfolio/stocks/:stockId
   * Headers:
     * Content-Type: application/json
   * Body:
 
     ```json
     {
-      "url": "image url",
-      "preview": true
-    }
-    ```
-
-* Successful Response
-  * Status Code: 201
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "id": 1,
-      "url": "image url",
-      "preview": true
-    }
-    ```
-
-* Error response: Couldn't find a Spot with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Spot couldn't be found"
-    }
-    ```
-
-### Edit a Spot
-
-Updates and returns an existing spot.
-
-* Require Authentication: true
-* Require proper authorization: Spot must belong to the current user
-* Request
-  * Method: PUT
-  * Route path: /api/spots/:spotId
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "address": "123 Disney Lane",
-      "city": "San Francisco",
-      "state": "California",
-      "country": "United States of America",
-      "lat": 37.7645358,
-      "lng": -122.4730327,
-      "name": "App Academy",
-      "description": "Place where web developers are created",
-      "price": 123
+      "name": "Toad Coin",
+      "price": 123,
+      "marketcap":100000000.00,
+      "createdAt": "2021-11-19 20:39:36",
+      "updatedAt": "2021-11-19 20:39:36",
+         "transactions": {
+            "bought_at":123.456,
+            "sold_at":123.456,
+            // bought_at && sold_at can be null.  < xor >
+            "shares": 10,
+            "createdAt": "2021-11-19 20:39:36",
+            "updatedAt": "2021-11-19 20:39:36",
+         },
+      "users": {
+         "id":1,
+         "username":"DEMO USER YEAH",
+         "available_cash": 123
+      }
     }
     ```
 
@@ -680,19 +695,23 @@ Updates and returns an existing spot.
 
     ```json
     {
-      "id": 1,
-      "ownerId": 1,
-      "address": "123 Disney Lane",
-      "city": "San Francisco",
-      "state": "California",
-      "country": "United States of America",
-      "lat": 37.7645358,
-      "lng": -122.4730327,
-      "name": "App Academy",
-      "description": "Place where web developers are created",
+    "name": "Toad Coin",
       "price": 123,
+      "marketcap":100000000.00,
       "createdAt": "2021-11-19 20:39:36",
-      "updatedAt": "2021-11-20 10:06:40"
+      "updatedAt": "2021-11-19 20:39:36",
+         "transactions": {
+            "bought_at":123.456,
+            "sold_at":123.456,
+            "shares": 10,
+            "createdAt": "2021-11-19 20:39:36",
+            "updatedAt": "2021-11-19 20:39:36",
+         },
+      "users": {
+         "id":1,
+         "username":"DEMO USER YEAH",
+         "available_cash": 123
+      }
     }
     ```
 
@@ -706,20 +725,18 @@ Updates and returns an existing spot.
     {
       "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
       "errors": {
-        "address": "Street address is required",
-        "city": "City is required",
-        "state": "State is required",
-        "country": "Country is required",
-        "lat": "Latitude must be within -90 and 90",
-        "lng": "Longitude must be within -180 and 180",
         "name": "Name must be less than 50 characters",
-        "description": "Description is required",
-        "price": "Price per day must be a positive number"
+        "price": "Price per day must be a positive number",
+        "bought_at": "Must be a positive number",
+        "sold_at": "Must be a positive number",
+        "available_cash": "available_cash must be greater than stock price",
+        "shares": "shares must be positive number",
+        "": ""
       }
     }
     ```
 
-* Error response: Couldn't find a Spot with the specified id
+* Error response: Couldn't find a Stock with the specified id
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
@@ -727,19 +744,19 @@ Updates and returns an existing spot.
 
     ```json
     {
-      "message": "Spot couldn't be found"
+      "message": "Stock couldn't be found"
     }
     ```
 
-### Delete a Spot
+### Delete a Stock
 
-Deletes an existing spot.
+Sells off the stock completely and Removes it from user portfolio.
 
 * Require Authentication: true
-* Require proper authorization: Spot must belong to the current user
+* Require proper authorization: Stock must belong to the current user
 * Request
   * Method: DELETE
-  * Route path: /api/spots/:spotId
+  * Route path: /api/portfolio/stocks/:stockId
   * Body: none
 
 * Successful Response
@@ -754,7 +771,7 @@ Deletes an existing spot.
     }
     ```
 
-* Error response: Couldn't find a Spot with the specified id
+* Error response: Couldn't find a Stock with the specified id
   * Status Code: 404
   * Headers:
     * Content-Type: application/json
@@ -762,20 +779,20 @@ Deletes an existing spot.
 
     ```json
     {
-      "message": "Spot couldn't be found"
+      "message": "Stock couldn't be found"
     }
     ```
 
-## REVIEWS
+## WatchList
 
-### Get all Reviews of the Current User
+### Get all Stocks of the Current User Watchlist
 
-Returns all the reviews written by the current user.
+Returns all the stocks added to watchlist by the current user.
 
 * Require Authentication: true
 * Request
   * Method: GET
-  * Route path: /api/reviews/current
+  * Route path: /api/watchlist
   * Body: none
 
 * Successful Response
@@ -786,13 +803,10 @@ Returns all the reviews written by the current user.
 
     ```json
     {
-      "Reviews": [
+      "Watchlist": [
         {
           "id": 1,
           "userId": 1,
-          "spotId": 1,
-          "review": "This was an awesome spot!",
-          "stars": 5,
           "createdAt": "2021-11-19 20:39:36",
           "updatedAt": "2021-11-19 20:39:36" ,
           "User": {
@@ -800,66 +814,18 @@ Returns all the reviews written by the current user.
             "firstName": "John",
             "lastName": "Smith"
           },
-          "Spot": {
+          "Stocks": [
+            {
             "id": 1,
-            "ownerId": 1,
-            "address": "123 Disney Lane",
-            "city": "San Francisco",
-            "state": "California",
-            "country": "United States of America",
-            "lat": 37.7645358,
-            "lng": -122.4730327,
-            "name": "App Academy",
+            "name": "Netflix",
             "price": 123,
-            "previewImage": "image url"
-          },
-          "ReviewImages": [
+            "market_cap": 1000000000,
+            },
             {
-              "id": 1,
-              "url": "image url"
-            }
-          ]
-        }
-      ]
-    }
-    ```
-
-### Get all Reviews by a Spot's id
-
-Returns all the reviews that belong to a spot specified by id.
-
-* Require Authentication: false
-* Request
-  * Method: GET
-  * Route path: /api/spots/:spotId/reviews
-  * Body: none
-
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "Reviews": [
-        {
-          "id": 1,
-          "userId": 1,
-          "spotId": 1,
-          "review": "This was an awesome spot!",
-          "stars": 5,
-          "createdAt": "2021-11-19 20:39:36",
-          "updatedAt": "2021-11-19 20:39:36" ,
-          "User": {
-            "id": 1,
-            "firstName": "John",
-            "lastName": "Smith"
-          },
-          "ReviewImages": [
-            {
-              "id": 1,
-              "url": "image url"
+            "id": 2,
+            "name": "Amazon",
+            "price": 123,
+            "market_cap": 1000000000,
             }
           ],
         }
@@ -867,732 +833,41 @@ Returns all the reviews that belong to a spot specified by id.
     }
     ```
 
-* Error response: Couldn't find a Spot with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
 
-    ```json
-    {
-      "message": "Spot couldn't be found"
-    }
-    ```
 
-### Create a Review for a Spot based on the Spot's id
+### Add stock to watchlist                (/api/watchlist)
+add stock to watchlist
 
-Create and return a new review for a spot specified by id.
 
 * Require Authentication: true
 * Request
   * Method: POST
-  * Route path: /api/spots/:spotId/reviews
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "review": "This was an awesome spot!",
-      "stars": 5,
-    }
-    ```
+  * Route path: /api/watchlist/stocks/:stockId
+  * Body: none
 
 * Successful Response
-  * Status Code: 201
+  * Status Code: 200
   * Headers:
     * Content-Type: application/json
   * Body:
-
-    ```json
+  ```json
     {
-      "id": 1,
-      "userId": 1,
-      "spotId": 1,
-      "review": "This was an awesome spot!",
-      "stars": 5,
+
+
+      "name": "Toad Coin",
+      "price": 123,
+      "marketcap":100000000.00,
       "createdAt": "2021-11-19 20:39:36",
-      "updatedAt": "2021-11-19 20:39:36"
-    }
-    ```
-
-* Error Response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
-      "errors": {
-        "review": "Review text is required",
-        "stars": "Stars must be an integer from 1 to 5",
-      }
-    }
-    ```
-
-* Error response: Couldn't find a Spot with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Spot couldn't be found"
-    }
-    ```
-
-* Error response: Review from the current user already exists for the Spot
-  * Status Code: 500
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "User already has a review for this spot"
-    }
-    ```
-
-### Add an Image to a Review based on the Review's id
-
-Create and return a new image for a review specified by id.
-
-* Require Authentication: true
-* Require proper authorization: Review must belong to the current user
-* Request
-  * Method: POST
-  * Route path: /api/reviews/:reviewId/images
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "url": "image url"
-    }
-    ```
-
-* Successful Response
-  * Status Code: 201
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "id": 1,
-      "url": "image url"
-    }
-    ```
-
-* Error response: Couldn't find a Review with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Review couldn't be found"
-    }
-    ```
-
-* Error response: Cannot add any more images because there is a maximum of 10
-  images per resource
-  * Status Code: 403
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Maximum number of images for this resource was reached"
-    }
-    ```
-
-### Edit a Review
-
-Update and return an existing review.
-
-* Require Authentication: true
-* Require proper authorization: Review must belong to the current user
-* Request
-  * Method: PUT
-  * Route path: /api/reviews/:reviewId
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "review": "This was an awesome spot!",
-      "stars": 5,
-    }
-    ```
-
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "id": 1,
-      "userId": 1,
-      "spotId": 1,
-      "review": "This was an awesome spot!",
-      "stars": 5,
-      "createdAt": "2021-11-19 20:39:36",
-      "updatedAt": "2021-11-20 10:06:40"
-    }
-    ```
-
-* Error Response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
-      "errors": {
-        "review": "Review text is required",
-        "stars": "Stars must be an integer from 1 to 5",
-      }
-    }
-    ```
-
-* Error response: Couldn't find a Review with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Review couldn't be found"
-    }
-    ```
-
-### Delete a Review
-
-Delete an existing review.
-
-* Require Authentication: true
-* Require proper authorization: Review must belong to the current user
-* Request
-  * Method: DELETE
-  * Route path: /api/reviews/:reviewId
-  * Body: none
-
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Successfully deleted"
-    }
-    ```
-
-* Error response: Couldn't find a Review with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Review couldn't be found"
-    }
-    ```
-
-## BOOKINGS
-
-### Get all of the Current User's Bookings
-
-Return all the bookings that the current user has made.
-
-* Require Authentication: true
-* Request
-  * Method: GET
-  * Route path: /api/bookings/current
-  * Body: none
-
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "Bookings": [
-        {
-          "id": 1,
-          "spotId": 1,
-          "Spot": {
-            "id": 1,
-            "ownerId": 1,
-            "address": "123 Disney Lane",
-            "city": "San Francisco",
-            "state": "California",
-            "country": "United States of America",
-            "lat": 37.7645358,
-            "lng": -122.4730327,
-            "name": "App Academy",
-            "price": 123,
-            "previewImage": "image url"
-          },
-          "userId": 2,
-          "startDate": "2021-11-19",
-          "endDate": "2021-11-20",
-          "createdAt": "2021-11-19 20:39:36",
-          "updatedAt": "2021-11-19 20:39:36"
-        }
-      ]
-    }
-    ```
-
-### Get all Bookings for a Spot based on the Spot's id
-
-Return all the bookings for a spot specified by id.
-
-* Require Authentication: true
-* Request
-  * Method: GET
-  * Route path: /api/spots/:spotId/bookings
-  * Body: none
-
-* Successful Response: If you ARE NOT the owner of the spot.
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "Bookings": [
-        {
-          "spotId": 1,
-          "startDate": "2021-11-19",
-          "endDate": "2021-11-20"
-        }
-      ]
-    }
-    ```
-
-* Successful Response: If you ARE the owner of the spot.
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "Bookings": [
-        {
-          "User": {
-            "id": 2,
-            "firstName": "John",
-            "lastName": "Smith"
-          },
-          "id": 1,
-          "spotId": 1,
-          "userId": 2,
-          "startDate": "2021-11-19",
-          "endDate": "2021-11-20",
-          "createdAt": "2021-11-19 20:39:36",
-          "updatedAt": "2021-11-19 20:39:36"
-        }
-      ]
-    }
-    ```
-
-* Error response: Couldn't find a Spot with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Spot couldn't be found"
-    }
-    ```
-
-### Create a Booking from a Spot based on the Spot's id
-
-Create and return a new booking from a spot specified by id.
-
-* Require Authentication: true
-* Require proper authorization: Spot must NOT belong to the current user
-* Request
-  * Method: POST
-  * Route path: /api/spots/:spotId/bookings
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "startDate": "2021-11-19",
-      "endDate": "2021-11-20"
-    }
-    ```
-
-* Successful Response
-  * Status Code: 201
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "id": 1,
-      "spotId": 1,
-      "userId": 2,
-      "startDate": "2021-11-19",
-      "endDate": "2021-11-20",
-      "createdAt": "2021-11-19 20:39:36",
-      "updatedAt": "2021-11-19 20:39:36"
-    }
-    ```
-
-* Error response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
-      "errors": {
-        "startDate": "startDate cannot be in the past",
-        "endDate": "endDate cannot be on or before startDate"
-      }
-    }
-    ```
-
-* Error response: Couldn't find a Spot with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Spot couldn't be found"
-    }
-    ```
-
-* Error response: Booking conflict
-  * Status Code: 403
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Sorry, this spot is already booked for the specified dates",
-      "errors": {
-        "startDate": "Start date conflicts with an existing booking",
-        "endDate": "End date conflicts with an existing booking"
-      }
-    }
-    ```
-
-### Edit a Booking
-
-Update and return an existing booking.
-
-* Require Authentication: true
-* Require proper authorization: Booking must belong to the current user
-* Request
-  * Method: PUT
-  * Route path: /api/bookings/:bookingId
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "startDate": "2021-11-19",
-      "endDate": "2021-11-20"
-    }
-    ```
-
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "id": 1,
-      "spotId": 1,
-      "userId": 2,
-      "startDate": "2021-11-19",
-      "endDate": "2021-11-20",
-      "createdAt": "2021-11-19 20:39:36",
-      "updatedAt": "2021-11-20 10:06:40"
-    }
-    ```
-
-* Error response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
-      "errors": {
-        "startDate": "startDate cannot be in the past",
-        "endDate": "endDate cannot be on or before startDate"
-      }
-    }
-    ```
-
-* Error response: Couldn't find a Booking with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Booking couldn't be found"
-    }
-    ```
-
-* Error response: Can't edit a booking that's past the end date
-  * Status Code: 403
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Past bookings can't be modified"
-    }
-    ```
-
-* Error response: Booking conflict
-  * Status Code: 403
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Sorry, this spot is already booked for the specified dates",
-      "errors": {
-        "startDate": "Start date conflicts with an existing booking",
-        "endDate": "End date conflicts with an existing booking"
-      }
-    }
-    ```
-
-### Delete a Booking
-
-Delete an existing booking.
-
-* Require Authentication: true
-* Require proper authorization: Booking must belong to the current user or the
-  Spot must belong to the current user
-* Request
-  * Method: DELETE
-  * Route path: /api/bookings/:bookingId
-  * Body: none
-
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Successfully deleted"
-    }
-    ```
-
-* Error response: Couldn't find a Booking with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Booking couldn't be found"
-    }
-    ```
-
-* Error response: Bookings that have been started can't be deleted
-  * Status Code: 403
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Bookings that have been started can't be deleted"
-    }
-    ```
-
-## IMAGES
-
-### Delete a Spot Image
-
-Delete an existing image for a Spot.
-
-* Require Authentication: true
-* Require proper authorization: Spot must belong to the current user
-* Request
-  * Method: DELETE
-  * Route path: /api/spot-images/:imageId
-  * Body: none
-
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Successfully deleted"
-    }
-    ```
-
-* Error response: Couldn't find a Spot Image with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Spot Image couldn't be found"
-    }
-    ```
-
-### Delete a Review Image
-
-Delete an existing image for a Review.
-
-* Require Authentication: true
-* Require proper authorization: Review must belong to the current user
-* Request
-  * Method: DELETE
-  * Route path: /api/review-images/:imageId
-  * Body: none
-
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Successfully deleted"
-    }
-    ```
-
-* Error response: Couldn't find a Review Image with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Review Image couldn't be found"
-    }
-    ```
-
-## Add Query Filters to Get All Spots
-
-Return spots filtered by query parameters.
-
-* Require Authentication: false
-* Request
-  * Method: GET
-  * Route path: /api/spots
-  * Query Parameters
-    * page: integer, minimum: 1, default: 1
-    * size: integer, minimum: 1, maximum: 20, default: 20
-    * minLat: decimal, optional
-    * maxLat: decimal, optional
-    * minLng: decimal, optional
-    * maxLng: decimal, optional
-    * minPrice: decimal, optional, minimum: 0
-    * maxPrice: decimal, optional, minimum: 0
-  * Body: none
-
-* Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "Spots": [
-        {
-          "id": 1,
-          "ownerId": 1,
-          "address": "123 Disney Lane",
-          "city": "San Francisco",
-          "state": "California",
-          "country": "United States of America",
-          "lat": 37.7645358,
-          "lng": -122.4730327,
-          "name": "App Academy",
-          "description": "Place where web developers are created",
-          "price": 123,
-          "createdAt": "2021-11-19 20:39:36",
-          "updatedAt": "2021-11-19 20:39:36",
-          "avgRating": 4.5,
-          "previewImage": "image url"
-        }
-      ],
-      "page": 2,
-      "size": 20
-    }
-    ```
-
-* Error Response: Query parameter validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
-      "errors": {
-        "page": "Page must be greater than or equal to 1",
-        "size": "Size must be between 1 and 20",
-        "maxLat": "Maximum latitude is invalid",
-        "minLat": "Minimum latitude is invalid",
-        "minLng": "Maximum longitude is invalid",
-        "maxLng": "Minimum longitude is invalid",
-        "minPrice": "Minimum price must be greater than or equal to 0",
-        "maxPrice": "Maximum price must be greater than or equal to 0"
+      "updatedAt": "2021-11-19 20:39:36",
+         "transactions": {
+            "bought_at":123.456,
+            "shares": 10,
+            "createdAt": "2021-11-19 20:39:36",
+            "updatedAt": "2021-11-19 20:39:36",
+         },
+      "users": {
+         "id":1,
+         "username":"DEMO USER YEAH"
       }
     }
     ```

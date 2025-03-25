@@ -31,7 +31,11 @@ function ProfileButton() {
     </div>
 
 
-    <img src='https://media.discordapp.net/attachments/1352078167824924682/1352877213758001152/168DA8D9-29E4-4C6F-944A-C7FB3ED2EAAD.png?ex=67e04557&is=67def3d7&hm=3d48e132907ffa136d8a22614c5c9295434befe7fb70b4af963966a25c5f3c47&=&format=webp&quality=lossless&width=800&height=800'></img>
+    <img src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742869032/trade-toad2_gltqdk.png'></img>
+
+    <img src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742869030/z1WTK1Mj22ptr4EX1tQc--0--wxhad-removebg-preview_qcwbkn.png'></img>
+
+
 
     <p>
       Leap into the fun now.

@@ -48,3 +48,10 @@ p{
 
     /* padding-bottom: 5px; */
 }
+
+@media screen and (max-width:515px)  {
+    .page{
+        width: 80vw;
+        margin-left: 10%;
+    }
+}

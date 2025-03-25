@@ -67,6 +67,7 @@ font-size: large;
   .search-icon{
     height: 30px;
     width: 30px;
+    padding-bottom: 24px;
   }
 
   .search-text-input{
@@ -76,4 +77,17 @@ font-size: large;
     box-shadow: 2px 4px 6px #FFC857;
   }
 
+
+  
+
+  .header {
+    /* height: 18vh; */
+  }
+}
+
+
+@media screen and (max-width:315px) {
+  .search-icon{
+    padding-bottom: 30px;
+  }
 }
