@@ -36,18 +36,33 @@
 
 
 .search-text-input{
-  width: 30%;
+  width: 300px;
   height: 3vh;
   background-color: white;
   box-shadow: 2px 4px 6px #FFC857;
+
 }
 
 .search-container{
   display: flex;
-  width: 80%;
+  width: 440px;
   height: 50%;
   align-self: center;
+  margin-left: 25px;
 }
+
+
+
+.trade-toad-banner{
+  width: 500px;
+  height: 70px;
+  justify-self: center;
+  align-self: center;
+  margin-top: 10px;
+  margin-right: 26%;
+}
+
+
 
 /* *{
   background-color: black;
