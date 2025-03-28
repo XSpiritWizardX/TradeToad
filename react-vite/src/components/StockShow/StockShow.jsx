@@ -1,6 +1,9 @@
 // import { useSelector } from 'react-redux';
 import './StockShow.css'
 
+import OpenModalButton from '../OpenModalButton/OpenModalButton';
+import BuyStockModal from '../BuyStockModal/BuyStockModal';
+import SellStockModal from '../SellStockModal/SellStockModal'
 
 function StockShow() {
 //   const sessionUser = useSelector(state => state.session.user);
@@ -35,20 +38,26 @@ function StockShow() {
             >
                 <h1>Trade</h1>
 
+                <OpenModalButton
+                 className= 'buy-button'
+                buttonText="Buy"
+                // onItemClick={closeMenu}
+                modalComponent={<BuyStockModal />}
+              />
+
+                <OpenModalButton
+                 className= 'sell-button'
+                buttonText="Sell"
+                // onItemClick={closeMenu}
+                modalComponent={<SellStockModal />}
+              />
 
 
-                <button
-                className='buy-button'
-                >
-                    BUY
-                </button>
-
-
-                <button
+                {/* <button
                 className='sell-button'
                 >
                     SELL
-                </button>
+                </button> */}
 
             </div>
 
