@@ -1,0 +1,51 @@
+
+
+
+
+
+
+
+.stock-show-head-text{
+    display: flex;
+    justify-self: flex-start;
+    margin-left: 4%;
+}
+
+
+
+
+.stock-show-area{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 4%;
+    margin-right: 4%;
+
+}
+
+
+.example-apple-img{
+    width: 1200px;
+    height: 600px;
+    border: 4px solid white;
+
+}
+
+
+
+
+
+.user-trade-menu{
+    border: 4px solid white;
+    width: 242px;
+}
+
+
+.buy-button{
+    width: 100px;
+    margin-left: 6%;
+}
+
+.sell-button{
+    width: 100px;
+    margin-left: 5%;
+}

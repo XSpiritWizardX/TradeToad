@@ -3,6 +3,9 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import HomePage from '../components/HomePage/HomePage';
 import Layout from './Layout';
+import Dashboard from '../components/Dashboard/Dashboard';
+import StockShow from '../components/StockShow/StockShow'
+
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +23,14 @@ export const router = createBrowserRouter([
         path: "signup",
         element: <SignupFormPage />,
       },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/stocks/:stockID",
+        element: <StockShow />,
+      }
     ],
   },
 ]);

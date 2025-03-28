@@ -32,7 +32,9 @@ function LoginFormModal() {
     <>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
-        <label>
+        <label
+        className="email-label"
+        >
           Email
           <input
             type="text"
@@ -42,7 +44,9 @@ function LoginFormModal() {
           />
         </label>
         {errors.email && <p>{errors.email}</p>}
-        <label>
+        <label
+        className="password-label"
+        >
           Password
           <input
             type="password"

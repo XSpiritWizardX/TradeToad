@@ -1,36 +1,34 @@
 
-
 .profile-dropdown{
-    display: visible;
-
-    width: 150px;
-    /* position is fixed because otherwise its side by side */
+  display: visible;
+    width: 120px;
+    height: 170px;
     position: fixed;
-    top: 80px;
+    display: flex;
+    flex-direction: column;
+    top: 120px;
     right: 20px;
     border-radius: 10px;
     z-index: 1;
-
     color: white;
     border: 2px solid #FFC857;
-}
-.profile-dropdown.hidden {
-    display: none;
-}
+    }
+
+    .profile-dropdown.hidden {
+      display: none;
+      }
 
 
 
 
-.nav-links {
-  text-decoration: none;
-  color: rgb(0, 118, 182);
-}
+      .nav-links {
+        text-decoration: none;
+        color: rgb(0, 118, 182);
+        }
 
-.nav-links::after {
-  color: blueviolet;
-}
-
-
+        .nav-links::after {
+          color: blueviolet;
+          }
 
 
 
@@ -39,57 +37,42 @@
 
 
 
-.menu-button {
-  /* position: fixed; */
-    z-index: 1;
-    border: black 5;
-    width: 70px;
-    height: 70px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 2px 4px 6px #FFC857;
-    transition: transform 0.2s ease, background-color 0.3s ease;
-    background-color: white;
-    margin-right: 12px;
-  }
 
 
-  /* .menu-icon {
-    padding:10px,10px;
-    margin:10px;
-    background-color: white;
-    color: white;
-  } */
+          .menu-button {
+            z-index: 1;
+            border: black 5;
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 6px 6px 6px #FFC857;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+            background-color: white;
+            margin-right: 12px;
+            border: 3px solid black;
+            }
 
-  .user-icon{
-    display: flex;
-    justify-self: flex-start;
-    align-self: center;
-    background-color: white;
-    color: white;
-    height: 28px;
-    width: 40px;
-  }
 
-  .user-circle {
-    height: 40px;
-    width: 40px;
-    /* margin-bottom: 10%; */
-    background-color: white;
-    color: black;
-    border-radius: 50%;
-    border: 1px solid rgb(0, 0, 0);
-  }
 
-  .menu-button:hover {
-    background-color: #ddd;
-    transform: scale(1.1);
-  }
-  .menu-button:active {
-    background-color: #bbb;
-  }
+    .user-circle {
+      height: 40px;
+      width: 40px;
+      background-color: white;
+      color: black;
+      border-radius: 50%;
+      border: 1px solid rgb(0, 0, 0);
+      }
+
+      .menu-button:hover {
+        background-color: #ddd;
+        transform: scale(1.1);
+        }
+        .menu-button:active {
+          background-color: #bbb;
+          }
 
 
 
@@ -105,14 +88,14 @@
 .account-info {
   display: flex;
   justify-content: center;
- padding: 5px 10px 5px 10px;
+  padding: 5px 10px 5px 10px;
 
-}
+ }
 
 .profile-line{
   border: 1px solid black;
   margin:3px 6px;
-}
+  }
 
 
 
@@ -120,7 +103,7 @@
 
 
 
-.auth-container {
+  .auth-container {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -129,33 +112,32 @@
     height: 20vh;
     top: 80px;
     right: 20px;
-    /* gap: 10px; */
     text-align: center;
-  }
+    }
 
 
-  .auth-button {
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: auto;
-    text-align: center;
-  }
+    .auth-button {
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: auto;
+      text-align: center;
+      }
 
-  .logout-button {
-    border-radius: 38%;
-    cursor: pointer;
+      .logout-button {
+        border-radius: 38%;
+        cursor: pointer;
     margin: auto;
     color:white;
     background-color: darkgray;
-  }
-
-
-
-  @media screen and (max-width:515px) {
-    .menu-button{
-      margin-right: 3%;
     }
-  }
+
+
+
+    @media screen and (max-width:515px) {
+      .menu-button{
+        margin-right: 3%;
+        }
+        }

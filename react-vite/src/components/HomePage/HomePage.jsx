@@ -3,7 +3,7 @@ import './HomePage.css'
 // import { useState, useEffect, useRef } from "react";
 // import { useDispatch, useSelector } from "react-redux";
 
-
+import { NavLink } from 'react-router-dom';
 
 
 function ProfileButton() {
@@ -44,14 +44,22 @@ function ProfileButton() {
     </p>
 
 
+<NavLink
+to='/dashboard'
+>
 
-
+    <button
+    className='dashboard-button'
+    >
+      Dashboard
+    </button>
+</NavLink>
 
     <footer
     className="foot"
     >
 
-      <h5>App Data && resources</h5>
+      <h5>App Data && Resources</h5>
       <a to='/resources'
       className='resources'
       >

@@ -1,0 +1,45 @@
+.dashboard-container{
+    background-color: black;
+    padding-top: 30px;
+    height: 1500px;
+
+}
+.dashboard-content{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+
+.portfolio-card{
+
+    width: 600px;
+    height: 600px;
+}
+
+.watchlist-card{
+
+    width: 200px;
+    height: 600px;
+    margin-right: 8%;
+}
+
+
+
+.stock-choices-dashboard{
+    display: flex;
+    border: 2px solid #FFC857;
+    height: 60px;
+    width: 90vw;
+    margin-left: 4%;
+    align-self: flex-start;;
+
+}
+
+
+.stock-choices-card{
+    margin-left: 2%;
+
+}
+
+

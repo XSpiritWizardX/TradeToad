@@ -1,5 +1,5 @@
 .page {
-    height: 90vh;
+    background-color: black;
 }
 
 h1{
@@ -12,10 +12,13 @@ h3{
 
 h5{
     color: white;
+    margin-left: 4%;
 }
 .resources{
     color: white;
     cursor: pointer;
+    margin-left: 4%;
+    margin-bottom: 2%;
 }
 
 .textz{
@@ -23,6 +26,7 @@ h5{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    /* background-color: black; */
 }
 
 img{
@@ -36,17 +40,26 @@ p{
     display: flex;
     justify-self: center;
     color: white;
+    margin-bottom: 10%;
 }
 
 .foot{
     display: flex;
     /* justify-content: start; */
-    align-items: center;
+    align-items: start;
     flex-direction: column;
-    margin-top: 15%;
-    border-top: 2px solid white;
+    border-top: 1px solid rgba(255, 255, 255, 0.418);
+    background-color: black;
 
     /* padding-bottom: 5px; */
+}
+
+.dashboard-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    margin-bottom: 4%;
 }
 
 @media screen and (max-width:515px)  {

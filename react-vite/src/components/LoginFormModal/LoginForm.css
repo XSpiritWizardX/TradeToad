@@ -7,7 +7,7 @@ h1 {
 
 label {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
+    /* background-color: white; */
 }
 
 
@@ -26,12 +26,12 @@ form {
     border-radius: 10px;
 }
 
-.input {
+input {
     /* width: 372px; */
-    margin-bottom: 8px;
-    margin:10px, 10px;
-    border-color: rgba(151, 44, 44, 0.938);
-
+    /* margin-bottom: 8px;
+    margin:10px, 10px; */
+    border-color:#FFC857;
+    color: white;
 }
 
 
@@ -56,3 +56,10 @@ button:hover{
     margin: 2% auto;
     cursor: pointer;
 }
+
+/* .login-form input,
+.login-form label,
+.login-form p,
+.login-form button {
+  color: white;
+} */
