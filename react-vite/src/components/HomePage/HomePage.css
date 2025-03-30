@@ -30,7 +30,7 @@
     height: 30vh;
     /* animation: spin 2s linear infinite; */
     /* animation: updown 1.5s linear infinite; */
-    /* animation: hop-around 10s linear infinite; */
+    animation: hop-around 1s linear infinite;
 
 }
 
@@ -43,8 +43,6 @@
 
 
 /* @keyframes spin {
-
-
     0% {
         transform: rotate(0deg);
     }
@@ -55,8 +53,6 @@
         transform: rotate(360deg);
      }
 } */
-
-
 
 /* @keyframes updown{
     0% {
@@ -92,33 +88,78 @@
     100% {
         transform: translateY(0%);
     }
-
-
 } */
 
 
-/* @keyframes hop-around{
+@keyframes hop-around{
     0% {
-        transform: translateY(0%);
-
+        transform: translate(0px, 0px);
     }
-
+    10% {
+        transform: translate(100px, -180px);
+    }
+    20% {
+        transform: translate(200px, -320px);
+    }
+    30% {
+        transform: translate(300px, -420px);
+    }
+    40% {
+        transform: translate(400px, -480px);
+    }
     50% {
-        transform: translateX(90vw);
+        transform: translate(500px, -500px);
     }
-
-    75% {
-        transform: translateY(70vh);
-        transform: scale(330%, 330%);
+    60% {
+        transform: translate(600px, -480px);
+    }
+    70% {
+        transform: translate(700px, -420px);
     }
     80% {
-        transform: translateY(-50vh);
+        transform: translate(800px, -320px);
     }
     90% {
-        transform: translateX(10vw);
+        transform: translate(900px, -180px);
     }
-
-} */
+    100% {
+        transform: translate(1000px, 0px);
+    }
+    /* hop back */
+    100% {
+        transform: translate(1000px, 0px);
+    }
+    90% {
+        transform: translate(900px, -180px);
+    }
+    80% {
+        transform: translate(800px, -320px);
+    }
+    70% {
+        transform: translate(700px, -420px);
+    }
+    60% {
+        transform: translate(600px, -480px);
+    }
+    50% {
+        transform: translate(500px, -500px);
+    }
+    40% {
+        transform: translate(400px, -480px);
+    }
+    30% {
+        transform: translate(300px, -420px);
+    }
+    20% {
+        transform: translate(200px, -320px);
+    }
+    90% {
+        transform: translate(100px, -180px);
+    }
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
 
 
 .foot{
