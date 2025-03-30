@@ -1,20 +1,27 @@
 // import { useSelector } from 'react-redux';
-// import { Navigate } from 'react-router-dom';
-import './Watchlist.css'
+// import { NavLink } from 'react-router-dom';
+
+import './CurrentStocks.css'
 
 
-function Watchlist() {
+function CurrentStocksCard() {
+//   const sessionUser = useSelector(state => state.session.user);
 
   // Redirect if not logged in
 //   if (!sessionUser) return <Navigate to="/" />;
 
   return (
-    <div className="watchlist-container">
+    <div className="current-stocks-container">
+
+
+
       {/* <h1
-      className='watchlist-title'
-      >Watchlist</h1> */}
-
-
+      className='current-head-text'
+      >
+        Currently Owned
+        <br/>
+        Stocks
+        </h1> */}
 
 
       <div
@@ -178,27 +185,6 @@ function Watchlist() {
       </div>
 
 
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
 
 
       <div
@@ -222,10 +208,61 @@ function Watchlist() {
             </p>
 
       </div>
+
+
+
+
+      <div
+      className='watch-stock-container'
+      >
+
+        <p
+        className='para-watch'
+        >
+            stock name
+            </p>
+        <p
+        className='para-watch'
+        >
+            stock price
+            </p>
+        <p
+        className='para-watch'
+        >
+            percentage change ^%
+            </p>
+
+      </div>
+
+
+
+
+      <div
+      className='watch-stock-container'
+      >
+
+        <p
+        className='para-watch'
+        >
+            stock name
+            </p>
+        <p
+        className='para-watch'
+        >
+            stock price
+            </p>
+        <p
+        className='para-watch'
+        >
+            percentage change ^%
+            </p>
+
+      </div>
+
 
 
     </div>
   );
 }
 
-export default Watchlist;
+export default CurrentStocksCard;

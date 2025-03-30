@@ -85,6 +85,7 @@ function ProfileButton() {
              >
               <li>{user.username}</li>
               <li>{user.email}</li>
+              <button>Add Credit Card</button>
               <li>
                 <button onClick={logout}>Log Out</button>
               </li>

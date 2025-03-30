@@ -25,7 +25,7 @@ function Navigation() {
 
 
 
-        
+
 
         <div
         className="search-container"

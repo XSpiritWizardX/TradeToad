@@ -17,11 +17,27 @@ function PortfolioCard() {
         >
             <h1
             className='investing-money-portfolio'
-            >Portfolio ...Investing...  Total amount of money
+            >Investing  $123,456,789.00
             </h1>
             <h1
             className='investing-money-portfolio2'
-            >money today... %change</h1>
+            >$1234567.89
+
+            <span
+            className="seperation"
+            >
+              &#183;
+            </span>
+
+            (1.00%)
+
+             <span
+            className="seperation"
+            >
+              &#183;
+            </span>
+
+            Today</h1>
         </div>
 
 

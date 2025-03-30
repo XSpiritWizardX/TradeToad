@@ -2,26 +2,49 @@
     background-color: black;
     padding-top: 30px;
     height: 100%;
-    width: auto;
+    width: 98vw;
 }
 .dashboard-content{
     display: flex;
     justify-content: space-between;
 
 }
+.dash-head-text{
+
+    color: white;
+    border: 2px solid greenyellow;
+    border-bottom: 2px solid #B4EC51;
+    margin-left: 4%;
+}
+
+
+
+.top-port-text-and-buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.port-head-text{
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
+}
+
 
 
 .portfolio-card{
 
-    width: 600px;
+    width: 70vw;
     height: 600px;
+
 }
 
 .watchlist-card{
 
-    width: 200px;
-    height: 600px;
+    width: 30vw;
+    height: auto;
     margin-right: 8%;
+    overflow-y: scroll;
 }
 
 
@@ -29,8 +52,8 @@
 .stock-choices-dashboard{
     display: flex;
     border: 2px solid #FFC857;
-    height: 60px;
-    width: 90vw;
+    height: 70px;
+    width: 58vw;
     margin-left: 4%;
     align-self: flex-start;;
     margin-bottom: 20px;
@@ -40,5 +63,75 @@
 
 .stock-choices-card{
     margin-left: 2%;
+    margin-bottom: 2px;
 
+}
+
+.current-stock-and-watchlist{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 808px;
+}
+
+
+
+.fund-me{
+    display: flex;
+    justify-self: flex-end;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    border-radius: 12%;
+    border: 2px solid #FFC857;
+    margin-bottom: 1%;
+}
+
+.withdraw {
+    display: flex;
+    justify-self: flex-end;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    border-radius: 15%;
+    border: 2px solid #FFC857;
+    margin-bottom: 1%;
+}
+
+
+.buttonsz {
+    display: flex;
+    justify-content:flex-end;
+    justify-self: flex-end;
+    margin-bottom: 1%;
+}
+
+
+.time-frame-container{
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 0.5%;
+}
+
+.time-frame{
+    width: 6%;
+    margin: 0.5%;
+    border: 2px solid #FFC857;
+    border-radius: 15%;
+}
+
+
+.landing-page-copy{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+
+.side-bar-header-text{
+    color: #FFC857;
+    height: 5%;
+    margin-top: 0;
 }

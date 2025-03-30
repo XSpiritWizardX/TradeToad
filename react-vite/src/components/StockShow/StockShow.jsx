@@ -1,6 +1,6 @@
 // import { useSelector } from 'react-redux';
 import './StockShow.css'
-
+import { NavLink } from 'react-router-dom';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import BuyStockModal from '../BuyStockModal/BuyStockModal';
 import SellStockModal from '../SellStockModal/SellStockModal'
@@ -59,7 +59,7 @@ function StockShow() {
 
 
 
-               
+
 
                 <OpenModalButton
                 className='sell-button'
@@ -105,7 +105,47 @@ function StockShow() {
 
 
 
+        <div
+        className='time-frame-container'
+        >
 
+        <button
+        className='time-frame'
+        >
+          Live
+        </button>
+        <button
+        className='time-frame'
+        >
+          1 Day
+        </button>
+        <button
+        className='time-frame'
+        >
+          1 Week
+        </button>
+        <button
+        className='time-frame'
+        >
+          1 Month
+        </button>
+        <button
+        className='time-frame'
+        >
+          3 Months
+        </button>
+        <button
+        className='time-frame'
+        >
+          1 Year
+        </button>
+        <button
+        className='time-frame'
+        >
+          All Time
+        </button>
+
+        </div>
 
 
         <div
@@ -117,12 +157,114 @@ function StockShow() {
 
 
 
-    <h1
-    className='para-stock-choice'
-    >
-        stock choices
-    </h1>
+  <h1
+      className='para-stock-choice'
+      >
+          Stock Choices // Biggest Movers
+      </h1>
+          <div
+          className='stock-choices-dashboard'
+          >
 
+
+              <NavLink
+                className="stock-choices-card"
+                to='/stocks/:stockID'
+              >
+                <button>
+                  Stock #1
+                </button>
+              </NavLink>
+
+              <NavLink
+               to='/stocks/:stockID'
+                  className="stock-choices-card"
+              >
+                <button>
+                  Stock #2
+                </button>
+              </NavLink>
+
+              <NavLink
+               to='/stocks/:stockID'
+                  className="stock-choices-card"
+              >
+                <button>
+                  Stock #3
+                </button>
+              </NavLink>
+
+
+              <NavLink
+               to='/stocks/:stockID'
+                  className="stock-choices-card"
+              >
+                <button>
+                  Stock #4
+                </button>
+              </NavLink>
+
+
+              <NavLink
+               to='/stocks/:stockID'
+                  className="stock-choices-card"
+              >
+                <button>
+                  Stock #5
+                </button>
+              </NavLink>
+
+
+              <NavLink
+               to='/stocks/:stockID'
+                  className="stock-choices-card"
+              >
+                <button>
+                  Stock #6
+                </button>
+              </NavLink>
+
+
+              <NavLink
+               to='/stocks/:stockID'
+                  className="stock-choices-card"
+              >
+                <button>
+                  Stock #7
+                </button>
+              </NavLink>
+
+
+              <NavLink
+               to='/stocks/:stockID'
+                  className="stock-choices-card"
+              >
+                <button>
+                  Stock #8
+                </button>
+              </NavLink>
+
+
+              <NavLink
+               to='/stocks/:stockID'
+                  className="stock-choices-card"
+              >
+                <button>
+                  Stock #9
+                </button>
+              </NavLink>
+
+
+              <NavLink
+               to='/stocks/:stockID'
+                  className="stock-choices-card"
+              >
+                <button>
+                  Stock #10
+                </button>
+              </NavLink>
+
+          </div>
 
 
 
