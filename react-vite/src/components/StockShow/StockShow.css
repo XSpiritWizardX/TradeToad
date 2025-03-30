@@ -24,7 +24,7 @@
 
 
 .example-apple-img{
-    width: 78%;
+    width: 90%;
     height: 600px;
     border: 4px solid white;
 
@@ -54,5 +54,3 @@
     flex-direction: column;
     margin-left: 4%;
 }
-
-
