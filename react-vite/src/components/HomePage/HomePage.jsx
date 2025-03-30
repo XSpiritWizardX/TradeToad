@@ -17,7 +17,7 @@ function ProfileButton() {
 
   return (
     <div
-    className='page'
+    className='home-page'
     >
 
     <div
@@ -31,13 +31,23 @@ function ProfileButton() {
     </div>
 
 
-    <img src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742869032/trade-toad2_gltqdk.png'></img>
-
-    <img src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742869030/z1WTK1Mj22ptr4EX1tQc--0--wxhad-removebg-preview_qcwbkn.png'></img>
-
+    <img
+    src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742869032/trade-toad2_gltqdk.png'
 
 
-    <p>
+    className='jumping-toad'
+    ></img>
+
+    <img
+    src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742869030/z1WTK1Mj22ptr4EX1tQc--0--wxhad-removebg-preview_qcwbkn.png'
+    className='game-toad'
+    ></img>
+
+
+
+    <p
+    className='homepage-p-text'
+    >
       Leap into the fun now.
       <br/>
        Sign up or Login to begin.

@@ -38,26 +38,64 @@ function StockShow() {
             >
                 <h1>Trade</h1>
 
+
+
+                <div
+                className='button-cont-stockshow'
+                >
+
+                {/* <button
+                className= 'buy-button'
+                > */}
+
+
                 <OpenModalButton
-                 className= 'buy-button'
+                className='buy-button'
                 buttonText="Buy"
                 // onItemClick={closeMenu}
                 modalComponent={<BuyStockModal />}
               />
+                {/* </button> */}
+
+
+
+               
 
                 <OpenModalButton
-                 className= 'sell-button'
+                className='sell-button'
                 buttonText="Sell"
                 // onItemClick={closeMenu}
                 modalComponent={<SellStockModal />}
               />
 
 
-                {/* <button
-                className='sell-button'
+
+
+                <button
+                className='add-watch-button'
+                >Add to watchlist</button>
+                </div>
+
+
+                <p>Technical data</p>
+
+                <div
+                className='tech-data'
                 >
-                    SELL
-                </button> */}
+                <p>PRICE</p>
+                <p>VOLUME</p>
+                <p>VOLATILITY</p>
+                <p>MARKET-CAP</p>
+                <p>OPEN</p>
+                <p>CLOSE</p>
+                <p>HIGH</p>
+                <p>LOW</p>
+
+                </div>
+
+
+
+
 
             </div>
 

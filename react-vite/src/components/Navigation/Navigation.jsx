@@ -15,6 +15,18 @@ function Navigation() {
 
         </NavLink>
 
+
+
+        <img
+        src="https://res.cloudinary.com/dl6ls3rgu/image/upload/v1743177193/text-1743177174588_mr9aoq.png"
+         alt="banner-trade-toad"
+         className="trade-toad-banner"
+         />
+
+
+
+        
+
         <div
         className="search-container"
         >
@@ -29,13 +41,16 @@ function Navigation() {
 
         </div>
 
-        <img
-        src="https://res.cloudinary.com/dl6ls3rgu/image/upload/v1743177193/text-1743177174588_mr9aoq.png"
-         alt="banner-trade-toad"
-         className="trade-toad-banner"
-         />
 
-        <ProfileButton />
+
+
+
+        <ProfileButton
+        className="profile-button"
+        />
+
+
+
 
     </div>
   );

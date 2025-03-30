@@ -1,24 +1,4 @@
-h1 {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    display: flex;
-    justify-self: center;
-}
 
-
-label {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    /* background-color: white; */
-}
-
-
-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    margin: 10px;
-    border-radius: 10px;
-    color: white;
-}
 
 .login-container {
     width: 400px;
@@ -26,27 +6,7 @@ form {
     border-radius: 10px;
 }
 
-input {
-    /* width: 372px; */
-    /* margin-bottom: 8px;
-    margin:10px, 10px; */
-    border-color:#FFC857;
-    color: white;
-}
 
-
-button {
-    margin-top: 10px;
-    height: 40px;
-    color: white;
-    background-color: green;
-    font-size: large;
-}
-
-
-button:hover{
-    cursor: pointer;
-}
 
 
 .demo-log-in {
@@ -63,3 +23,8 @@ button:hover{
 .login-form button {
   color: white;
 } */
+
+.submit-button-login {
+background-color: green;
+color: white;
+}

@@ -1,19 +1,4 @@
-.page {
-    background-color: black;
-}
 
-h1{
-    color: white;
-}
-
-h3{
-    color: white;
-}
-
-h5{
-    color: white;
-    margin-left: 4%;
-}
 .resources{
     color: white;
     cursor: pointer;
@@ -22,6 +7,7 @@ h5{
 }
 
 .textz{
+    margin-top: 2%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,19 +15,22 @@ h5{
     /* background-color: black; */
 }
 
-img{
+
+
+.jumping-toad{
     display: flex;
     justify-self: center;
-    height: 400px;
+    height: 30vh;
 
 }
 
-p{
+.game-toad{
     display: flex;
     justify-self: center;
-    color: white;
-    margin-bottom: 10%;
+    height: 30vh;
 }
+
+
 
 .foot{
     display: flex;
@@ -60,11 +49,12 @@ p{
     align-items: center;
     justify-self: center;
     margin-bottom: 4%;
+    width: 10%;
 }
 
 @media screen and (max-width:515px)  {
     .page{
-        width: 80vw;
-        margin-left: 10%;
+        width: 100vw;
+
     }
 }

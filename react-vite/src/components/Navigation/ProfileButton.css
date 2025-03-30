@@ -12,6 +12,7 @@
     z-index: 1;
     color: white;
     border: 2px solid #FFC857;
+    background-color: gray;
     }
 
     .profile-dropdown.hidden {
@@ -21,18 +22,21 @@
 
 
 
-      .nav-links {
+      /* .nav-links {
         text-decoration: none;
         color: rgb(0, 118, 182);
         }
 
         .nav-links::after {
           color: blueviolet;
-          }
+          } */
 
 
 
-
+.pro-divvy{
+  margin-right: 1%;
+  margin-top: 1%;
+}
 
 
 
@@ -42,8 +46,8 @@
           .menu-button {
             z-index: 1;
             border: black 5;
-            width: 70px;
-            height: 70px;
+            width: 80%;
+            height: 70%;
             cursor: pointer;
             display: flex;
             justify-content: center;
@@ -109,7 +113,7 @@
     justify-content: space-evenly;
     border: 2px solid black;
     border-radius: 10px;
-    height: 20vh;
+    height: 100%;
     top: 80px;
     right: 20px;
     text-align: center;

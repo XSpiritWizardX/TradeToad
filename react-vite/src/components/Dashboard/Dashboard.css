@@ -1,8 +1,8 @@
 .dashboard-container{
     background-color: black;
     padding-top: 30px;
-    height: 1500px;
-
+    height: 100%;
+    width: auto;
 }
 .dashboard-content{
     display: flex;
@@ -33,6 +33,7 @@
     width: 90vw;
     margin-left: 4%;
     align-self: flex-start;;
+    margin-bottom: 20px;
 
 }
 
@@ -41,5 +42,3 @@
     margin-left: 2%;
 
 }
-
-

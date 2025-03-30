@@ -18,7 +18,7 @@
     display: flex;
     justify-content: space-between;
     margin-left: 4%;
-    margin-right: 4%;
+    margin-right: 1%;
 
 }
 
@@ -36,16 +36,23 @@
 
 .user-trade-menu{
     border: 4px solid white;
-    width: 242px;
+    width: 22%;
+    margin-left: 1%;
+
 }
 
 
-.buy-button{
-    width: 100px;
-    margin-left: 6%;
+.button-cont-stockshow{
+    display: flex;
+    justify-content: space-evenly;
 }
 
-.sell-button{
-    width: 100px;
-    margin-left: 5%;
+
+.tech-data{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-left: 4%;
 }
+
+

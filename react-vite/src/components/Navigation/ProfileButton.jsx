@@ -5,10 +5,10 @@ import { FaUserCircle } from 'react-icons/fa';
 
 import { thunkLogout } from "../../redux/session";
 
-
-import OpenModalMenuItem from "./OpenModalMenuItem";
-import LoginFormModal from "../LoginFormModal";
-import SignupFormModal from "../SignupFormModal";
+import OpenModalButton from '../OpenModalButton/OpenModalButton';
+// import OpenModalMenuItem from "./OpenModalMenuItem";
+import LoginFormModal from "../LoginFormModal/LoginFormModal";
+import SignupFormModal from "../SignupFormModal/SignupFormModal";
 
 import './ProfileButton.css'
 
@@ -61,7 +61,9 @@ function ProfileButton() {
 
 
   return (
-    <>
+    <div
+    className="pro-divvy"
+    >
       <button
       className="menu-button"
       onClick={toggleMenu}
@@ -69,17 +71,17 @@ function ProfileButton() {
         {/* <div className='menu-icon'>
         <CiMenuBurger />
         </div> */}
-        <div className='user-icon' >
+
         <FaUserCircle
         className="user-circle"
         />
-        </div>
+
       </button>
       {showMenu && (
         <div className={ulClassName} ref={ulRef}>
           {user ? (
              <div
-             className='auth-container'
+             className='auth-container-user'
              >
               <li>{user.username}</li>
               <li>{user.email}</li>
@@ -95,25 +97,32 @@ function ProfileButton() {
             <div
             className="auth-container"
             >
-              <OpenModalMenuItem
-                itemText="Sign Up"
-                onItemClick={closeMenu}
-                modalComponent={<SignupFormModal />}
-                className="auth-button"
-              />
-              <OpenModalMenuItem
-                itemText="Log In"
-                onItemClick={closeMenu}
+              <OpenModalButton
+                buttonText="Log In"
+                // onItemClick={closeMenu}
                 modalComponent={<LoginFormModal />}
-                className="auth-button"
+                className="login"
               />
+
+              <OpenModalButton
+                buttonText="Sign Up"
+                // onItemClick={closeMenu}
+                modalComponent={<SignupFormModal />}
+                className="signup"
+              />
+
+
+              <p>  DEMO USER?!?</p>
+
+
             </div>
+
 
 
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }
 
