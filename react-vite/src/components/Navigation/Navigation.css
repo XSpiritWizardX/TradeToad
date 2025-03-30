@@ -20,11 +20,28 @@
   z-index: 1;
   width: 100px;
   height: auto;
+  /* animation: spin 10s linear infinite; */
 }
 
 
-
-
+/* @keyframes spin {
+  /* Set up your keyframe animation here */
+  /* from {
+      transform: rotate(0deg);
+  }
+  to {
+      transform: rotate(360deg);
+  }
+  0% {
+      transform: rotate(0deg);
+  }
+   50% {
+      transform: rotate(180deg);
+   }
+   100% {
+      transform: rotate(360deg);
+   }
+*/
 
 
 .trade-toad-banner{
@@ -105,7 +122,7 @@
 
 
 
- 
+
 }
 
 

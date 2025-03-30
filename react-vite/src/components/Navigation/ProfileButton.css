@@ -13,6 +13,7 @@
     color: white;
     border: 2px solid #FFC857;
     background-color: gray;
+    padding-right: 10px;
     }
 
     .profile-dropdown.hidden {
@@ -111,7 +112,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    border: 2px solid black;
+    /* border: 2px solid black; */
+    margin-left: 4%;
     border-radius: 10px;
     height: 100%;
     top: 80px;
@@ -120,23 +122,23 @@
     }
 
 
-    .auth-button {
+    /* .auth-button {
       border: none;
       padding: 10px 20px;
       font-size: 16px;
-      border-radius: 5px;
+      border-radius: 50px;
       cursor: pointer;
       width: auto;
       text-align: center;
-      }
+      } */
 
-      .logout-button {
+      /* .logout-button {
         border-radius: 38%;
         cursor: pointer;
     margin: auto;
     color:white;
     background-color: darkgray;
-    }
+    } */
 
 
 

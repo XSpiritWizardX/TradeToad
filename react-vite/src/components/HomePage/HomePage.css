@@ -26,10 +26,99 @@
 
 .game-toad{
     display: flex;
-    justify-self: center;
+    justify-self: start;
     height: 30vh;
+    /* animation: spin 2s linear infinite; */
+    /* animation: updown 1.5s linear infinite; */
+    /* animation: hop-around 10s linear infinite; */
+
 }
 
+.game-toad:hover {
+    transform: scale(180%, 180%);
+    cursor: pointer;
+
+}
+
+
+
+/* @keyframes spin {
+
+
+    0% {
+        transform: rotate(0deg);
+    }
+     50% {
+        transform: rotate(180deg);
+     }
+     100% {
+        transform: rotate(360deg);
+     }
+} */
+
+
+
+/* @keyframes updown{
+    0% {
+        transform: translateY(0%);
+    }
+    10% {
+        transform: translateY(-10%);
+    }
+    20% {
+        transform: translateY(-20%);
+    }
+    30% {
+        transform: translateY(-50%);
+    }
+    40% {
+        transform: translateY(-70%);
+    }
+    50% {
+        transform: translateY(-100%);
+    }
+    60% {
+        transform: translateY(-70%);
+    }
+    70% {
+        transform: translateY(-50%);
+    }
+    80% {
+        transform: translateY(-20%);
+    }
+    90% {
+        transform: translateY(-10%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+
+
+} */
+
+
+/* @keyframes hop-around{
+    0% {
+        transform: translateY(0%);
+
+    }
+
+    50% {
+        transform: translateX(90vw);
+    }
+
+    75% {
+        transform: translateY(70vh);
+        transform: scale(330%, 330%);
+    }
+    80% {
+        transform: translateY(-50vh);
+    }
+    90% {
+        transform: translateX(10vw);
+    }
+
+} */
 
 
 .foot{
@@ -51,6 +140,8 @@
     margin-bottom: 4%;
     width: 10%;
 }
+
+
 
 @media screen and (max-width:515px)  {
     .page{
