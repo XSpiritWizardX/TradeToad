@@ -76,7 +76,7 @@ function HomePage() {
 
         ></img>
 
-          
+
 
         )}
 
@@ -107,6 +107,13 @@ function HomePage() {
 
 
 
+
+
+
+
+
+
+
 <NavLink
 to='/dashboard'
 className='foot-links'
@@ -118,6 +125,113 @@ className='foot-links'
       Dashboard
     </button>
 </NavLink>
+
+
+
+
+
+        <h1
+
+        >
+
+        Learn. Trade. Grow.
+        </h1>
+
+
+<h1>
+
+A Smarter Way to Master the Stock Market
+</h1>
+
+<p>
+
+Whether you're a complete beginner or looking to sharpen your trading skills, <br/>our web app is designed to make learning the stock market simple, engaging, and effective.
+</p>
+
+<h1>
+
+📡 Real-Time Market Data—Updated Every 60 Seconds
+</h1>
+
+<p>
+
+Stay ahead of the game with live stock prices, trends, and market movements—updated every minute.
+<br/>
+ No outdated charts. No guesswork. Just real-time data at your fingertips.
+</p>
+
+<h1>
+
+🎓 Comprehensive Learning Center
+</h1>
+
+<p>
+
+Stock trading doesn’t have to be complicated. Our interactive courses, bite-sized lessons,
+<br/>
+ and expert insights break everything down into easy-to-understand steps.
+ <br/>
+ Learn at your own pace, from the basics to advanced strategies.
+</p>
+
+
+<h1>
+
+📊 Hands-On Trading Simulations
+</h1>
+
+<p>
+
+Practice trading without the risk.
+<br/>
+Use virtual money to test strategies, experiment with trades,
+<br/>
+and gain confidence before investing real dollars.
+</p>
+
+<h1>
+
+🔍 Market Insights & Expert Analysis
+</h1>
+
+<p>
+Understand the ‘why’ behind the numbers.
+<br/>
+Get insights from experienced traders,
+<br/>
+market trends, and news that impact your decisions.
+</p>
+
+
+<h1>
+
+🚀 Your Journey to Smarter Trading Starts Here
+<br/>
+No prior experience needed—perfect for beginners
+</h1>
+<p>
+
+Track your progress and build your own strategy
+<br/>
+Stay informed with minute-by-minute stock updates
+<br/>
+Learn at your own pace with a structured curriculum
+<br/>
+Join now and take your first step toward mastering the stock market!
+</p>
+
+<h1>
+
+✅ Sign Up for Free & Start Learning Today!
+</h1>
+
+
+
+
+<ln>-------------<br/>-------------</ln>
+
+
+
 
 
         <div
