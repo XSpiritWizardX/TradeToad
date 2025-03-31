@@ -15,37 +15,60 @@
     /* background-color: black; */
 }
 
-
-
-
 .landing-page-copy{
     display: flex;
     justify-self: start;
-    height: 30vh;
-    /* animation: spin 2s linear infinite; */
-    /* animation: updown 1.5s linear infinite; */
-    animation: hop-around 5s linear infinite;
 
 }
 
-.game-toad:hover {
+.foot{
+    display: flex;
+    /* justify-content: start; */
+    align-items: start;
+    flex-direction: column;
+    border-top: 1px solid rgba(255, 255, 255, 0.418);
+    background-color: black;
+
+    /* padding-bottom: 5px; */
+}
+
+.dashboard-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    margin-bottom: 4%;
+    width: 10%;
+}
+
+/* .jumping-toad{
+    display: flex;
+    justify-self: center;
+    height: 20vh;
+
+} */
+
+.game-toad{
+    display: flex;
+    justify-self: start;
+    height: 25vh;
+
+    animation: hop-around 6s linear infinite;
+
+}
+
+/* .game-toad:hover {
     transform: scale(180%, 180%);
     cursor: pointer;
 
-}
-
-
-/* @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-     50% {
-        transform: rotate(180deg);
-     }
-     100% {
-        transform: rotate(360deg);
-     }
 } */
+
+@media screen and (max-width:515px)  {
+    .page{
+        width: 100vw;
+
+    }
+}
 
 @keyframes hop-around{
     /* 1st jump - splice*/
@@ -157,56 +180,7 @@
     }
 }
 
-
-.foot{
-    display: flex;
-    /* justify-content: start; */
-    align-items: start;
-    flex-direction: column;
-    border-top: 1px solid rgba(255, 255, 255, 0.418);
-    background-color: black;
-
-    /* padding-bottom: 5px; */
-}
-
-.dashboard-button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    justify-self: center;
-    margin-bottom: 4%;
-    width: 10%;
-}
-
-
-.jumping-toad{
-    display: flex;
-    justify-self: center;
-    height: 20vh;
-
-}
-
-
-
-.game-toad{
-    display: flex;
-    justify-self: start;
-    height: 30vh;
-
-    animation: hop-around 7s linear infinite;
-
-}
-
-.game-toad:hover {
-    transform: scale(180%, 180%);
-    cursor: pointer;
-
-}
-
-
-
-
-@keyframes hop-around{
+/* @keyframes hop-around{
 
     0% {
         transform: translate(-100px, -250px);
@@ -348,14 +322,6 @@
     100% {
         transform: translate(2000px, -500px);
     }
-}
+} */
 
 
-
-
-@media screen and (max-width:515px)  {
-    .page{
-        width: 100vw;
-
-    }
-}
