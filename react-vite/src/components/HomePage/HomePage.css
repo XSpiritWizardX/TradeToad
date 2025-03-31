@@ -58,11 +58,11 @@
 
 }
 
-/* .game-toad:hover {
+.game-toad:hover {
     transform: scale(180%, 180%);
     cursor: pointer;
 
-} */
+}
 
 @media screen and (max-width:515px)  {
     .page{
