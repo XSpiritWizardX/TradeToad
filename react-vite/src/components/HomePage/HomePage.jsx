@@ -75,6 +75,9 @@ function HomePage() {
         onClick={handleToadClick}
 
         ></img>
+
+          
+
         )}
 
 
