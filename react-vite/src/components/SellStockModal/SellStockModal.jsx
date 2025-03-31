@@ -39,9 +39,27 @@ function SellStockModal() {
             required
             />
        </label>
-        <button type="submit">
+
+
+        <div
+        className="button-sell-modal-container"
+        >
+        <button type="submit"
+        className="sell-modal-button"
+        >
           Sell Now
         </button>
+        <button type="submit"
+        className="sell-modal-button"
+        >
+          Sell All
+        </button>
+
+        </div>
+
+
+
+
       </form>
     </>
   );

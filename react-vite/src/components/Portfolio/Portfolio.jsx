@@ -17,7 +17,9 @@ function PortfolioCard() {
         >
             <h1
             className='investing-money-portfolio'
-            >Investing  $123,456,789.00
+            >Investing
+            <br/>
+             $123,456,789.00
             </h1>
             <h1
             className='investing-money-portfolio2'

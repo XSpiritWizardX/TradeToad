@@ -1,0 +1,11 @@
+.sell-modal-button{
+    margin-right:1%;
+    margin-left: 1%;
+    width: 98%;
+}
+
+
+.button-sell-modal-container{
+    display: flex;
+    justify-content: space-between;
+}

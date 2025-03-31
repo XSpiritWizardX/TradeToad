@@ -19,9 +19,10 @@ function StockShow() {
       <h1
       className='stock-show-head-text'
       >
-       Stock Name Apple
+        APPL<br/>
+       Apple
         <br/>
-        Price $123.45
+        $208.60
 
         </h1>
 

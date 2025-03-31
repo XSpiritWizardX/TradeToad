@@ -23,7 +23,7 @@ function BuyStockModal() {
     // if (serverResponse) {
     //   setErrors(serverResponse);
     // } else {
-    //   closeModal();
+      // closeModal();
     // }
   };
 
@@ -42,7 +42,10 @@ function BuyStockModal() {
             required
             />
        </label>
-        <button type="submit">
+        <button
+        type="submit"
+        className="buy-modal-button"
+        >
           Buy Now
         </button>
       </form>
