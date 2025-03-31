@@ -39,6 +39,7 @@
     justify-self: center;
     margin-bottom: 4%;
     width: 10%;
+    text-decoration: none;
 }
 
 /* .jumping-toad{
@@ -323,5 +324,3 @@
         transform: translate(2000px, -500px);
     }
 } */
-
-

@@ -1,14 +1,36 @@
 import './HomePage.css'
-
+import { useState } from 'react';
 // import { useState, useEffect, useRef } from "react";
 // import { useDispatch, useSelector } from "react-redux";
 
 import { NavLink } from 'react-router-dom';
 
 
-function ProfileButton() {
 
 
+
+
+
+
+
+
+
+
+
+function HomePage() {
+
+  const [isToadVisible, setIsToadVisible] = useState(true)
+
+
+
+
+
+
+  const handleToadClick = () => {
+    setIsToadVisible(false);
+    console.log('Image clicked! Visibility set to false.');
+
+  }
 
 
 
@@ -31,17 +53,43 @@ function ProfileButton() {
     </div>
 
 
-    {/* <img
-    src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742869032/trade-toad2_gltqdk.png'
 
 
-    className='jumping-toad'
-    ></img> */}
 
-    <img
-    src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742869030/z1WTK1Mj22ptr4EX1tQc--0--wxhad-removebg-preview_qcwbkn.png'
-    className='game-toad'
-    ></img>
+
+
+      {/* Begin Toad Jumps */}
+
+
+      <div
+      className='toad-group'
+      >
+
+
+        {isToadVisible && (
+
+
+        <img
+        src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742869030/z1WTK1Mj22ptr4EX1tQc--0--wxhad-removebg-preview_qcwbkn.png'
+        className='game-toad'
+        onClick={handleToadClick}
+
+        ></img>
+        )}
+
+
+
+
+
+      </div>
+
+
+      {/* End Toad Jumps */}
+
+
+
+
+
 
 
 
@@ -58,6 +106,7 @@ function ProfileButton() {
 
 <NavLink
 to='/dashboard'
+className='foot-links'
 >
 
     <button
@@ -156,27 +205,10 @@ to='/dashboard'
 
 
 
-
-
-
-    {/* <footer
-    className="foot"
-    >
-
-      <h5>App Data && Resources</h5>
-      <a to='/resources'
-      className='resources'
-      >
-        resources
-        </a>
-    </footer> */}
-
-
-
-
-
   </div>
+
   );
+
 }
 
-export default ProfileButton;
+export default HomePage;
