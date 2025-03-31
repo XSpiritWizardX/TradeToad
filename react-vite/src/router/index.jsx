@@ -5,6 +5,7 @@ import HomePage from '../components/HomePage/HomePage';
 import Layout from './Layout';
 import Dashboard from '../components/Dashboard/Dashboard';
 import StockShow from '../components/StockShow/StockShow'
+import BlankPages from '../components/BlankPage/BlankPage';
 
 
 export const router = createBrowserRouter([
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "/stocks/:stockID",
         element: <StockShow />,
+      },
+      {
+        path: "/coming-soon",
+        element:<BlankPages/>
       }
     ],
   },

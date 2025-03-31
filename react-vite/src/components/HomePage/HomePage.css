@@ -45,15 +45,20 @@
     justify-self: center;
     margin-bottom: 4%;
     width: 10%;
+    text-decoration: none;
 }
 
-
+/*
 .jumping-toad{
     display: flex;
     justify-self: center;
     height: 20vh;
 
-}
+} */
+
+
+
+
 
 
 
@@ -61,18 +66,26 @@
     display: flex;
     justify-self: start;
     height: 30vh;
-
-    animation: hop-around 7s linear infinite;
+    animation: hop-around 7s linear;
 
 }
+
+/* .toad-group{
+    display: flex;
+    justify-content: center;
+} */
+
+
 
 .game-toad:hover {
     transform: scale(180%, 180%);
     cursor: pointer;
-
 }
 
 
+.game-toad-hidden{
+    display: none;
+}
 
 
 @keyframes hop-around{
