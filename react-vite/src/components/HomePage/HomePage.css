@@ -42,34 +42,45 @@
     text-decoration: none;
 }
 
-/* .jumping-toad{
+/*
+.jumping-toad{
     display: flex;
     justify-self: center;
     height: 20vh;
 
 } */
 
+
+
+
+
+
+
 .game-toad{
     display: flex;
     justify-self: start;
-    height: 25vh;
-
-    animation: hop-around 6s linear infinite;
+    height: 30vh;
+    animation: hop-around 7s linear;
 
 }
+
+/* .toad-group{
+    display: flex;
+    justify-content: center;
+} */
+
+
 
 .game-toad:hover {
     transform: scale(180%, 180%);
     cursor: pointer;
-
 }
 
-@media screen and (max-width:515px)  {
-    .page{
-        width: 100vw;
 
-    }
+.game-toad-hidden{
+    display: none;
 }
+
 
 @keyframes hop-around{
     /* 1st jump - splice*/
