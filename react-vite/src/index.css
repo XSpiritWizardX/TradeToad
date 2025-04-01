@@ -6,7 +6,9 @@ html{
 }
 
 
-
+h2{
+    color: #ffffff;
+}
 
 h3{
     color: #ffffff;
@@ -16,6 +18,9 @@ h5{
     color: rgb(255, 255, 255);
 }
 
+h4{
+    color: #ffffff;
+}
 
 p{
     display: flex;
@@ -68,6 +73,7 @@ button {
     background-color: green;
     font-size: large;
     border: 2px solid #FFC857;
+    text-decoration: none;
 }
 
 
