@@ -128,7 +128,7 @@ className='foot-links'
 
 
 
-
+{/* Begin Copywriting */}
 
         <h1
 
@@ -145,8 +145,30 @@ A Smarter Way to Master the Stock Market
 
 <p>
 
-Whether you're a complete beginner or looking to sharpen your trading skills, <br/>our web app is designed to make learning the stock market simple, engaging, and effective.
+Whether you&apos;re a complete beginner or looking to sharpen your trading skills, <br/>our web app is designed to make learning the stock market simple, engaging, and effective.
 </p>
+
+
+
+<h1>Why Trade Toad?</h1>
+        <p>
+
+            Live Market Data:
+
+            Real-time stock prices keep your practice sessions realistic.
+            <br/>
+            Risk-Free Trading: No real money needed—just smart strategies.
+            <br/>
+           Expert Support: Get help when you need it with dedicated trading resources and support.
+           <br/>
+           Learn & Improve: Track your progress and refine your skills with every trade.
+           <br/>
+           Portfolio Simulation: Build, manage, and tweak your virtual investment portfolio.
+           <br/>
+            Strategy Testing: Experiment with different trading methods to find what works best for you.
+        </p>
+
+
 
 <h1>
 
@@ -167,7 +189,7 @@ Stay ahead of the game with live stock prices, trends, and market movements—up
 
 <p>
 
-Stock trading doesn’t have to be complicated. Our interactive courses, bite-sized lessons,
+Stock trading doesn&apos;t have to be complicated. Our interactive courses, bite-sized lessons,
 <br/>
  and expert insights break everything down into easy-to-understand steps.
  <br/>
@@ -195,7 +217,7 @@ and gain confidence before investing real dollars.
 </h1>
 
 <p>
-Understand the ‘why’ behind the numbers.
+Understand the why behind the numbers.
 <br/>
 Get insights from experienced traders,
 <br/>
@@ -230,9 +252,12 @@ Join now and take your first step toward mastering the stock market!
 
 <ln>-------------<br/>-------------</ln>
 
+{/* End copywriting */}
 
 
 
+
+        {/* Begin Articles */}
 
         <div
         className='landing-page-copy'
@@ -316,7 +341,7 @@ Join now and take your first step toward mastering the stock market!
 
         </div>
 
-
+ {/* End Articles */}
 
 
 

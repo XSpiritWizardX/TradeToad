@@ -25,10 +25,15 @@ h1{
 
 }
 
-button{
+
+.sign-up-submit-button{
+
     border-radius: 5px;
     font-size: large;
+    width: 96%;
 }
+
+
 
 label {
     display: flex;
