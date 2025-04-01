@@ -16,7 +16,7 @@ function StockShow() {
 
 
 
-      <h1
+      {/* <h1
       className='stock-show-head-text'
       >
         APPL<br/>
@@ -24,7 +24,7 @@ function StockShow() {
         <br/>
         $208.60
 
-        </h1>
+        </h1> */}
 
 
 

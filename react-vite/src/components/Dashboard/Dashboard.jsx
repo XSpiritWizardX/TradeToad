@@ -3,12 +3,13 @@ import { NavLink } from 'react-router-dom';
 import PortfolioCard from '../../components/Portfolio/Portfolio';
 import WatchlistCard from '../../components/Watchlist/Watchlist'
 import CurrentStocksCard from '../CurrentStocks/CurrentStocks';
+import { useSelector } from 'react-redux';
 import './Dashboard.css'
 
 
 function Dashboard() {
 //   const sessionUser = useSelector(state => state.session.user);
-
+  const user = useSelector(state => state.session.user)
   // Redirect if not logged in
 //   if (!sessionUser) return <Navigate to="/" />;
 
@@ -18,7 +19,7 @@ function Dashboard() {
 
 
       <h1>
-        Welcome, USER!
+        Welcome, {user?.firstName} {user?.lastName} !
         </h1>
 
 

@@ -1,9 +1,9 @@
 import './HomePage.css'
 import { useState } from 'react';
 // import { useState, useEffect, useRef } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
-import { NavLink } from 'react-router-dom';
+// import { NavLink } from 'react-router-dom';
 
 
 
@@ -41,6 +41,9 @@ function HomePage() {
     <div
     className='home-page'
     >
+
+
+
 
     <div
     className='textz'
@@ -111,10 +114,10 @@ function HomePage() {
 
 
 
+{/* Use dashboard button only for dev purposes */}
 
 
-
-<NavLink
+{/* <NavLink
 to='/dashboard'
 className='foot-links'
 >
@@ -124,7 +127,7 @@ className='foot-links'
       >
         Dashboard
       </button>
-    </NavLink>
+    </NavLink> */}
 
 
 
@@ -355,7 +358,5 @@ Join now and take your first step toward mastering the stock market!
   );
 
 }
-
-export default HomePage;
 
 export default HomePage;
