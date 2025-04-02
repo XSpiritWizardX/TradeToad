@@ -1,0 +1,65 @@
+.portfolio-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+    max-width: 400px;
+  }
+
+  .portfolio-card h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .balance-section {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .balance-amount {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2e7d32;
+    margin-top: 5px;
+  }
+
+  .add-funds-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .input-group label {
+    font-weight: 500;
+    color: #555;
+  }
+
+  .input-group input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  .add-funds-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .add-funds-button:hover {
+    background-color: #388e3c;
+  }

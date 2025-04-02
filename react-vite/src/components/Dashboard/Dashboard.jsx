@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import PortfolioCard from '../PortfolioCard';
+import PortfolioCard from '../components/PortfolioCard/PortfolioCard'
 
 function Dashboard() {
   const sessionUser = useSelector(state => state.session.user);
