@@ -42,11 +42,16 @@ function PortfolioCard() {
             Today</h1>
         </div>
 
-
+          {/* Begin react charts here */}
       <div className="portfolio-content">
+
+
         <img src="https://res.cloudinary.com/dl6ls3rgu/image/upload/v1743126559/robinhood-portfolio-example_cl1zyl.jpg" alt="example-portfolio"
         className='example-port-img'/>
+
+
       </div>
+      {/* End react charts here */}
 
     </div>
   );

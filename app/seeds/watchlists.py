@@ -1,13 +1,11 @@
 from app.models import db, Watchlist, environment, SCHEMA
-from sqlalchemy.sql import integer
+from sqlalchemy.sql import text
 
 
 # Adds a demo user, you can add other users here if you want
-def seed_watchlist():
-    demoWatch = Watchlist(
-        userID=1, stockId=1)
-    marnieWatch = Watchlist(
-        userId=2, stockId=2)
+def seed_watchlists():
+    demoWatch = Watchlist(userId="1", stockId="1")
+    marnieWatch = Watchlist(userId="2", stockId="2")
 
 
     db.session.add(demoWatch)
