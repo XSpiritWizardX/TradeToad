@@ -1,9 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
+import HomePage from '../components/HomePage/HomePage';
 import Layout from './Layout';
-import PortfolioCard from '../../TradeToad/react-vite/src/components/PortfolioCard/PortfolioCard';
 import Dashboard from '../components/Dashboard/Dashboard';
+import StockShow from '../components/StockShow/StockShow'
+import BlankPages from '../components/BlankPage/BlankPage';
+
 
 export const router = createBrowserRouter([
   {
@@ -11,7 +14,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>,
+        element:<HomePage/>,
       },
       {
         path: "/dashboard",
@@ -26,6 +29,18 @@ export const router = createBrowserRouter([
         path: "signup",
         element: <SignupFormPage />,
       },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/stocks/:stockID",
+        element: <StockShow />,
+      },
+      {
+        path: "/coming-soon",
+        element:<BlankPages/>
+      }
     ],
   },
 ]);

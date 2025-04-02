@@ -3,16 +3,25 @@ from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
-
-auth_routes = Blueprint('auth', __name__)
+# from flask_wtf.csrf import CSRFProtect
+# csrf = CSRFProtect()
+# csrf.init_app()
+# csrf._disable_on_debug = True  # Not for production
+auth_routes = Blueprint('auth', __name__, "")
 
 
 @auth_routes.route('/')
 def authenticate():
+    print('trying something here')
+    print(f"Current user: {current_user}, Authenticated: {current_user.is_authenticated}")
+    print("CSRF Token from request:", request.cookies.get('csrf_token'))
+
+
     """
     Authenticates a user.
     """
     if current_user.is_authenticated:
+        print("user is authenticated")
         return current_user.to_dict()
     return {'errors': {'message': 'Unauthorized'}}, 401
 
@@ -30,6 +39,8 @@ def login():
         # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
+        print("trying to login")
+        db.session.commit()  # Ensure session persists
         return user.to_dict()
     return form.errors, 401
 

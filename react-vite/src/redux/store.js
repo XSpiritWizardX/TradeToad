@@ -9,6 +9,10 @@ import sessionReducer from "./session";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
+  // stock: stocksReducer,
+  // watchlist: watchlistReducer,
+  // portfolio: portfolioReducer
+  
 });
 
 let enhancer;

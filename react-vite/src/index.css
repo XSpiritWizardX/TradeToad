@@ -1,1 +1,82 @@
 /* TODO: Add sitewide styles */
+
+
+html{
+    background-color: black;
+}
+
+
+h2{
+    color: #ffffff;
+}
+
+h3{
+    color: #ffffff;
+}
+
+h5{
+    color: rgb(255, 255, 255);
+}
+
+h4{
+    color: #ffffff;
+}
+
+p{
+    display: flex;
+    justify-self: center;
+    color: white;
+    margin-bottom: 5%;
+}
+
+
+h1 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    justify-self: center;
+    color: white;
+}
+
+
+label {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    /* background-color: white; */
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 10px;
+    border-radius: 10px;
+    color: white;
+}
+
+
+input {
+    /* width: 372px; */
+    /* margin-bottom: 8px;
+    margin:10px, 10px; */
+    border-color:#FFC857;
+    color: black;
+}
+
+
+button {
+    margin-top: 10px;
+    margin-right: 4%;
+    margin-left: 2%;
+    height: 50px;
+    width: 100%;
+    color: white;
+    background-color: green;
+    font-size: large;
+    border: 2px solid #FFC857;
+    text-decoration: none;
+}
+
+
+button:hover{
+    cursor: pointer;
+}
