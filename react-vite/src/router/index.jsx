@@ -6,8 +6,8 @@ import Layout from './Layout';
 import Dashboard from '../components/Dashboard/Dashboard';
 import StockShow from '../components/StockShow/StockShow'
 import BlankPages from '../components/BlankPage/BlankPage';
-
-
+import LearningCenter from '../components/LearningCenter/LearningCenter'
+import TransferFunds from '../components/TransferFunds/TransferFunds';
 export const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -40,6 +40,14 @@ export const router = createBrowserRouter([
       {
         path: "/coming-soon",
         element:<BlankPages/>
+      },
+      {
+        path:"/learning-center",
+        element:<LearningCenter/>
+      },
+      {
+        path:'/transfer',
+        element:<TransferFunds/>
       }
     ],
   },

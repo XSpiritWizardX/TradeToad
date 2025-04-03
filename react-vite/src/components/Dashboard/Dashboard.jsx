@@ -46,7 +46,7 @@ function Dashboard() {
 
 
 
-        <div
+        {/* <div
         className='buttonsz'
         >
 
@@ -58,7 +58,7 @@ function Dashboard() {
         className='withdraw'
         >Withdraw</button>
 
-        </div>
+        </div> */}
 
         {/* </div> */}
 
