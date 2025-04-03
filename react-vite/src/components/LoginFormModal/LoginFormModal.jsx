@@ -28,7 +28,8 @@ function LoginFormModal() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
-      closeModal();
+      closeModal()
+      .then(navigate('/dashboard'))
     }
   };
 
