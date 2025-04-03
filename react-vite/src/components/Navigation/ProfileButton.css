@@ -1,8 +1,8 @@
 
 .profile-dropdown{
   display: visible;
-    width: 120px;
-    height: 170px;
+    width: 160px;
+    height: auto;
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -14,6 +14,7 @@
     border: 2px solid #FFC857;
     background-color: gray;
     padding-right: 10px;
+    padding-bottom: 10px;
     }
 
     .profile-dropdown.hidden {
@@ -23,14 +24,14 @@
 
 
 
-      /* .nav-links {
+      .nav-links {
         text-decoration: none;
         color: rgb(0, 118, 182);
         }
 
         .nav-links::after {
           color: blueviolet;
-          } */
+          }
 
 
 
@@ -44,21 +45,21 @@
 
 
 
-          .menu-button {
-            z-index: 1;
-            border: black 5;
-            width: 80%;
-            height: 70%;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 6px 6px 6px #FFC857;
-            transition: transform 0.2s ease, background-color 0.3s ease;
-            background-color: white;
-            margin-right: 12px;
-            border: 3px solid black;
-            }
+.menu-button {
+  z-index: 1;
+  border: black 5;
+  width: 80%;
+  height: 70%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 6px 6px 6px #FFC857;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  background-color: white;
+  margin-right: 12px;
+  border: 3px solid black;
+  }
 
 
 
@@ -82,7 +83,13 @@
 
 
 
-
+.nav-link-dropdown{
+  /* display: flex; */
+  text-decoration: none;
+  color: #1B4D3E;
+  font-size: x-large;
+  /* justify-self: self-start; */
+}
 
 
 
@@ -93,7 +100,8 @@
 .account-info {
   display: flex;
   justify-content: center;
-  padding: 5px 10px 5px 10px;
+  margin-bottom: 0;
+  font-size: large;
 
  }
 
@@ -122,23 +130,23 @@
     }
 
 
-    /* .auth-button {
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 50px;
-      cursor: pointer;
-      width: auto;
-      text-align: center;
-      } */
 
-      /* .logout-button {
-        border-radius: 38%;
-        cursor: pointer;
-    margin: auto;
-    color:white;
-    background-color: darkgray;
-    } */
+
+  .auth-container-user{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    /* border: 2px solid black; */
+    margin-left: 4%;
+    border-radius: 10px;
+    height: 100%;
+    top: 80px;
+    right: 20px;
+    text-align: center;
+  }
+
+
+
 
 
 
