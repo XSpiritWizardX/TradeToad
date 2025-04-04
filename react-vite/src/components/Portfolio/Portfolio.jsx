@@ -1,7 +1,7 @@
 // import { useSelector } from 'react-redux';
 // import { Navigate } from 'react-router-dom';
 import './Portfolio.css'
-import lineChart from '../LineChart/lineChart'
+//import lineChart from '../LineChart/lineChart'
 // import 'useLagRadar'
 /*import {
   Chart as ChartJS,
