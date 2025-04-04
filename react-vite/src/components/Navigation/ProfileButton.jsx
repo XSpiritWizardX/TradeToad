@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaUserCircle } from 'react-icons/fa';
 // import { CiMenuBurger } from "react-icons/ci";
-
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { thunkLogout } from "../../redux/session";
 
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
@@ -20,6 +21,7 @@ function ProfileButton() {
 
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
+  const navigate = useNavigate();
   const user = useSelector((store) => store.session.user);
   const ulRef = useRef();
 
@@ -44,10 +46,16 @@ function ProfileButton() {
 
   const closeMenu = () => setShowMenu(false);
 
+
+
+
   const logout = (e) => {
     e.preventDefault();
     dispatch(thunkLogout());
-    closeMenu();
+    (navigate('/'))
+    .then(closeMenu())
+
+
   };
 
 
@@ -77,22 +85,119 @@ function ProfileButton() {
         />
 
       </button>
+
+
+
       {showMenu && (
         <div className={ulClassName} ref={ulRef}>
           {user ? (
+
+
+
              <div
              className='auth-container-user'
              >
-              <li>{user.username}</li>
-              <li>{user.email}</li>
-              <button>Add Credit Card</button>
-              <li>
-                <button onClick={logout}>Log Out</button>
-              </li>
+
+
+              <p
+              className="account-info"
+              >
+                  Welcome,
+              </p>
+              <p
+              className="account-info"
+              >
+                {user.firstName} {user.lastName}
+                </p>
+
+              <p
+              className="account-info"
+              >
+                {user.email}
+                </p>
+
+
+                <br/>
+                <br/>
+
+
+                <NavLink
+              to='/dashboard'
+              className="nav-link-dropdown"
+              >
+              Dashboard
+              </NavLink>
+
+
+             <br/>
+
+
+              <NavLink
+              to='/coming-soon'
+              className="nav-link-dropdown"
+              >
+              Add Credit Card
+              </NavLink>
+
+
+              <br/>
+
+              <NavLink
+              to='/transfer'
+              className="nav-link-dropdown"
+              >
+              Transfer Funds
+              </NavLink>
+
+              <br/>
+
+
+              {/* <NavLink
+              to='/coming-soon'
+              className="nav-link-dropdown"
+              >
+              Withdraw
+              </NavLink> */}
+
+              {/* <br/> */}
+
+
+
+
+              <NavLink
+              to='/learning-center'
+              className="nav-link-dropdown"
+              >
+              Learning Center
+              </NavLink>
+              {/* <button>Add Credit Card</button> */}
+
+              <br/>
+
+
+                <button onClick={logout}
+
+                >Log Out</button>
+
+                {/* <OpenModalButton
+                buttonText="Log Out"
+                onButtonClick={logout}
+                modalComponent={<LoginFormModal />}
+                className="logout"
+                /> */}
+
+
             </div>
+
+
+
           )
 
+
+
           :
+
+
 
           (
             <div
@@ -113,7 +218,7 @@ function ProfileButton() {
               />
 
 
-             
+
 
 
             </div>
