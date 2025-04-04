@@ -1,7 +1,7 @@
 """watcherz
 
 Revision ID: c0ad3953df44
-Revises: dad3f6c55e3e
+Revises: ffdc0a98111c
 Create Date: 2025-03-31 20:49:46.951690
 
 """
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = 'c0ad3953df44'
-down_revision = 'dad3f6c55e3e'
+down_revision = 'ffdc0a98111c'
 branch_labels = None
 depends_on = None
 
