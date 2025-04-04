@@ -9,8 +9,7 @@ class Watchlist(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    userId = db.Column(db.Integer,nullable=False)
-    stockId = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer,nullable=False)
 
     # @property
     # def password(self):
@@ -26,7 +25,5 @@ class Watchlist(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'userId': self.userId,
-            'stockId': self.stockId
-
+            'user_id': self.user_id,
         }

@@ -8,6 +8,8 @@ client = RESTClient(polygon_config.API_KEY)
 
 # aggregate data
 
+closingPrices = []
+
 def apiCall():
     aggs = []
     closing = []
@@ -33,6 +35,9 @@ def apiCall():
 result = apiCall()
 print(result)
 print(f'\nnumber of results: {len(result)}\n')
+
+print('=========')
+print(f'closingPrices: {closingPrices}')
 
 
 # use code snippets later:

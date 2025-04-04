@@ -4,9 +4,8 @@ from sqlalchemy.sql import text
 
 # Adds a demo user, you can add other users here if you want
 def seed_watchlists():
-    demoWatch = Watchlist(userId="1", stockId="1")
-    marnieWatch = Watchlist(userId="2", stockId="2")
-
+    demoWatch = Watchlist(user_id="1")
+    marnieWatch = Watchlist(user_id="2")
 
     db.session.add(demoWatch)
     db.session.add(marnieWatch)

@@ -7,13 +7,27 @@ def seed_users():
     demo = User(
         firstName='DEMO', lastName='USER', username="Demo", email='demo@aa.io', password='password')
     marnie = User(
-        firstName='MAR', lastName='MARNI', username="Demo3", email='marnie@aa.io', password='password')
+        firstName='MAR', lastName='MARNI', username="Demo2", email='marnie@aa.io', password='password')
     bobbie = User(
-        firstName='BOB', lastName='BOBBIE', username="Demo2", email='bobbie@aa.io', password='password')
+        firstName='BOB', lastName='BOBBIE', username="Demo3", email='bobbie@aa.io', password='password')
+    trixie = User(
+        firstName='Trixie', lastName='Stardust', username="Demo4", email='2for1dances@aa.io', password='password')
+    jane = User(
+        firstName='Jane', lastName='Way', username="Demo5", email='enterprisecap@aa.io', password='password')
+    luke = User(
+        firstName='Luke', lastName='Skywalker', username="Demo6", email='thechosenone@aa.io', password='password')
+    elon = User(
+        firstName='Elon', lastName='Tusks', username="Demo7", email='etusks@aa.io', password='password')
 
     db.session.add(demo)
     db.session.add(marnie)
     db.session.add(bobbie)
+    # new users
+    db.session.add(trixie)
+    db.session.add(jane)
+    db.session.add(luke)
+    db.session.add(elon)
+
     db.session.commit()
 
 
