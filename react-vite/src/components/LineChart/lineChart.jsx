@@ -1,14 +1,14 @@
-import "./styles.css";
+import "./lineChart.css";
 //import useLagRadar from "./useLagRadar";
 import React from "react";
 import ReactDOM from "react-dom";
-
+import Line from "./components/Line";
 //
 
 
 //import DarkMode from "./components/DarkMode";
 
-import Line from "./components/Line";
+
 
 
 /*const components = [
@@ -48,14 +48,14 @@ ChartJS.register(
   )
    function LineChart() {
      const primaryAxis = React.useMemo(
-       (): AxisOptions<LineElement> => ({
+       () => ({
          getValue: datum => datum.date,
        }),
        []
      )
 
      const secondaryAxes = React.useMemo(
-       (): AxisOptions<LineElement>[] => [
+       () => [
          {
            getValue: datum => datum.line,
          },
