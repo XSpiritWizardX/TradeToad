@@ -9,8 +9,8 @@ class Watchlist(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    userId = db.Column(db.Integer,nullable=False)
-    stockId = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer,nullable=False)
+    
 
     # @property
     # def password(self):

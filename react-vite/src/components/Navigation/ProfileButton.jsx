@@ -99,11 +99,11 @@ function ProfileButton() {
              >
 
 
-              <p
+              {/* <p
               className="account-info"
               >
                   Welcome,
-              </p>
+              </p> */}
               <p
               className="account-info"
               >
@@ -120,7 +120,9 @@ function ProfileButton() {
                 <br/>
                 <br/>
 
-
+                <ln
+            className='profile-line'
+            ></ln>
                 <NavLink
               to='/dashboard'
               className="nav-link-dropdown"
@@ -131,15 +133,19 @@ function ProfileButton() {
 
              <br/>
 
-
-              <NavLink
+             <ln
+            className='profile-line'
+            ></ln>
+              {/* <NavLink
               to='/coming-soon'
               className="nav-link-dropdown"
               >
               Add Credit Card
               </NavLink>
 
-
+              <ln
+            className='profile-line'
+            ></ln> */}
               <br/>
 
               <NavLink
@@ -151,7 +157,9 @@ function ProfileButton() {
 
               <br/>
 
-
+              <ln
+            className='profile-line'
+            ></ln>
               {/* <NavLink
               to='/coming-soon'
               className="nav-link-dropdown"
@@ -173,7 +181,9 @@ function ProfileButton() {
               {/* <button>Add Credit Card</button> */}
 
               <br/>
-
+              <ln
+            className='profile-line'
+            ></ln>
 
                 <button onClick={logout}
 
