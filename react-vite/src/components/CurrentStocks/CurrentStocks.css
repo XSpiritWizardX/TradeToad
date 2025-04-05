@@ -1,0 +1,6 @@
+.current-stocks-container{
+    border: 4px solid #FFC857;
+    height: 50%;
+    margin-bottom: 3%;
+    overflow-y: scroll;
+}

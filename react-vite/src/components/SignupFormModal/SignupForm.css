@@ -1,10 +1,10 @@
 h1{
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
-
-
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    justify-self: center;
 }
 
-.signup-container {
+/* .signup-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,15 +14,29 @@ h1{
     border-color: black;
     border:black 5px fill;
 
-}
+} */
 
 .inputs{
     display: flex;
+
     margin-bottom: 5px;
-    width: 375px;
+    margin-left: 5px;
+    /* width: 375px; */
+
 }
 
-button{
-    border-radius: 5px;
 
+.sign-up-submit-button{
+
+    border-radius: 5px;
+    font-size: large;
+    width: 96%;
+}
+
+
+
+label {
+    display: flex;
+    margin-bottom: 3%;
+    justify-content: space-between;
 }

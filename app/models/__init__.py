@@ -1,7 +1,9 @@
 from .db import db
 from .user import User
-from .portfolio import Portfolio
-from .stock import Stock
 from .watchlist import Watchlist
+from .stock import Stock
+from .watchlist_stock import Watchlist_Stock
+from .stock_transaction import Stock_Transaction
+from .portfolio import Portfolio
 from .portfolio_stock import PortfolioStock
 from .db import environment, SCHEMA
