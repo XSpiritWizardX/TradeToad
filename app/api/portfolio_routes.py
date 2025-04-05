@@ -21,12 +21,13 @@ def create_portfolio():
     """
     data = request.get_json()
     name = data.get("name")
-    balance = data.get("balance", 0.0)
+    total_cash = data.get("total_cash", 0.00)
+    available_cash = data.get("available_cash", 0.00)
 
     if not name:
         return jsonify({'error': 'Portfolio name is required'}), 400
 
-    new_portfolio = Portfolio(user_id=current_user.id, name=name, balance=balance)
+    new_portfolio = Portfolio(user_id=current_user.id, name=name, total_cash=total_cash, available_cash=available_cash)
     db.session.add(new_portfolio)
     db.session.commit()
 
@@ -36,7 +37,7 @@ def create_portfolio():
 @login_required
 def update_portfolio(id):
     """
-    Update a portfolio's balance.
+    Update a portfolio's total_cash.
     """
     portfolio = Portfolio.query.filter_by(id=id, user_id=current_user.id).first()
 
@@ -44,10 +45,12 @@ def update_portfolio(id):
         return jsonify({'error': 'Portfolio not found'}), 404
 
     data = request.get_json()
-    new_balance = data.get("balance")
+    # new_balance = data.get("balance")
+    # not sure but I replaced "balance" with "total_cash"
+    new_total_cash = data.get("total_cash")
 
-    if new_balance is not None:
-        portfolio.balance = new_balance
+    if new_total_cash is not None:
+        portfolio.total_cash = new_total_cash
 
     db.session.commit()
     return jsonify(portfolio.to_dict())

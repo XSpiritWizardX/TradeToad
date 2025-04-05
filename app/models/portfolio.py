@@ -8,8 +8,8 @@ class Portfolio(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
-    name = db.Column(db.String(100), nullable=False)
-    balance = db.Column(db.Float, default=0.0)
+    total_cash = db.Column(db.Float, default=0.00)
+    available_cash = db.Column(db.Float, default=0.00)
 
     # Relationship
     stocks = db.relationship("PortfolioStock", back_populates="portfolio", cascade="all, delete-orphan")
@@ -18,7 +18,7 @@ class Portfolio(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
-            'name': self.name,
-            'balance': self.balance,
+            'total_cash': self.total_cash,
+            'available_cash': self.available_cash,
             'stocks': [stock.to_dict() for stock in self.stocks]  # Include stock details
         }

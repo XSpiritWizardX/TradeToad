@@ -4,4 +4,5 @@ from wtforms.validators import DataRequired
 
 class PortfolioForm(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
-    balance = FloatField('balance')
+    # balance = FloatField('balance')
+    total_cash = FloatField('total_cash')

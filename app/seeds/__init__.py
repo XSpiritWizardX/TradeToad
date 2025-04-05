@@ -4,6 +4,8 @@ from .watchlists import seed_watchlists, undo_watchlists
 from .stocks import seed_stocks, undo_stocks
 from .watchlist_stocks import seed_watchlist_stocks, undo_watchlist_stocks
 from .stock_transactions import seed_stock_transactions, undo_stock_transactions
+# from .portfolios import seed_portfolios, undo_seed_portfolios
+# from .portfolio_stocks import seed_portfolio_stocks, undo_seed_portfolio_stocks
 
 from app.models.db import db, environment, SCHEMA
 
