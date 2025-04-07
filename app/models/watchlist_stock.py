@@ -9,9 +9,12 @@ class Watchlist_Stock(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    watchlist_id = db.Column(db.Integer,nullable=False)
-    stock_id = db.Column(db.Integer,nullable=False)
+    watchlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("watchlists.id")), nullable=False)
+    stock_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("stocks.id")), nullable=False)
     
+    # Relationships
+    watchlist = db.relationship("Watchlist", back_populates="watchlist_stocks")
+    stock = db.relationship("Stock", back_populates="watchlist_stocks")
 
     def to_dict(self):
         return {

@@ -9,11 +9,11 @@ class PortfolioStock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     portfolio_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("portfolios.id")), nullable=False)
     stock_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("stocks.id")), nullable=False)
-    quantity = db.Column(db.Float, nullable=False, default=1)
+    quantity = db.Column(db.Numeric, nullable=False, default=0)
 
     # Relationships
-    portfolio = db.relationship("Portfolio", back_populates="stocks")
-    stock = db.relationship("Stock", back_populates="portfolio_entries")
+    portfolio = db.relationship("Portfolio", back_populates="portfolio_stocks")
+    stock = db.relationship("Stock", back_populates="portfolio_stocks")
 
     def to_dict(self):
         return {
@@ -23,3 +23,6 @@ class PortfolioStock(db.Model):
             'quantity': self.quantity,
             'stock': self.stock.to_dict()  # Include stock details
         }
+    # NOTE line 24: "Include stock details" is not in schema diagram
+    # Is this stock details going to add redundant data to table?
+    # Will stock details page need to use this 'stock' details column?

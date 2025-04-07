@@ -9,18 +9,12 @@ class Watchlist(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer,nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False, unique=True)
+    # unique=True to enforce one watchlist per user
 
-    # @property
-    # def password(self):
-    #     return self.hashed_password
-
-    # @password.setter
-    # def password(self, password):
-    #     self.hashed_password = generate_password_hash(password)
-
-    # def check_password(self, password):
-    #     return check_password_hash(self.password, password)
+    # Relationships
+    watchlist_stocks = db.relationship("Watchlist_Stock", back_populates="watchlist", cascade="all, delete-orphan")
+    user = db.relationship("User", back_populates="watchlist")
 
     def to_dict(self):
         return {
