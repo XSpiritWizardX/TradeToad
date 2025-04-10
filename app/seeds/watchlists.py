@@ -12,6 +12,10 @@ def seed_watchlists():
     lukeWatch = Watchlist(user_id="6")
     elonWatch = Watchlist(user_id="7")
 
+
+
+
+
     db.session.add(demoWatch)
     db.session.add(marnieWatch)
     db.session.add(bobbieWatch)
@@ -19,6 +23,7 @@ def seed_watchlists():
     db.session.add(janeWatch)
     db.session.add(lukeWatch)
     db.session.add(elonWatch)
+
 
 
     db.session.commit()

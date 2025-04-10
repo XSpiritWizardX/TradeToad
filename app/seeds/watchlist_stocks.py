@@ -12,6 +12,11 @@ def seed_watchlist_stocks():
     elon4 = Watchlist_Stock(watchlist_id=7, stock_id=4)
     elon5 = Watchlist_Stock(watchlist_id=7, stock_id=5)
 
+
+
+
+
+
     db.session.add(demoWatch)
     db.session.add(marnieWatch)
     db.session.add(elon1)
@@ -19,6 +24,10 @@ def seed_watchlist_stocks():
     db.session.add(elon3)
     db.session.add(elon4)
     db.session.add(elon5)
+
+
+
+
 
     db.session.commit()
 

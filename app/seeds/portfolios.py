@@ -13,12 +13,31 @@ def seed_portfolios():
         user_id=4, total_cash=1000000.55, available_cash=392000.15)
     p5 = Portfolio(
         user_id=5, total_cash=1000000.66, available_cash=1800.25)
+    p6 = Portfolio(
+        user_id=6, total_cash=1000000.66, available_cash=1800.25)
+    p7 = Portfolio(
+        user_id=7, total_cash=1000000.66, available_cash=1800.25)
+
+
+
+
+
+
+
 
     db.session.add(p1)
     db.session.add(p2)
     db.session.add(p3)
     db.session.add(p4)
     db.session.add(p5)
+    db.session.add(p6)
+    db.session.add(p7)
+
+
+
+
+
+
 
     db.session.commit()
 

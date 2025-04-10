@@ -14,18 +14,20 @@ def seed_stock_transactions():
     trans5 = Stock_Transaction(
         user_id=5, stock_id=5, shares=200000000.00, price=147.74, action='BUY')
 
-# sample stock symbols, change to stock_id's
-# META
-# AAPL
-# AMZN
-# NFLX
-# GOOGL
+
+
+
+
 
     db.session.add(trans1)
     db.session.add(trans2)
     db.session.add(trans3)
     db.session.add(trans4)
     db.session.add(trans5)
+
+
+
+
 
     db.session.commit()
 
