@@ -7,7 +7,7 @@ from .portfolio import Portfolio
 from .portfolio_stock import Portfolio_Stock
 from .stock_transaction import Stock_Transaction
 from .crypto import Crypto
-
+from .portfolio_crypto import Portfolio_Crypto
 
 
 from .db import environment, SCHEMA
