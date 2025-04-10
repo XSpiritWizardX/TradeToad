@@ -6,9 +6,20 @@ from sqlalchemy.sql import text
 def seed_watchlists():
     demoWatch = Watchlist(user_id="1")
     marnieWatch = Watchlist(user_id="2")
+    bobbieWatch = Watchlist(user_id="3")
+    trixieWatch = Watchlist(user_id="4")
+    janeWatch = Watchlist(user_id="5")
+    lukeWatch = Watchlist(user_id="6")
+    elonWatch = Watchlist(user_id="7")
 
     db.session.add(demoWatch)
     db.session.add(marnieWatch)
+    db.session.add(bobbieWatch)
+    db.session.add(trixieWatch)
+    db.session.add(janeWatch)
+    db.session.add(lukeWatch)
+    db.session.add(elonWatch)
+
 
     db.session.commit()
 
