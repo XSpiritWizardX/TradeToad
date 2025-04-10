@@ -13,6 +13,12 @@ class Stock(db.Model):
     company = db.Column(db.String(40), nullable=False)
     market_cap = db.Column(db.Integer(), nullable=False)
 
+    # Relationships
+    portfolio_stocks = db.relationship("Portfolio_Stock", back_populates="stock", cascade="all, delete-orphan")
+    watchlist_stocks = db.relationship("Watchlist_Stock", back_populates="stock", cascade="all, delete-orphan")
+    stock_transactions = db.relationship("Stock_Transaction", back_populates="stock", cascade="all, delete-orphan")
+
+
 
     def to_dict(self):
         return {

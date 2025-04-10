@@ -11,12 +11,12 @@ class Portfolio_Stock(db.Model):
     # stock_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("stocks.id")), nullable=False)
 
     portfolio_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("portfolios.id")), nullable=False)
-    stock_id = db.Column(db.Integer,  nullable=False)
+    stock_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("stocks.id")), nullable=False)
     quantity = db.Column(db.Numeric(precision=15, scale=2, asdecimal=True), nullable=False)
 
     # Relationships
     portfolio = db.relationship("Portfolio", back_populates="portfolio_stock", uselist=False)
-    # stock = db.relationship("Stock", back_populates="portfolio_stocks")
+    stock = db.relationship("Stock", back_populates="portfolio_stocks")
 
     def to_dict(self):
         return {

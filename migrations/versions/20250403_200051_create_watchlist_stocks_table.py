@@ -21,7 +21,7 @@ def upgrade():
     op.create_table('watchlist_stocks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('watchlist_id', sa.Integer(), sa.ForeignKey("watchlists.id"), nullable=False),
-    sa.Column('stock_id', sa.Integer(), nullable=False),
+    sa.Column('stock_id', sa.Integer(), sa.ForeignKey("stocks.id"), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

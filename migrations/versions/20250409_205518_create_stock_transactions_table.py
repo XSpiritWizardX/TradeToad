@@ -21,7 +21,7 @@ def upgrade():
     op.create_table('stock_transactions',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), sa.ForeignKey("users.id"), nullable=False),
-    sa.Column('stock_id', sa.Integer(), nullable=False),
+    sa.Column('stock_id', sa.Integer(), sa.ForeignKey("stocks.id"), nullable=False),
     sa.Column('shares', sa.Numeric(precision=15, scale=2), nullable=False),
     sa.Column('price', sa.Numeric(precision=15, scale=2), nullable=False),
     sa.Column('action', sa.String(length=4), nullable=False),
