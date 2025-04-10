@@ -13,7 +13,7 @@ class Portfolio(db.Model):
 
 
      # Relationships
-    # portfolio_stocks = db.relationship("PortfolioStock", back_populates="portfolio", cascade="all, delete-orphan")
+    portfolio_stock = db.relationship("Portfolio_Stock", back_populates="portfolio", cascade="all, delete-orphan")
     user = db.relationship("User", back_populates="portfolio")
 
 
