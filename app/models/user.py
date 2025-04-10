@@ -21,7 +21,7 @@ class User(db.Model, UserMixin):
     watchlist = db.relationship("Watchlist", back_populates="user", cascade="all, delete-orphan", uselist=False)
     portfolio = db.relationship("Portfolio", back_populates="user", cascade="all, delete-orphan", uselist=False)
     stock_transactions = db.relationship("Stock_Transaction", back_populates="user", cascade="all, delete-orphan")
-
+    crypto_transactions = db.relationship("Crypto_Transaction", back_populates="user", cascade="all, delete-orphan")
 
     @property
     def password(self):
