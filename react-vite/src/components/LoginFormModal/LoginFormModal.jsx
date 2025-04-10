@@ -50,6 +50,28 @@ function LoginFormModal() {
 
 
 
+const loginDemo2 = (e) => {
+  e.preventDefault();
+  return dispatch(thunkLogin({
+      email: 'thechosenone@aa.io',
+      password: 'password'
+  }))
+  .then(closeModal)
+  .then(navigate('/dashboard'))
+};
+
+
+const loginDemo3 = (e) => {
+  e.preventDefault();
+  return dispatch(thunkLogin({
+      email: 'etusks@aa.io',
+      password: 'password'
+  }))
+  .then(closeModal)
+  .then(navigate('/dashboard'))
+};
+
+
 
 
 
@@ -92,12 +114,43 @@ function LoginFormModal() {
         className="submit-button-login"
         type="submit">Log In</button>
 
+
+        <ln
+        className="separate-line"
+        >
+
+        </ln>
+
+        <p
+        className="login-modal-words"
+        >
+          Try a demo account right away
+        </p>
+
+
+
         <a
         className='demo-log-in'
         onClick={loginDemo}
         >
           Demo User
         </a>
+
+        <a
+        className='demo-log-in'
+        onClick={loginDemo2}
+        >
+          Luke Skywalker
+        </a>
+
+
+        <a
+        className='demo-log-in'
+        onClick={loginDemo3}
+        >
+          Elon Tusks
+        </a>
+
 
 
       </form>
