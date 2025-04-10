@@ -14,9 +14,9 @@ class Crypto(db.Model):
     market_cap = db.Column(db.Integer(), nullable=False)
 
     # Relationships
-    # portfolio_stocks = db.relationship("Portfolio_Stock", back_populates="stock", cascade="all, delete-orphan")
-    # watchlist_stocks = db.relationship("Watchlist_Stock", back_populates="stock", cascade="all, delete-orphan")
-    # stock_transactions = db.relationship("Stock_Transaction", back_populates="stock", cascade="all, delete-orphan")
+    portfolio_cryptos = db.relationship("Portfolio_Crypto", back_populates="crypto", cascade="all, delete-orphan")
+    watchlist_cryptos = db.relationship("Watchlist_Crypto", back_populates="crypto", cascade="all, delete-orphan")
+    crypto_transactions = db.relationship("Crypto_Transaction", back_populates="crypto", cascade="all, delete-orphan")
 
 
 

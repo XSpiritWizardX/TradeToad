@@ -21,7 +21,7 @@ def upgrade():
     op.create_table('portfolio_cryptos',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('portfolio_id', sa.Integer(), sa.ForeignKey("portfolios.id"), nullable=False),
-    sa.Column('crypto_id', sa.Integer(), nullable=False),
+    sa.Column('crypto_id', sa.Integer(), sa.ForeignKey("cryptos.id"), nullable=False),
     sa.Column('quantity', sa.Numeric(precision=15, scale=2), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )

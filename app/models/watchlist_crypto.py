@@ -12,12 +12,12 @@ class Watchlist_Crypto(db.Model):
     # watchlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("watchlists.id")), nullable=False)
     # stock_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("stocks.id")), nullable=False)
     watchlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("watchlists.id")), nullable=False)
-    crypto_id = db.Column(db.Integer, nullable=False)
+    crypto_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("cryptos.id")), nullable=False)
 
     # relationships
 
     watchlist = db.relationship("Watchlist", back_populates="watchlist_crypto", uselist=False)
-    # stock = db.relationship("Stock", back_populates="watchlist_stocks")
+    crypto = db.relationship("Crypto", back_populates="watchlist_cryptos")
 
 
 
