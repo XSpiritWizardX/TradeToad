@@ -25,5 +25,5 @@ class Watchlist_Crypto(db.Model):
         return {
             'id': self.id,
             'watchlist_id': self.watchlist_id,
-            'stock_id': self.crypto_id,
+            'crypto_id': self.crypto_id,
         }
