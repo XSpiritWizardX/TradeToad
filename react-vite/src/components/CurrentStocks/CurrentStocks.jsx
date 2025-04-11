@@ -264,7 +264,7 @@ function CurrentStocksCard() {
       <h1
       className='current-head-text'
       >
-       Stock
+       Stocks
         </h1>
 
 
