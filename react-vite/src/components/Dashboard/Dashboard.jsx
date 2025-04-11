@@ -82,7 +82,7 @@ function Dashboard() {
         >
           <h1
           className='side-bar-header-text'
-          >Currently Owned</h1>
+          >Portfolio</h1>
         <CurrentStocksCard
         className='current-stock-card'
         />
