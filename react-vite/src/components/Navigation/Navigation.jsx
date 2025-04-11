@@ -11,7 +11,9 @@ function Navigation() {
 
         <NavLink to="/">
         {/* Home || TRADE TOAD  IMAGE */}
-        <img className='home-image' src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742868928/40D78BCF-EF7D-4B06-8CE2-51617E5A0AA7_kuigij.png' />
+        {/* <img className='home-image' src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742868928/40D78BCF-EF7D-4B06-8CE2-51617E5A0AA7_kuigij.png' /> */}
+
+        <img className='home-image' src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1744339363/A0M8kXCgqNXyPMytxIoo--0--e9tsq-removebg-preview_rkvcan.png' />
 
         </NavLink>
 

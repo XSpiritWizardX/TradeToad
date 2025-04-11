@@ -15,7 +15,9 @@ function Watchlist() {
       >Watchlist</h1> */}
 
 
-        <h1>Crypto</h1>
+        <h1
+        className='current-head-text'
+        >Crypto</h1>
 
       <div
       className='watch-stock-container'
@@ -225,7 +227,19 @@ function Watchlist() {
 
 
 
-      <h1>Stocks</h1>
+
+
+
+
+
+      <h1
+      className='current-head-text'
+      >
+        Stocks
+      </h1>
+
+
+
 
       <div
       className='watch-stock-container'

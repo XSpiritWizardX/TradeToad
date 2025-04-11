@@ -51,9 +51,19 @@
 } */
 
 
+.big-toad-home-img{
+    display: flex;
+    width: 400px;
+    height: 400px;
+    justify-self: center;
+    border-radius: 25%;
+}
 
-
-
+.images-togetherness-toads{
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 5%;
+}
 
 
 .game-toad{

@@ -108,10 +108,30 @@ function HomePage() {
     </p>
 
 
+<div
+className='images-togetherness-toads'
+>
 
 
 
+<img
+src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1744340628/qT4oo6Gvviki5ddsEk5d--0--lywd6_zhijfb.jpg'
+className='big-toad-home-img'
+>
+</img>
 
+<img
+src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1744342159/qDhCqph1Y8EY3kkwAobO--0--14jj3_sfpgxs.jpg'
+className='big-toad-home-img'
+>
+</img>
+
+<img
+src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1744343647/C4lBlA4zd7rrXK4u45Nx--0--uslw1_cyztcq.jpg'
+className='big-toad-home-img'
+>
+</img>
+</div>
 
 
 {/* Use dashboard button only for dev purposes */}

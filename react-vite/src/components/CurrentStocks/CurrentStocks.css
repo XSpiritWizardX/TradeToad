@@ -4,3 +4,8 @@
     margin-bottom: 3%;
     overflow-y: scroll;
 }
+
+.current-head-text{
+    border-bottom: 6px double gray;
+    font-size: xx-large;
+}

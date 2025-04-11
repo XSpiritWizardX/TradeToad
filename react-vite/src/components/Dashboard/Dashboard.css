@@ -135,8 +135,9 @@
     justify-self: center;
     align-self: center;
     /* border: 2px dotted #FFC857; */
-    text-decoration: underline;
+    /* text-decoration: underline; */
     color: #FFC857;
     height: 5%;
     margin-top: 0;
+    font-size: 44px;
 }
