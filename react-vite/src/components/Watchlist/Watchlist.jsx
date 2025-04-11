@@ -15,7 +15,7 @@ function Watchlist() {
       >Watchlist</h1> */}
 
 
-        <h1>Cryptos</h1>
+        <h1>Crypto</h1>
 
       <div
       className='watch-stock-container'
