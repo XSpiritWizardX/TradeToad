@@ -19,6 +19,9 @@ def seed_users():
     elon = User(
         firstName='Elon', lastName='Tusks', username="Demo7", email='etusks@aa.io', password='password')
 
+
+
+
     db.session.add(demo)
     db.session.add(marnie)
     db.session.add(bobbie)
@@ -27,6 +30,9 @@ def seed_users():
     db.session.add(jane)
     db.session.add(luke)
     db.session.add(elon)
+
+
+
 
     db.session.commit()
 

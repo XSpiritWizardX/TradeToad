@@ -1,16 +1,16 @@
-from app.models import db, Watchlist_Stock, environment, SCHEMA
+from app.models import db, Watchlist_Crypto, environment, SCHEMA
 from sqlalchemy.sql import text
 
 
 # Adds a demo user, you can add other users here if you want
-def seed_watchlist_stocks():
-    demoWatch = Watchlist_Stock(watchlist_id=1, stock_id=5)
-    marnieWatch = Watchlist_Stock(watchlist_id=2, stock_id=5)
-    elon1 = Watchlist_Stock(watchlist_id=7, stock_id=1)
-    elon2 = Watchlist_Stock(watchlist_id=7, stock_id=2)
-    elon3 = Watchlist_Stock(watchlist_id=7, stock_id=3)
-    elon4 = Watchlist_Stock(watchlist_id=7, stock_id=4)
-    elon5 = Watchlist_Stock(watchlist_id=7, stock_id=5)
+def seed_watchlist_cryptos():
+    demoWatch = Watchlist_Crypto(watchlist_id=1, crypto_id=5)
+    marnieWatch = Watchlist_Crypto(watchlist_id=2, crypto_id=5)
+    elon1 = Watchlist_Crypto(watchlist_id=7, crypto_id=1)
+    elon2 = Watchlist_Crypto(watchlist_id=7, crypto_id=2)
+    elon3 = Watchlist_Crypto(watchlist_id=7, crypto_id=3)
+    elon4 = Watchlist_Crypto(watchlist_id=7, crypto_id=4)
+    elon5 = Watchlist_Crypto(watchlist_id=7, crypto_id=5)
 
 
 
@@ -38,10 +38,10 @@ def seed_watchlist_stocks():
 # incrementing primary key, CASCADE deletes any dependent entities.  With
 # sqlite3 in development you need to instead use DELETE to remove all data and
 # it will reset the primary keys for you as well.
-def undo_watchlist_stocks():
+def undo_watchlist_cryptos():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.watchlist_stocks RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.watchlist_cryptos RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM watchlist_stocks"))
+        db.session.execute(text("DELETE FROM watchlist_cryptos"))
 
     db.session.commit()

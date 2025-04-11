@@ -14,11 +14,21 @@ def seed_stocks():
     google = Stock(
         symbol='GOOGL', company='Alphabet Inc', market_cap=1840000000000)
 
+
+
+
+
+
     db.session.add(meta)
     db.session.add(apple)
     db.session.add(amazon)
     db.session.add(netflix)
     db.session.add(google)
+
+
+
+
+
 
     db.session.commit()
 

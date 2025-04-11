@@ -2,8 +2,8 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 # from werkzeug.security import generate_password_hash, check_password_hash
 # from flask_login import UserMixin
 
-class Stock(db.Model):
-    __tablename__ = 'stocks'
+class Crypto(db.Model):
+    __tablename__ = 'cryptos'
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -14,9 +14,9 @@ class Stock(db.Model):
     market_cap = db.Column(db.Integer(), nullable=False)
 
     # Relationships
-    portfolio_stocks = db.relationship("Portfolio_Stock", back_populates="stock", cascade="all, delete-orphan")
-    watchlist_stocks = db.relationship("Watchlist_Stock", back_populates="stock", cascade="all, delete-orphan")
-    stock_transactions = db.relationship("Stock_Transaction", back_populates="stock", cascade="all, delete-orphan")
+    portfolio_cryptos = db.relationship("Portfolio_Crypto", back_populates="crypto", cascade="all, delete-orphan")
+    watchlist_cryptos = db.relationship("Watchlist_Crypto", back_populates="crypto", cascade="all, delete-orphan")
+    crypto_transactions = db.relationship("Crypto_Transaction", back_populates="crypto", cascade="all, delete-orphan")
 
 
 

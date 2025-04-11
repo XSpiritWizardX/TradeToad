@@ -15,7 +15,217 @@ function Watchlist() {
       >Watchlist</h1> */}
 
 
+        <h1>Crypto</h1>
 
+      <div
+      className='watch-stock-container'
+      >
+
+        <p
+        className='para-watch'
+        >
+            stock name
+            </p>
+        <p
+        className='para-watch'
+        >
+            stock price
+            </p>
+        <p
+        className='para-watch'
+        >
+            percentage change ^%
+            </p>
+
+      </div>
+
+
+      <div
+      className='watch-stock-container'
+      >
+
+        <p
+        className='para-watch'
+        >
+            stock name
+            </p>
+        <p
+        className='para-watch'
+        >
+            stock price
+            </p>
+        <p
+        className='para-watch'
+        >
+            percentage change ^%
+            </p>
+
+      </div>
+
+
+      <div
+      className='watch-stock-container'
+      >
+
+        <p
+        className='para-watch'
+        >
+            stock name
+            </p>
+        <p
+        className='para-watch'
+        >
+            stock price
+            </p>
+        <p
+        className='para-watch'
+        >
+            percentage change ^%
+            </p>
+
+      </div>
+
+
+      <div
+      className='watch-stock-container'
+      >
+
+        <p
+        className='para-watch'
+        >
+            stock name
+            </p>
+        <p
+        className='para-watch'
+        >
+            stock price
+            </p>
+        <p
+        className='para-watch'
+        >
+            percentage change ^%
+            </p>
+
+      </div>
+
+
+      <div
+      className='watch-stock-container'
+      >
+
+        <p
+        className='para-watch'
+        >
+            stock name
+            </p>
+        <p
+        className='para-watch'
+        >
+            stock price
+            </p>
+        <p
+        className='para-watch'
+        >
+            percentage change ^%
+            </p>
+
+      </div>
+
+
+      <div
+      className='watch-stock-container'
+      >
+
+        <p
+        className='para-watch'
+        >
+            stock name
+            </p>
+        <p
+        className='para-watch'
+        >
+            stock price
+            </p>
+        <p
+        className='para-watch'
+        >
+            percentage change ^%
+            </p>
+
+      </div>
+
+
+      <div
+      className='watch-stock-container'
+      >
+
+        <p
+        className='para-watch'
+        >
+            stock name
+            </p>
+        <p
+        className='para-watch'
+        >
+            stock price
+            </p>
+        <p
+        className='para-watch'
+        >
+            percentage change ^%
+            </p>
+
+      </div>
+
+
+      <div
+      className='watch-stock-container'
+      >
+
+        <p
+        className='para-watch'
+        >
+            stock name
+            </p>
+        <p
+        className='para-watch'
+        >
+            stock price
+            </p>
+        <p
+        className='para-watch'
+        >
+            percentage change ^%
+            </p>
+
+      </div>
+
+
+      <div
+      className='watch-stock-container'
+      >
+
+        <p
+        className='para-watch'
+        >
+            stock name
+            </p>
+        <p
+        className='para-watch'
+        >
+            stock price
+            </p>
+        <p
+        className='para-watch'
+        >
+            percentage change ^%
+            </p>
+
+      </div>
+
+
+
+      <h1>Stocks</h1>
 
       <div
       className='watch-stock-container'
@@ -222,6 +432,8 @@ function Watchlist() {
             </p>
 
       </div>
+
+
 
 
     </div>

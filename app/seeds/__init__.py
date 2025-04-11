@@ -3,6 +3,13 @@ from .users import seed_users, undo_users
 from .watchlists import seed_watchlists, undo_watchlists
 from .stocks import seed_stocks, undo_stocks
 from .watchlist_stocks import seed_watchlist_stocks, undo_watchlist_stocks
+from .portfolios import seed_portfolios, undo_portfolios
+from .portfolio_stocks import seed_portfolio_stocks, undo_portfolio_stocks
+from .stock_transactions import seed_stock_transactions, undo_stock_transactions
+from .cryptos import seed_cryptos, undo_cryptos
+from .portfolio_cryptos import seed_portfolio_cryptos, undo_portfolio_cryptos
+from .watchlist_cryptos import seed_watchlist_cryptos, undo_watchlist_cryptos
+from .crypto_transactions import seed_crypto_transactions, undo_crypto_transactions
 
 from app.models.db import db, environment, SCHEMA
 
@@ -23,12 +30,25 @@ def seed():
         undo_watchlists()
         undo_stocks()
         undo_watchlist_stocks()
+        undo_portfolios()
+        undo_portfolio_stocks()
+        undo_stock_transactions()
+        undo_cryptos()
+        undo_portfolio_cryptos()
+        undo_watchlist_cryptos()
+        undo_crypto_transactions()
     # Add other seed functions here
     seed_users()
     seed_watchlists()
     seed_stocks()
     seed_watchlist_stocks()
-
+    seed_portfolios()
+    seed_portfolio_stocks()
+    seed_stock_transactions()
+    seed_cryptos()
+    seed_portfolio_cryptos()
+    seed_watchlist_cryptos()
+    seed_crypto_transactions()
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
 def undo():
@@ -36,5 +56,11 @@ def undo():
     undo_watchlists()
     undo_stocks()
     undo_watchlist_stocks()
-
+    undo_portfolios()
+    undo_portfolio_stocks()
+    undo_stock_transactions()
+    undo_cryptos()
+    undo_portfolio_cryptos()
+    undo_watchlist_cryptos()
+    undo_crypto_transactions()
     # Add other undo functions here
