@@ -22,7 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('symbol', sa.String(length=5), nullable=False),
     sa.Column('company', sa.String(length=40), nullable=False),
-    sa.Column('market_cap', sa.Integer(), nullable=False),
+    sa.Column('market_cap', sa.Numeric(precision=20, scale=2), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

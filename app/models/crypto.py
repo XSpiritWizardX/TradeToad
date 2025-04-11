@@ -11,7 +11,7 @@ class Crypto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     symbol = db.Column(db.String(5), nullable=False)
     company = db.Column(db.String(40), nullable=False)
-    market_cap = db.Column(db.Integer, nullable=False)
+    market_cap = db.Column(db.Numeric(precision=20, scale=2, asdecimal=True), nullable=False)
 
     # Relationships
     portfolio_cryptos = db.relationship("Portfolio_Crypto", back_populates="crypto", cascade="all, delete-orphan")
