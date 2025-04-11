@@ -11,7 +11,7 @@ class Stock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     symbol = db.Column(db.String(5), nullable=False)
     company = db.Column(db.String(40), nullable=False)
-    market_cap = db.Column(db.Integer(), nullable=False)
+    market_cap = db.Column(db.Integer, nullable=False)
 
     # Relationships
     portfolio_stocks = db.relationship("Portfolio_Stock", back_populates="stock", cascade="all, delete-orphan")

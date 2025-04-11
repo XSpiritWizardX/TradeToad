@@ -10,7 +10,7 @@ def seed_portfolio_cryptos():
     c3 = Portfolio_Crypto(
         portfolio_id=3, crypto_id=3, quantity=2160.89)
     c4 = Portfolio_Crypto(
-        portfolio_id=4, crypto_id=4, quantity=392000.15)
+        portfolio_id=4, crypto_id=4, quantity=392_000.15)
     c5 = Portfolio_Crypto(
         portfolio_id=5, crypto_id=5, quantity=1800.25)
     c6 = Portfolio_Crypto(
@@ -20,7 +20,7 @@ def seed_portfolio_cryptos():
     c8 = Portfolio_Crypto(
         portfolio_id=7, crypto_id=4, quantity=1800.25)
     c9 = Portfolio_Crypto(
-        portfolio_id=7, crypto_id=3, quantity=180000000.25)
+        portfolio_id=7, crypto_id=3, quantity=180_000_000.25)
     c10 = Portfolio_Crypto(
         portfolio_id=7, crypto_id=2, quantity=1800.25)
     c11 = Portfolio_Crypto(
