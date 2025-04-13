@@ -37,7 +37,7 @@ def create_stock_transaction():
 
 
 
-    new_stock_transaction = Stock_Transaction(user_id=current_user.id, watchlist_id=watchlist_id, stock_id=stock_id)
+    new_stock_transaction = Stock_Transaction(user_id=current_user.id, stock_id=stock_id)
     db.session.add(new_stock_transaction)
     db.session.commit()
 
