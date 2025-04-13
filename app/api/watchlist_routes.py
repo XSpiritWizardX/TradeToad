@@ -30,14 +30,13 @@ def create_watchlist():
     Create a new watchlist for the logged-in user.
     """
     data = request.get_json()
-    name = data.get("name")
-    total_cash = data.get("total_cash", 0.00)
-    available_cash = data.get("available_cash", 0.00)
+    user_id = data.get("user_id")
+
 
     if not name:
         return jsonify({'error': 'Watchlist name is required'}), 400
 
-    new_watchlist = Watchlist(user_id=current_user.id, name=name, total_cash=total_cash, available_cash=available_cash)
+    new_watchlist = Watchlist(user_id=current_user.id)
     db.session.add(new_watchlist)
     db.session.commit()
 
