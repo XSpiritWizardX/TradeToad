@@ -8,12 +8,11 @@ client = RESTClient(polygon_config.API_KEY)
 
 # aggregate data
 
-closingPrices = []
+aggs = []
+closing = []
+highs = []
 
 def apiCall():
-    aggs = []
-    closing = []
-    highs = []
 
     for a in client.list_aggs(
         "AAPL",
@@ -26,21 +25,27 @@ def apiCall():
         limit=120,
     ):
         aggs.append(a)
-        closingPrices = closing.append(a.close)
-        highPrices = highs.append(a.high)
-        # print(f'closingPrices: {closingPrices}\n')
-        # print(f'highPrices: {highPrices}')
-    return aggs, closing, highs
+        # closing = closing.append(a.close)
+        closing.append(a.close)
+        highs.append(a.high)
+        # print(f'closing: {closing}\n')
+        # print(f'highs: {highs}')
+    # return aggs, closing, highs
+    return 'done with API call:\n'
 
 result = apiCall()
+
 print(result)
-print(f'\nnumber of results: {len(result)}\n')
+print(aggs)
+print(f'\nnumber of results: {len(aggs)}\n')
+print(f'closing: {closing}\n')
+print(f'highs: {highs}\n')
 
-print('=========')
-print(f'closingPrices: {closingPrices}')
 
 
-# use code snippets later:
+
+
+# use code snippets later?
 
 # def prices(result):
 #     closing = []
