@@ -33,8 +33,8 @@ def create_watchlist():
     user_id = data.get("user_id")
 
 
-    if not name:
-        return jsonify({'error': 'Watchlist name is required'}), 400
+    # if not name:
+    #     return jsonify({'error': 'Watchlist name is required'}), 400
 
     new_watchlist = Watchlist(user_id=current_user.id)
     db.session.add(new_watchlist)
