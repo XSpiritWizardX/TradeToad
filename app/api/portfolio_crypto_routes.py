@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Portfolio_Crypto,crypto
+from app.models import Portfolio_Crypto, db
 
 
 portfolio_crypto_routes = Blueprint('portfolio_cryptos', __name__, "")
