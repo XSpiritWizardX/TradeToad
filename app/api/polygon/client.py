@@ -1,45 +1,54 @@
 from polygon import RESTClient
-import polygon_config
-# # to parse response
+from . import polygon_config
+# to parse response
 import json
-
 
 client = RESTClient(polygon_config.API_KEY)
 
-# aggregate data
 
-aggs = []
-closing = []
-highs = []
-
-def apiCall():
+def apiCall(symbol="AAPL"):
+    aggs = []       # aggregate data
+    closing = []
+    highs = []
+    lows = []
 
     for a in client.list_aggs(
-        "AAPL",
+        symbol,
         1,
         "day",
         "2025-01-15",
         "2025-04-01",
         adjusted="true",
         sort="asc",
-        limit=120,
+        limit=5000,
     ):
         aggs.append(a)
-        # closing = closing.append(a.close)
         closing.append(a.close)
         highs.append(a.high)
-        # print(f'closing: {closing}\n')
-        # print(f'highs: {highs}')
-    # return aggs, closing, highs
-    return 'done with API call:\n'
+        lows.append(a.low)
 
-result = apiCall()
+    return {
+        "symbol": symbol,
+        "data_points": len(aggs),
+        "closing": closing, 
+        "highs": highs,
+        "lows": lows,
+        "aggs": aggs
+    }
 
-print(result)
-print(aggs)
-print(f'\nnumber of results: {len(aggs)}\n')
-print(f'closing: {closing}\n')
-print(f'highs: {highs}\n')
+
+# This printout is for demo purposes,
+# Only execute this code when running the file directly (not when imported)
+if __name__ == "__main__":
+    result = apiCall()
+    # print(result["aggs"])   # use this to see keys in result dict. 
+    print("\nAPI Call Result\n")
+    print(f'Symbol: {result["symbol"]}\n')
+    print(f'number of results: {result["data_points"]}')
+    print(f'(showing first 50)\n')
+    print(f'closing: {result["closing"][:50]}\n')
+    print(f'highs: {result["highs"][:50]}\n')
+    print(f'lows: {result["lows"][:50]}\n')
 
 
 
