@@ -14,13 +14,19 @@ function StockChart() {
     async function fetchStockData() {
       try {
         setLoading(true);
+        console.log(`Fetching stock data for ${symbol}...`);
+        
         const response = await fetch(`/api/stocks/${symbol}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch stock data');
+          const errorText = await response.text();
+          console.error(`API error: ${response.status} ${errorText}`);
+          throw new Error(`Failed to fetch stock data: ${response.status}`);
         }
         const data = await response.json();
+        console.log('Stock data received successfully');
         setStockData(data);
       } catch (err) {
+        console.error('Error fetching stock data:', err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -30,9 +36,9 @@ function StockChart() {
     fetchStockData();
   }, [symbol]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!stockData) return <div>No data available</div>;
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
+  if (!stockData) return <div className="no-data">No data available</div>;
 
   // Format data for the chart
   const chartData = stockData.closing.map((close, index) => ({
@@ -43,18 +49,22 @@ function StockChart() {
   }));
 
   return (
-    <div>
+    <div className="stock-chart-container">
       <h2>{stockData.symbol} Stock Price</h2>
-      <LineChart width={800} height={400} data={chartData}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis domain={['auto', 'auto']} />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="close" stroke="#8884d8" dot={false} />
-        <Line type="monotone" dataKey="high" stroke="#82ca9d" dot={false} />
-        <Line type="monotone" dataKey="low" stroke="#ff7300" dot={false} />
-      </LineChart>
+      <div className="chart-wrapper">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis domain={['auto', 'auto']} />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="close" stroke="#8884d8" dot={false} />
+            <Line type="monotone" dataKey="high" stroke="#82ca9d" dot={false} />
+            <Line type="monotone" dataKey="low" stroke="#ff7300" dot={false} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }

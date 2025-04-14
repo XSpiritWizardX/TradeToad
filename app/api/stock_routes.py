@@ -16,6 +16,7 @@ def get_stocks():
     return jsonify({'stocks': [stock.to_dict() for stock in stocks]})
 
 
+# This becomes /api/stocks/<symbol>
 @stock_routes.route('/<symbol>')
 def get_stock(symbol):
     """
