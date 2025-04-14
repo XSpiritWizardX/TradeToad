@@ -1,36 +1,38 @@
 // import { useSelector } from 'react-redux';
+
+import StockChart from '../StockChart/StockChart';
 import './StockShow.css'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import BuyStockModal from '../BuyStockModal/BuyStockModal';
 import SellStockModal from '../SellStockModal/SellStockModal'
 
 function StockShow() {
 //   const sessionUser = useSelector(state => state.session.user);
-
   // Redirect if not logged in
 //   if (!sessionUser) return <Navigate to="/" />;
+  const { stockID } = useParams();
 
   return (
     <div className="dashboard-container">
+      <div className='stock-show-area'>
+        <h1 className='stock-show-head-text'>
+          APPL<br/>
+        Apple
+          <br/>
+          $208.60
+        </h1>
+
+        <StockChart symbol={stockID || "AAPL"} />
+
+      {/* </div> */}
 
 
 
-      {/* <h1
-      className='stock-show-head-text'
-      >
-        APPL<br/>
-       Apple
-        <br/>
-        $208.60
-
-        </h1> */}
 
 
 
-        <div
-        className='stock-show-area'
-        >
+        
             <img src="https://res.cloudinary.com/dl6ls3rgu/image/upload/v1743130771/apple-stock-example_pk547s.webp" alt="apple-example-image"
             className='example-apple-img'/>
 
@@ -39,42 +41,26 @@ function StockShow() {
             >
                 <h1>Trade</h1>
 
+                <div className='button-cont-stockshow'>
 
+                  <OpenModalButton
+                    className='buy-button'
+                    buttonText="Buy"
+                    // onItemClick={closeMenu}
+                    modalComponent={<BuyStockModal />}
+                  />
 
-                <div
-                className='button-cont-stockshow'
-                >
+                  <OpenModalButton
+                    className='sell-button'
+                    buttonText="Sell"
+                    // onItemClick={closeMenu}
+                    modalComponent={<SellStockModal />}
+                  />
 
-                {/* <button
-                className= 'buy-button'
-                > */}
+                  <button className='add-watch-button'>
+                    Add to watchlist
+                  </button>
 
-
-                <OpenModalButton
-                className='buy-button'
-                buttonText="Buy"
-                // onItemClick={closeMenu}
-                modalComponent={<BuyStockModal />}
-              />
-                {/* </button> */}
-
-
-
-
-
-                <OpenModalButton
-                className='sell-button'
-                buttonText="Sell"
-                // onItemClick={closeMenu}
-                modalComponent={<SellStockModal />}
-              />
-
-
-
-
-                <button
-                className='add-watch-button'
-                >Add to watchlist</button>
                 </div>
 
 
@@ -100,8 +86,6 @@ function StockShow() {
 
             </div>
 
-
-        </div>
 
 
 
@@ -158,7 +142,7 @@ function StockShow() {
 
 
 
-  <h1
+      <h1
       className='para-stock-choice'
       >
           Stock Choices // Biggest Movers
@@ -195,7 +179,6 @@ function StockShow() {
                 </button>
               </NavLink>
 
-
               <NavLink
                to='/stocks/:stockID'
                   className="stock-choices-card"
@@ -204,7 +187,6 @@ function StockShow() {
                   Stock #4
                 </button>
               </NavLink>
-
 
               <NavLink
                to='/stocks/:stockID'
@@ -215,7 +197,6 @@ function StockShow() {
                 </button>
               </NavLink>
 
-
               <NavLink
                to='/stocks/:stockID'
                   className="stock-choices-card"
@@ -224,7 +205,6 @@ function StockShow() {
                   Stock #6
                 </button>
               </NavLink>
-
 
               <NavLink
                to='/stocks/:stockID'
@@ -235,7 +215,6 @@ function StockShow() {
                 </button>
               </NavLink>
 
-
               <NavLink
                to='/stocks/:stockID'
                   className="stock-choices-card"
@@ -245,7 +224,6 @@ function StockShow() {
                 </button>
               </NavLink>
 
-
               <NavLink
                to='/stocks/:stockID'
                   className="stock-choices-card"
@@ -254,7 +232,6 @@ function StockShow() {
                   Stock #9
                 </button>
               </NavLink>
-
 
               <NavLink
                to='/stocks/:stockID'
@@ -270,8 +247,7 @@ function StockShow() {
 
 
 
-
-
+      </div>
     </div>
   );
 }
