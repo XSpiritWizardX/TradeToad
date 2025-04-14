@@ -10,14 +10,14 @@ watchlist_crypto_routes = Blueprint('watchlist_cryptos', __name__, "")
 
 
 
-
+# works good
 @watchlist_crypto_routes.route('/')
 @login_required
 def get_watchlist_cryptos():
     """
     Get all watchlist_cryptos for the logged-in user.
     """
-    watchlist_cryptos = Watchlist_Crypto.query.filter_by(user_id=current_user.id).all()
+    watchlist_cryptos = Watchlist_Crypto.query.all()
     return jsonify({'watchlist_cryptos': [watchlist_crypto.to_dict() for watchlist_crypto in watchlist_cryptos]})
 
 

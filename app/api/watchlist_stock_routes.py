@@ -22,7 +22,7 @@ def get_watchlist_stocks():
     """
     Get all watchlist_stocks for the logged-in user.
     """
-    watchlist_stocks = Watchlist_Stock.query.filter_by(user_id=current_user.id).all()
+    watchlist_stocks = Watchlist_Stock.query.all()
     return jsonify({'watchlist_stocks': [watchlist_stock.to_dict() for watchlist_stock in watchlist_stocks]})
 
 
