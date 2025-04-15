@@ -1,12 +1,9 @@
 from flask import Blueprint, jsonify, request
 from app.models import Stock, db
-
-
+from app.api.polygon.client import apiCall
 
 
 stock_routes = Blueprint('stocks', __name__, "")
-
-
 
 
 # works good
@@ -19,5 +16,12 @@ def get_stocks():
     return jsonify({'stocks': [stock.to_dict() for stock in stocks]})
 
 
-
-
+# This becomes /api/stocks/<symbol>
+@stock_routes.route('/<symbol>')
+def get_stock(symbol):
+    """
+    Get stock prices by stock symbol.
+    """
+    result = apiCall(symbol)
+    return jsonify(result)
+    # return jsonify({'stocks': [stock.to_dict() for stock in stocks]})

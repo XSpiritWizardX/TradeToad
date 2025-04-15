@@ -1,195 +1,130 @@
-
 import "./Footer.css";
-import { NavLink } from "react-router-dom";
-
-
-
-
-
-
-
-
-
-
-
+// import { NavLink } from "react-router-dom";
 
 
 function FooterCard() {
 
-
-
-
-
-
   return (
-    <div
-   className="foot-container"
-    >
+    <div className="foot-container">
 
-
-
-
-
-<footer
-    className="foot"
-    >
-
-
-
-
-
-
-      <div
-      className="resource-col"
+      <footer
+      className="foot"
       >
+        <div
+        className="resource-col"
+        >
+          <h5>Get Connected</h5>
 
-        <h5>Get Connected</h5>
-
-
-      <NavLink
-      to='/coming-soon'
-      className='foot-links'
-      >
-
-      <a to='/coming-soon'
-      className='foot-links'
-      >
-        Connectivity
-        </a>
-      </NavLink>
-
-
-
-      <NavLink
-      to='/coming-soon'
-      className='foot-links'
-      >
-        <a
+        <div
         to='/coming-soon'
         className='foot-links'
-        >Dashboard
-        </a>
-        </NavLink>
+        >
 
+        <a to='/coming-soon'
+        className='foot-links'
+        >
+          Connectivity
+          </a>
+        </div>
 
-        <NavLink
-      to='/coming-soon'
-      className='foot-links'
-      >
-        <a
+        <div
         to='/coming-soon'
         className='foot-links'
-        >Terms of Service
-        </a>
-      </NavLink>
+        >
+          <a
+          to='/coming-soon'
+          className='foot-links'
+          >Dashboard
+          </a>
+          </div>
 
-      <NavLink
-      to='/coming-soon'
-      className='foot-links'
-      >
-        <a
+          <div
         to='/coming-soon'
         className='foot-links'
-        >Privacy Policy
-        </a>
-        </NavLink>
+        >
+          <a
+          to='/coming-soon'
+          className='foot-links'
+          >Terms of Service
+          </a>
+        </div>
 
-        <NavLink
-      to='/coming-soon'
-      className='foot-links'
-      >
-        <a
+        <div
         to='/coming-soon'
         className='foot-links'
-        >Third-Party Cookies
-        </a>
-        </NavLink>
+        >
+          <a
+          to='/coming-soon'
+          className='foot-links'
+          >Privacy Policy
+          </a>
+          </div>
 
+          <div
+        to='/coming-soon'
+        className='foot-links'
+        >
+          <a
+          to='/coming-soon'
+          className='foot-links'
+          >Third-Party Cookies
+          </a>
+          </div>
+
+        </div>
+
+        <div
+        className="resource-col"
+        >
+
+          <h5>Resources</h5>
+
+          <div
+        to='/coming-soon'
+        className='foot-links'
+        >
+          <a
+          to='/coming-soon'
+          className='foot-links'
+          >Using Trade Toad</a>
+          </div>
+
+          <a
+          href='https://github.com/XSpiritWizardX/TradeToad/wiki'
+          target="_self"
+          className='foot-links'
+          >Docs
+          </a>
+
+          <div
+        to='/coming-soon'
+        className='foot-links'
+        >
+          <a
+          to='/coming-soon'
+          className='foot-links'
+          >Support
+          </a>
+          </div>
+
+          <div
+        to='/coming-soon'
+        className='foot-links'
+        >
+          <a
+          to='/coming-soon'
+          className='foot-links'
+          >Supported Hardware
+          </a>
+          </div>
       </div>
 
-
-
-
-
-
-
-
-
-
       <div
       className="resource-col"
       >
-
-
-        <h5>Resources</h5>
-
-
-        <NavLink
-      to='/coming-soon'
-      className='foot-links'
-      >
-        <a
-        to='/coming-soon'
-        className='foot-links'
-        >Using Trade Toad</a>
-        </NavLink>
-
-
-
-        <a
-        href='https://github.com/XSpiritWizardX/TradeToad/wiki'
-        target="_self"
-        className='foot-links'
-        >Docs
-        </a>
-
-
-
-        <NavLink
-      to='/coming-soon'
-      className='foot-links'
-      >
-        <a
-        to='/coming-soon'
-        className='foot-links'
-        >Support
-        </a>
-        </NavLink>
-
-        <NavLink
-      to='/coming-soon'
-      className='foot-links'
-      >
-        <a
-        to='/coming-soon'
-        className='foot-links'
-        >Supported Hardware
-        </a>
-        </NavLink>
-
-
-      </div>
-
-
-
-
-
-
-
-
-
-
-
-
-      <div
-      className="resource-col"
-      >
-
         <h5>Pricing</h5>
 
-
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -198,10 +133,9 @@ function FooterCard() {
       >
         Pricing Overview
         </a>
-        </NavLink>
+        </div>
 
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -210,10 +144,9 @@ function FooterCard() {
         className='foot-links'
         >Flexible Plans
         </a>
-          </NavLink>
+          </div>
 
-
-          <NavLink
+          <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -222,10 +155,9 @@ function FooterCard() {
         className='foot-links'
         >High Volume Data
         </a>
-        </NavLink>
+        </div>
 
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -234,10 +166,9 @@ function FooterCard() {
         className='foot-links'
         >Free Version
         </a>
-        </NavLink>
+        </div>
 
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -246,27 +177,17 @@ function FooterCard() {
         className='foot-links'
         >Subscriptions
         </a>
-        </NavLink>
-
+        </div>
 
       </div>
-
-
-
-
-
-
-
 
         {/* DEVELOPERS */}
       <div
       className="resource-col"
       >
-
         <h5>Developers</h5>
 
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -275,10 +196,9 @@ function FooterCard() {
       >
         Forum
         </a>
-        </NavLink>
+        </div>
 
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -288,10 +208,9 @@ function FooterCard() {
         >
           Projects
         </a>
-        </NavLink>
+        </div>
 
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -301,15 +220,9 @@ function FooterCard() {
         >
           Team Comments
         </a>
-        </NavLink>
+        </div>
 
       </div>
-
-
-
-
-
-
 
         {/* COMPANY */}
       <div
@@ -318,9 +231,7 @@ function FooterCard() {
 
         <h5>Company</h5>
 
-
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -329,10 +240,9 @@ function FooterCard() {
       >
         About Us
         </a>
-        </NavLink>
+        </div>
 
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -341,10 +251,9 @@ function FooterCard() {
         className='foot-links'
         >Blog
         </a>
-        </NavLink>
+        </div>
 
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -353,9 +262,9 @@ function FooterCard() {
         className='foot-links'
         >Partnerships
         </a>
-        </NavLink>
+        </div>
 
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -364,9 +273,9 @@ function FooterCard() {
         className='foot-links'
         >Affiliate Program
         </a>
-        </NavLink>
+        </div>
 
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -375,19 +284,8 @@ function FooterCard() {
         className='foot-links'
         >Careers
         </a>
-        </NavLink>
+        </div>
       </div>
-
-
-
-
-
-
-
-
-
-
-
 
         {/* SOCIAL */}
 
@@ -397,8 +295,7 @@ function FooterCard() {
 
         <h5>Social</h5>
 
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -407,10 +304,9 @@ function FooterCard() {
       >
         Twitter
         </a>
-        </NavLink>
+        </div>
 
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -419,10 +315,9 @@ function FooterCard() {
         className='foot-links'
         >Facebook
         </a>
-        </NavLink>
+        </div>
 
-
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -431,9 +326,9 @@ function FooterCard() {
         className='foot-links'
         >Linkedin
         </a>
-        </NavLink>
+        </div>
 
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -442,9 +337,9 @@ function FooterCard() {
         className='foot-links'
         >Github
         </a>
-        </NavLink>
+        </div>
 
-        <NavLink
+        <div
       to='/coming-soon'
       className='foot-links'
       >
@@ -453,29 +348,15 @@ function FooterCard() {
         className='foot-links'
         >Discord
         </a>
-        </NavLink>
+        </div>
 
-        
       </div>
-
-
-
-
-
-
-
 
     </footer>
 
       <p
       className="copyright-text"
       >@2025 TradeToad</p>
-
-
-
-
-
-
 
     </div>
   );
