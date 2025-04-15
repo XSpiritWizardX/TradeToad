@@ -9,14 +9,14 @@ portfolio_crypto_routes = Blueprint('portfolio_cryptos', __name__, "")
 
 
 
-
+# wroks good
 @portfolio_crypto_routes.route('/')
 @login_required
 def get_portfolio_cryptos():
     """
     Get all portfolio_cryptos for the logged-in user.
     """
-    portfolio_cryptos = Portfolio_Crypto.query.filter_by(user_id=current_user.id).all()
+    portfolio_cryptos = Portfolio_Crypto.query.all()
     return jsonify({'portfolio_cryptos': [portfolio_crypto.to_dict() for portfolio_crypto in portfolio_cryptos]})
 
 

@@ -8,14 +8,14 @@ from app.models import Portfolio_Stock, db
 portfolio_stock_routes = Blueprint('portfolio_stocks', __name__, "")
 
 
-
+# works good
 @portfolio_stock_routes.route('/')
 @login_required
 def get_portfolio_stocks():
     """
     Get all portfolio_stocks for the logged-in user.
     """
-    portfolio_stocks = Portfolio_Stock.query.filter_by(user_id=current_user.id).all()
+    portfolio_stocks = Portfolio_Stock.query.all()
     return jsonify({'portfolio_stocks': [portfolio_stock.to_dict() for portfolio_stock in portfolio_stocks]})
 
 

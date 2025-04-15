@@ -31,7 +31,6 @@ def create_crypto_transaction():
     Create a new crypto_transaction for the logged-in user.
     """
     data = request.get_json()
-    watchlist_id = data.get("watchlist_id")
     crypto_id = data.get("crypto_id")
 
 

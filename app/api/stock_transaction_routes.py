@@ -32,7 +32,6 @@ def create_stock_transaction():
     Create a new stock_transaction for the logged-in user.
     """
     data = request.get_json()
-    watchlist_id = data.get("watchlist_id")
     stock_id = data.get("stock_id")
 
 
