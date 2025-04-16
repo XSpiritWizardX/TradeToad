@@ -49,7 +49,7 @@ def apiCall(symbol="AAPL"):
         result = {
             "symbol": symbol,
             "data_points": len(aggs),
-            "closing": closing, 
+            "closing": closing,
             "highs": highs,
             "lows": lows,
             "aggs": aggs
@@ -58,9 +58,9 @@ def apiCall(symbol="AAPL"):
         # cache the result
         cache[symbol] = result
         cache_expiry[symbol] = current_time + CACHE_DURATION
-        
+
         return result
-    
+
     except Exception as e:
         print(f'Error fetching data for {symbol}: {str(e)}')
 
@@ -76,7 +76,7 @@ def apiCall(symbol="AAPL"):
 # Only execute this code when running the file directly (not when imported)
 if __name__ == "__main__":
     result = apiCall()
-    # print(result["aggs"])   # use this to see keys in result dict. 
+    # print(result["aggs"])   # use this to see keys in result dict.
     print("\nAPI Call Result\n")
     print(f'Symbol: {result["symbol"]}\n')
     print(f'number of results: {result["data_points"]}')
