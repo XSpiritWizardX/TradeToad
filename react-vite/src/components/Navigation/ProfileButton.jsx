@@ -14,11 +14,7 @@ import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import './ProfileButton.css'
 
 
-
 function ProfileButton() {
-
-
-
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
@@ -46,27 +42,14 @@ function ProfileButton() {
 
   const closeMenu = () => setShowMenu(false);
 
-
-
-
   const logout = (e) => {
     e.preventDefault();
     dispatch(thunkLogout());
     (navigate('/'))
     .then(closeMenu())
-
-
   };
 
-
-
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-
-
-
-
-
-
 
   return (
     <div
@@ -86,18 +69,13 @@ function ProfileButton() {
 
       </button>
 
-
-
       {showMenu && (
         <div className={ulClassName} ref={ulRef}>
           {user ? (
 
-
-
              <div
              className='auth-container-user'
              >
-
 
               {/* <p
               className="account-info"
@@ -169,9 +147,6 @@ function ProfileButton() {
 
               {/* <br/> */}
 
-
-
-
               <NavLink
               to='/learning-center'
               className="nav-link-dropdown"
@@ -198,17 +173,8 @@ function ProfileButton() {
 
 
             </div>
-
-
-
           )
-
-
-
           :
-
-
-
           (
             <div
             className="auth-container"
@@ -227,13 +193,7 @@ function ProfileButton() {
                 className="signup"
               />
 
-
-
-
-
             </div>
-
-
 
           )}
         </div>
