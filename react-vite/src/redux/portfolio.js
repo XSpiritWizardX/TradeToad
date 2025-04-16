@@ -1,5 +1,11 @@
-const SET_PORTFOLIO = 'session/setUser';
-const REMOVE_PORTFOLIO = 'session/removeUser';
+
+
+import { csrfFetch } from "./csrf";
+
+
+const SET_PORTFOLIO = 'session/portfolios';
+const SET_ONE_PORTFOLIO = '/api/portfolios/:portfolioId';
+const REMOVE_PORTFOLIO = 'session/portfolios';
 
 
 
@@ -14,12 +20,18 @@ const REMOVE_PORTFOLIO = 'session/removeUser';
 
 
 const setPortfolio = (user) => ({
-  type: SET_USER,
+  type: SET_PORTFOLIO,
   payload: user
 });
 
-const removePORTFOLIO = () => ({
-  type: REMOVE_USER
+
+const setOnePortfolio = (portfolio) => ({
+    type: SET_ONE_PORTFOLIO,
+    portfolio,
+  });
+
+const removePortfolioId = () => ({
+  type: REMOVE_PORTFOLIO
 });
 
 
@@ -37,74 +49,54 @@ const removePORTFOLIO = () => ({
 
 
 
-export const thunkAuthenticate = () => async (dispatch) => {
-  console.log('trying to get csrf')
-	const response = await fetch("/api/auth/");
+export const fetchPortfolios = () => async (dispatch) => {
+	const response = await fetch("/api/portfolios/");
 	if (response.ok) {
 		const data = await response.json();
 		if (data.errors) {
 			return;
 		}
 
-		dispatch(setUser(data));
+		dispatch(setPortfolio(data));
 	}
 };
 
 
 
 
-export const thunkLogin = (credentials) => async dispatch => {
-  const response = await fetch("/api/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(credentials)
-  });
 
-  if(response.ok) {
-    const data = await response.json();
-    dispatch(setUser(data));
-  } else if (response.status < 500) {
-    const errorMessages = await response.json();
-    return errorMessages
-  } else {
-    return { server: "Something went wrong. Please try again" }
-  }
-};
+export const fetchOnePortfolio = (portfolioId) => async (dispatch) => {
+    const response = await fetch(`/api/portfolios/${portfolioId}`);
+    console.log(response)
+    if (response.ok) {
+
+      const portfolio = await response.json();
+      dispatch(setOnePortfolio(portfolio));
+
+    }
+  };
 
 
 
 
 
+export const deletePortfolio = (portfolioId) => async (dispatch) => {
+    try {
+      const response = await csrfFetch(`/api/portfolios/${portfolioId}`, {
+        method: "DELETE",
+      });
 
+      if (!response.ok) {
+        throw new Error("Failed to delete portfolio");  // Prevents misleading success alerts
+      }
 
-
-export const thunkSignup = (user) => async (dispatch) => {
-  const response = await fetch("/api/auth/signup", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user)
-  });
-
-  if(response.ok) {
-    const data = await response.json();
-    dispatch(setUser(data));
-  } else if (response.status < 500) {
-    const errorMessages = await response.json();
-    return errorMessages
-  } else {
-    return { server: "Something went wrong. Please try again" }
-  }
-};
-
-
-
-
-
-
-export const thunkLogout = () => async (dispatch) => {
-  await fetch("/api/auth/logout");
-  dispatch(removeUser());
-};
+      dispatch(removePortfolioId(portfolioId)); // Update Redux state
+      return "Portfolio deleted successfully"; // Ensure frontend knows it worked
+    } catch (error) {
+      console.error("Delete Error:", error); // Log error to console
+      throw error; // Ensures the frontend properly handles the failure
+    }
+  };
 
 
 
@@ -114,21 +106,44 @@ export const thunkLogout = () => async (dispatch) => {
 
 
 
-const initialState = { user: null };
 
 
 
-function sessionReducer(state = initialState, action) {
+
+
+
+
+
+
+
+
+
+
+
+
+const initialState = { portfolio: null };
+
+
+
+function portfolioReducer(state = initialState, action) {
   switch (action.type) {
+
+
+
     case SET_PORTFOLIO:
-      return { ...state, portfolio: action.payload };
-    case REMOVE_PORTFOLIO:
-      return { ...state, portfolio: null };
+        return { ...state, portfolio: action.payload };
+    case SET_ONE_PORTFOLIO:
+        return { portfolio: action.portfolio};
+    case REMOVE_PORTFOLIO:{
+        const newState = { ...state };
+        delete newState.portfolios[action.portfolioId];
+        return newState;
+      }
     default:
-      return state;
+        return state;
   }
 }
 
 
 
-export default sessionReducer;
+export default portfolioReducer;
