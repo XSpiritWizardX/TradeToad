@@ -1,4 +1,4 @@
-from polygon import RESTClient
+from polygon.rest import RESTClient
 from . import polygon_config
 import time
 # to parse response
