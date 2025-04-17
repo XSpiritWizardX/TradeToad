@@ -5,7 +5,9 @@ import WatchlistCard from '../../components/Watchlist/Watchlist'
 import CurrentStocksCard from '../CurrentStocks/CurrentStocks';
 
 
-import { useSelector } from 'react-redux';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPortfolios } from "../../redux/portfolio";
 
 
 
@@ -19,11 +21,14 @@ import './Dashboard.css'
 
 
 function Dashboard() {
-//   const sessionUser = useSelector(state => state.session.user);
+  const dispatch = useDispatch();
   const user = useSelector(state => state.session.user)
-  const portfolio = useSelector(state => state.portfolio.portfolio)
-  // Redirect if not logged in
-//   if (!sessionUser) return <Navigate to="/" />;
+  const portfolios = useSelector(state => state.portfolio.portfolio || [])
+
+
+  useEffect(() => {
+    dispatch(fetchPortfolios());
+  }, [dispatch]);
 
   return (
     <div className="dashboard-container">
@@ -156,7 +161,7 @@ function Dashboard() {
         <h1
         className='dash-head-text'
         >
-          Available Cash = ${portfolio?.portfolio?.available_cash}
+          Available Cash = ${portfolios?.portfolios[0]?.available_cash}
         </h1>
         </div>
 

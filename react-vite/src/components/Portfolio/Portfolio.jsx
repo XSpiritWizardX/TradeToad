@@ -1,9 +1,16 @@
-// import { useSelector } from 'react-redux';
-// import { Navigate } from 'react-router-dom';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPortfolios } from "../../redux/portfolio";
 import './Portfolio.css'
 
 function PortfolioCard() {
+  const dispatch = useDispatch();
+  const portfolios = useSelector(state => state.portfolio.portfolio || [])
 
+
+  useEffect(() => {
+    dispatch(fetchPortfolios());
+  }, [dispatch]);
   // const sessionUser = useSelector(state => state.session.user);
 
   // Redirect if not logged in
@@ -19,7 +26,7 @@ function PortfolioCard() {
             className='investing-money-portfolio'
             >Investing
             <br/>
-             $123,456,789.00
+            ${[portfolios?.portfolios[0].total_cash]}
             </h1>
             <h1
             className='investing-money-portfolio2'
