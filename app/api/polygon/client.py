@@ -14,7 +14,16 @@ CACHE_DURATION = 3600  # cache for 1 hour
 
 
 def apiCall(symbol="AAPL"):
+    # clear cache if needed for testing fresh API calls:
+    # cache.clear()
+    # cache_expiry.clear()
+
+    symbol = symbol.upper()
     current_time = time.time()
+    print(f"Current time: {current_time}")
+    if symbol in cache:
+        print(f"Cache expiry for {symbol}: {cache_expiry.get(symbol, 0)}")
+        print(f"Time until expiry: {cache_expiry.get(symbol, 0) - current_time} seconds")
 
     # check if we have a cached response that's still valid
     if symbol in cache and current_time < cache_expiry.get(symbol, 0):
