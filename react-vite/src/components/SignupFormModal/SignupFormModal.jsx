@@ -39,6 +39,11 @@ function SignupFormModal() {
       setErrors(serverResponse);
     } else {
       closeModal();
+
+      // add the create portfolio and watchlist here
+      
+
+
     }
   };
 

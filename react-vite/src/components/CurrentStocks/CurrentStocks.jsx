@@ -1,14 +1,22 @@
 // import { useSelector } from 'react-redux';
 // import { NavLink } from 'react-router-dom';
-
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchPortfolios } from "../../redux/portfolio";
+import { fetchPortfolioStocks } from "../../redux/portfolioStocks";
 import './CurrentStocks.css'
 
 
 function CurrentStocksCard() {
-//   const sessionUser = useSelector(state => state.session.user);
+    const dispatch = useDispatch();
+    // const portfolios = useSelector(state => state.portfolio.portfolio || [])
+    // const portfolioStocks = useSelector(state => state.portfolio_stock.portfolio_stock || [])
 
-  // Redirect if not logged in
-//   if (!sessionUser) return <Navigate to="/" />;
+
+    useEffect(() => {
+        dispatch(fetchPortfolios());
+        dispatch(fetchPortfolioStocks())
+      }, [dispatch]);
 
   return (
     <div className="current-stocks-container">
@@ -45,217 +53,6 @@ function CurrentStocksCard() {
       </div>
 
 
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
 
 
 
@@ -265,7 +62,7 @@ function CurrentStocksCard() {
       className='current-head-text'
       >
        Stocks
-        </h1>
+         </h1>
 
 
         <div
@@ -275,145 +72,7 @@ function CurrentStocksCard() {
         <p
         className='para-watch'
         >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
+            {/* {stock?.name} */}
             </p>
         <p
         className='para-watch'
@@ -431,77 +90,8 @@ function CurrentStocksCard() {
 
 
 
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
 
 
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
-
-
-
-
-      <div
-      className='watch-stock-container'
-      >
-
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
-
-      </div>
 
 
 

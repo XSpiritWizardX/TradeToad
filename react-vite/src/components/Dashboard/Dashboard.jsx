@@ -161,7 +161,7 @@ function Dashboard() {
         <h1
         className='dash-head-text'
         >
-          Available Cash = ${portfolios?.portfolios[0]?.available_cash}
+          Available Cash = ${portfolios?.portfolios?.[0]?.available_cash}
         </h1>
         </div>
 

@@ -7,13 +7,22 @@ import {
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import portfolioReducer from "./portfolio";
+import watchlistReducer from "./watchlist";
+import portfolioStockReducer from "./portfolioStocks";
+import watchlistStockReducer from "./watchlistStocks";
+import stockReducer from "./stocks";
+import cryptoReducer from "./cryptos";
+
+
 
 const rootReducer = combineReducers({
   session: sessionReducer,
-  // stock: stocksReducer,
-  // watchlist: watchlistReducer,
-  portfolio: portfolioReducer
-
+  stock: stockReducer,
+  watchlist: watchlistReducer,
+  portfolio: portfolioReducer,
+  portfolioStock: portfolioStockReducer,
+  watchlistStock: watchlistStockReducer,
+  crypto: cryptoReducer
 });
 
 let enhancer;
