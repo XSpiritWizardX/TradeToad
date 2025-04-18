@@ -1,13 +1,20 @@
-// import { useSelector } from 'react-redux';
-// import { Navigate } from 'react-router-dom';
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {fetchWatchlists} from "../../redux/watchlist"
+import { fetchWatchlistCryptos } from "../../redux/watchlistCryptos";
+import { fetchWatchlistStocks } from "../../redux/watchlistStocks";
 import './Watchlist.css'
 
 
 function Watchlist() {
-
+  const dispatch = useDispatch();
   // Redirect if not logged in
 //   if (!sessionUser) return <Navigate to="/" />;
-
+   useEffect(() => {
+        dispatch(fetchWatchlists());
+        dispatch(fetchWatchlistStocks());
+        dispatch(fetchWatchlistCryptos())
+      }, [dispatch]);
   return (
     <div className="watchlist-container">
       {/* <h1
@@ -80,7 +87,7 @@ function Watchlist() {
       </div>
 
 
-     
+
 
 
 

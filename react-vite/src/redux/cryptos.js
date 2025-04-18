@@ -3,9 +3,9 @@
 import { csrfFetch } from "./csrf";
 
 
-const SET_CRYPTO = 'session/stocks';
-const SET_ONE_CRYPTO = '/api/stocks/:stockId';
-const REMOVE_CRYPTO = 'session/stocks';
+const SET_CRYPTO = 'session/cryptos';
+const SET_ONE_CRYPTO = '/api/cryptos/:cryptoId';
+const REMOVE_CRYPTO = 'session/cryptos';
 
 
 

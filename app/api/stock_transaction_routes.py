@@ -34,7 +34,7 @@ def create_stock_transaction():
     data = request.get_json()
     stock_id = data.get("stock_id")
 
-
+    
 
     new_stock_transaction = Stock_Transaction(user_id=current_user.id, stock_id=stock_id)
     db.session.add(new_stock_transaction)
