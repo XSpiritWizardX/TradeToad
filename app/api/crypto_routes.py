@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.models import Crypto, db
-
+from app.api.polygon.client import apiCall
 
 
 
@@ -18,3 +18,17 @@ def get_cryptos():
     """
     cryptos = Crypto.query.all()
     return jsonify({'cryptos': [crypto.to_dict() for crypto in cryptos]})
+
+
+
+
+
+# This becomes /api/cryptos/<symbol>
+@crypto_routes.route('/<symbol>')
+def get_crypto(symbol):
+    """
+    Get crypto prices by crypto symbol.
+    """
+    result = apiCall(symbol)
+    return jsonify(result)
+

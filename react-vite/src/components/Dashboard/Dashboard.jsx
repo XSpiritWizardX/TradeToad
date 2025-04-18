@@ -25,8 +25,8 @@ function Dashboard() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.session.user)
   const portfolios = useSelector(state => state.portfolio.portfolio || [])
-  const cryptos = useSelector(state => state.crypto?.crypto?.cryptos || []);
-  const stocks = useSelector(state => state.stock?.stock?.stocks || []);
+  // const cryptos = useSelector(state => state.crypto?.crypto?.cryptos || []);
+  // const stocks = useSelector(state => state.stock?.stock?.stocks || []);
 
   useEffect(() => {
     dispatch(fetchPortfolios());
@@ -289,29 +289,108 @@ function Dashboard() {
         <div
         className='stock-choices-dashboard'
         >
-          {stocks?.map(stock => {
-              { console.log(stock.symbol)}
 
-              <p>
-                {`${stock.symbol}`}
-              </p>
+<NavLink
+            className="stock-choices-card"
+            to='/stocks/AAPL'
+          >
+            <button>
+              APPLE
+            </button>
+          </NavLink>
 
-              // <NavLink
-              //   className="stock-choices-card"
-              //   to={`/stocks/${stock.symbol}`}
-              //   key={stock?.id}
-              // >
+          <NavLink
+            to='/stocks/META'
+              className="stock-choices-card"
+          >
+            <button>
+              FACEBOOK
+            </button>
+          </NavLink>
 
-              //     {`${stock?.symbol}`}
-              //     {`${stock?.company}`}
+          <NavLink
+            to='/stocks/AMZN'
+              className="stock-choices-card"
+          >
+            <button>
+              AMAZON
+            </button>
+          </NavLink>
 
-              // </NavLink>
+          <NavLink
+            to='/stocks/TSLA'
+              className="stock-choices-card"
+          >
+            <button>
+              TESLA
+            </button>
+          </NavLink>
+
+          <NavLink
+            to='/stocks/GOOGL'
+              className="stock-choices-card"
+          >
+            <button>
+              GOOGLE
+            </button>
+          </NavLink>
 
 
+          <NavLink
+            to='/stocks/NFLX'
+              className="stock-choices-card"
+          >
+            <button>
+              NETFLIX
+            </button>
+          </NavLink>
 
 
+          <NavLink
+            to='/stocks/X:BTCUSD'
+              className="stock-choices-card"
+          >
+            <button>
+              BITCOIN
+            </button>
+          </NavLink>
 
-           })}
+          <NavLink
+            to='/stocks/X:DOGEUSD'
+              className="stock-choices-card"
+          >
+            <button>
+              DOGECOIN
+            </button>
+          </NavLink>
+
+          <NavLink
+            to='/stocks/X:ETHUSD'
+              className="stock-choices-card"
+          >
+            <button>
+              ETHEREUM
+            </button>
+          </NavLink>
+
+          <NavLink
+            to='/stocks/X:LINKUSD'
+              className="stock-choices-card"
+          >
+            <button>
+              CHAINLINK
+            </button>
+          </NavLink>
+
+          <NavLink
+            to='/stocks/X:XRPUSD'
+              className="stock-choices-card"
+          >
+            <button>
+              XRP
+            </button>
+          </NavLink>
+
 
            </div>
 
@@ -322,19 +401,7 @@ function Dashboard() {
 {/* MAPP THOUGH CRYPTOS */}
 
            <div>
-          {cryptos?.map(crypto => {
 
-
-                        <NavLink
-                        to='/stocks/<symbol>'
-                            className="stock-choices-card"
-                            key={crypto?.id}
-                        >
-                          <button>
-                             {crypto?.symbol}
-                          </button>
-                        </NavLink>
-            })}
 
 
 

@@ -43,6 +43,7 @@
 .button-cont-stockshow{
     display: flex;
     justify-content: space-evenly;
+    width: 90%;
 }
 
 .tech-data{
@@ -50,4 +51,12 @@
     justify-content: flex-start;
     flex-direction: column;
     margin-left: 4%;
+}
+
+
+
+.stock-choices-dashboard{
+    display: flex;
+    justify-content: space-evenly;
+    width: auto;
 }

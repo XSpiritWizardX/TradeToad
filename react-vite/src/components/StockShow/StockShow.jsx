@@ -12,6 +12,7 @@ function StockShow() {
   // Redirect if not logged in
 //   if (!sessionUser) return <Navigate to="/" />;
   const { stockID } = useParams();
+  const {cryptoId} = useParams();
 
   return (
     <div className="dashboard-container">
@@ -19,7 +20,7 @@ function StockShow() {
       <div className='top-section'>
 
         <div className='chart-container'>
-            <StockChart symbol={stockID || "AAPL"} />
+            <StockChart symbol={stockID || cryptoId} />
         </div>
 
             <div className='user-trade-menu'>
@@ -55,10 +56,7 @@ function StockShow() {
                   <p>VOLUME</p>
                   <p>VOLATILITY</p>
                   <p>MARKET-CAP</p>
-                  <p>OPEN</p>
-                  <p>CLOSE</p>
-                  <p>HIGH</p>
-                  <p>LOW</p>
+
                 </div>
             </div>
       </div>
@@ -119,7 +117,7 @@ function StockShow() {
       </div>
 
       <h1 className='para-stock-choice'>
-          Stock Choices // Biggest Movers
+          Developers Choices
       </h1>
 
       <div
@@ -128,91 +126,102 @@ function StockShow() {
 
           <NavLink
             className="stock-choices-card"
-            to='/stocks/:stockID'
+            to='/stocks/AAPL'
           >
             <button>
-              Stock #1
+              APPLE
             </button>
           </NavLink>
 
           <NavLink
-            to='/stocks/:stockID'
+            to='/stocks/META'
               className="stock-choices-card"
           >
             <button>
-              Stock #2
+              FACEBOOK
             </button>
           </NavLink>
 
           <NavLink
-            to='/stocks/:stockID'
+            to='/stocks/AMZN'
               className="stock-choices-card"
           >
             <button>
-              Stock #3
+              AMAZON
             </button>
           </NavLink>
 
           <NavLink
-            to='/stocks/:stockID'
+            to='/stocks/TSLA'
               className="stock-choices-card"
           >
             <button>
-              Stock #4
+              TESLA
             </button>
           </NavLink>
 
           <NavLink
-            to='/stocks/:stockID'
+            to='/stocks/GOOGL'
               className="stock-choices-card"
           >
             <button>
-              Stock #5
+              GOOGLE
+            </button>
+          </NavLink>
+
+
+          <NavLink
+            to='/stocks/NFLX'
+              className="stock-choices-card"
+          >
+            <button>
+              NETFLIX
+            </button>
+          </NavLink>
+
+
+          <NavLink
+            to='/stocks/X:BTCUSD'
+              className="stock-choices-card"
+          >
+            <button>
+              BITCOIN
             </button>
           </NavLink>
 
           <NavLink
-            to='/stocks/:stockID'
+            to='/stocks/X:DOGEUSD'
               className="stock-choices-card"
           >
             <button>
-              Stock #6
+              DOGECOIN
             </button>
           </NavLink>
 
           <NavLink
-            to='/stocks/:stockID'
+            to='/stocks/X:ETHUSD'
               className="stock-choices-card"
           >
             <button>
-              Stock #7
+              ETHEREUM
             </button>
           </NavLink>
 
           <NavLink
-            to='/stocks/:stockID'
+            to='/stocks/X:LINKUSD'
               className="stock-choices-card"
           >
             <button>
-              Stock #8
+              CHAINLINK
             </button>
           </NavLink>
 
           <NavLink
-            to='/stocks/:stockID'
+            to='/stocks/X:XRPUSD'
               className="stock-choices-card"
           >
             <button>
-              Stock #9
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/:stockID'
-              className="stock-choices-card"
-          >
-            <button>
-              Stock #10
+              XRP
             </button>
           </NavLink>
 
