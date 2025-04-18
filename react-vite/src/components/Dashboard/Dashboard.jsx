@@ -25,8 +25,8 @@ function Dashboard() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.session.user)
   const portfolios = useSelector(state => state.portfolio.portfolio || [])
-  const cryptos = useSelector(state => state.crypto.crypto.cryptos || []);
-  const stocks = useSelector(state => state.stock.stock.stocks || []);
+  const cryptos = useSelector(state => state.crypto?.crypto?.cryptos || []);
+  const stocks = useSelector(state => state.stock?.stock?.stocks || []);
 
   useEffect(() => {
     dispatch(fetchPortfolios());
@@ -279,7 +279,7 @@ function Dashboard() {
         <h1
       className='para-stock-choice'
       >
-      Stock Choices // Biggest Movers
+      Stock Choices
       </h1>
 
 
@@ -290,20 +290,30 @@ function Dashboard() {
         className='stock-choices-dashboard'
         >
           {stocks?.map(stock => {
+              { console.log(stock.symbol)}
 
-              <NavLink
-                className="stock-choices-card"
-                to='/stocks/:stockID'
-                key={stock?.id}
-              >
-                <button>
-                  {stock?.symbol}
-                </button>
-              </NavLink>
+              <p>
+                {`${stock.symbol}`}
+              </p>
 
-          })}
+              // <NavLink
+              //   className="stock-choices-card"
+              //   to={`/stocks/${stock.symbol}`}
+              //   key={stock?.id}
+              // >
+
+              //     {`${stock?.symbol}`}
+              //     {`${stock?.company}`}
+
+              // </NavLink>
 
 
+
+
+
+           })}
+
+           </div>
 
 
 
@@ -311,20 +321,20 @@ function Dashboard() {
 
 {/* MAPP THOUGH CRYPTOS */}
 
-
+           <div>
           {cryptos?.map(crypto => {
 
 
                         <NavLink
-                        to='/stocks/:stockID'
+                        to='/stocks/<symbol>'
                             className="stock-choices-card"
                             key={crypto?.id}
                         >
                           <button>
-                            {crypto?.symbol}
+                             {crypto?.symbol}
                           </button>
                         </NavLink>
-          })}
+            })}
 
 
 

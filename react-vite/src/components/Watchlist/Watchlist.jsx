@@ -8,8 +8,7 @@ import './Watchlist.css'
 
 function Watchlist() {
   const dispatch = useDispatch();
-  // Redirect if not logged in
-//   if (!sessionUser) return <Navigate to="/" />;
+  
    useEffect(() => {
         dispatch(fetchWatchlists());
         dispatch(fetchWatchlistStocks());
@@ -17,9 +16,7 @@ function Watchlist() {
       }, [dispatch]);
   return (
     <div className="watchlist-container">
-      {/* <h1
-      className='watchlist-title'
-      >Watchlist</h1> */}
+
 
 
         <h1
