@@ -1,15 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPortfolios } from "../../redux/portfolio";
+// import { fetchPortfolioStocks } from "../../redux/portfolioStocks";
 import './Portfolio.css'
 
 function PortfolioCard() {
   const dispatch = useDispatch();
   const portfolios = useSelector(state => state.portfolio.portfolio || [])
+  // const portfolioStocks = useSelector(state => state.portfolioStocks.portfolioStocks || [])
 
 
   useEffect(() => {
     dispatch(fetchPortfolios());
+    // dispatch(fetchPortfolioStocks())
   }, [dispatch]);
   // const sessionUser = useSelector(state => state.session.user);
 
@@ -26,7 +29,7 @@ function PortfolioCard() {
             className='investing-money-portfolio'
             >Investing
             <br/>
-            ${[portfolios?.portfolios[0].total_cash]}
+            ${[portfolios?.portfolios?.[0]?.total_cash]}
             </h1>
             <h1
             className='investing-money-portfolio2'

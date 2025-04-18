@@ -8,7 +8,8 @@ import CurrentStocksCard from '../CurrentStocks/CurrentStocks';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPortfolios } from "../../redux/portfolio";
-
+import { fetchCryptos } from '../../redux/cryptos';
+import { fetchStocks } from '../../redux/stocks';
 
 
 
@@ -24,10 +25,13 @@ function Dashboard() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.session.user)
   const portfolios = useSelector(state => state.portfolio.portfolio || [])
-
+  const cryptos = useSelector(state => state.crypto.crypto.cryptos || []);
+  const stocks = useSelector(state => state.stock.stock.stocks || []);
 
   useEffect(() => {
     dispatch(fetchPortfolios());
+    dispatch(fetchCryptos())
+    dispatch(fetchStocks())
   }, [dispatch]);
 
   return (
@@ -161,7 +165,7 @@ function Dashboard() {
         <h1
         className='dash-head-text'
         >
-          Available Cash = ${portfolios?.portfolios[0]?.available_cash}
+          Available Cash = ${portfolios?.portfolios?.[0]?.available_cash}
         </h1>
         </div>
 
@@ -277,107 +281,60 @@ function Dashboard() {
       >
       Stock Choices // Biggest Movers
       </h1>
-          <div
-          className='stock-choices-dashboard'
-          >
 
+
+
+{/* MAP THROUGH STOCKS */}
+
+        <div
+        className='stock-choices-dashboard'
+        >
+          {stocks?.map(stock => {
 
               <NavLink
                 className="stock-choices-card"
                 to='/stocks/:stockID'
+                key={stock?.id}
               >
                 <button>
-                  Stock #1
+                  {stock?.symbol}
                 </button>
               </NavLink>
 
-              <NavLink
-               to='/stocks/:stockID'
-                  className="stock-choices-card"
-              >
-                <button>
-                  Stock #2
-                </button>
-              </NavLink>
-
-              <NavLink
-               to='/stocks/:stockID'
-                  className="stock-choices-card"
-              >
-                <button>
-                  Stock #3
-                </button>
-              </NavLink>
+          })}
 
 
-              <NavLink
-               to='/stocks/:stockID'
-                  className="stock-choices-card"
-              >
-                <button>
-                  Stock #4
-                </button>
-              </NavLink>
 
 
-              <NavLink
-               to='/stocks/:stockID'
-                  className="stock-choices-card"
-              >
-                <button>
-                  Stock #5
-                </button>
-              </NavLink>
 
 
-              <NavLink
-               to='/stocks/:stockID'
-                  className="stock-choices-card"
-              >
-                <button>
-                  Stock #6
-                </button>
-              </NavLink>
+
+{/* MAPP THOUGH CRYPTOS */}
 
 
-              <NavLink
-               to='/stocks/:stockID'
-                  className="stock-choices-card"
-              >
-                <button>
-                  Stock #7
-                </button>
-              </NavLink>
+          {cryptos?.map(crypto => {
 
 
-              <NavLink
-               to='/stocks/:stockID'
-                  className="stock-choices-card"
-              >
-                <button>
-                  Stock #8
-                </button>
-              </NavLink>
+                        <NavLink
+                        to='/stocks/:stockID'
+                            className="stock-choices-card"
+                            key={crypto?.id}
+                        >
+                          <button>
+                            {crypto?.symbol}
+                          </button>
+                        </NavLink>
+          })}
 
 
-              <NavLink
-               to='/stocks/:stockID'
-                  className="stock-choices-card"
-              >
-                <button>
-                  Stock #9
-                </button>
-              </NavLink>
 
 
-              <NavLink
-               to='/stocks/:stockID'
-                  className="stock-choices-card"
-              >
-                <button>
-                  Stock #10
-                </button>
-              </NavLink>
+
+
+
+
+
+
 
           </div>
 
