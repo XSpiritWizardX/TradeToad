@@ -1,11 +1,11 @@
 
 
-// import { csrfFetch } from "./csrf";
+import { csrfFetch } from "./csrf";
 
 
-// const SET_PORTFOLIO_STOCK = 'session/portfolio_stocks';
-// const SET_ONE_PORTFOLIO_STOCK = '/api/portfolio_stocks/:portfolioStockId';
-// const REMOVE_PORTFOLIO_STOCK = 'session/portfolio_stocks';
+const SET_PORTFOLIO_CRYPTO = 'session/portfolio_cryptos';
+const SET_ONE_PORTFOLIO_CRYPTO = '/api/portfolio_cryptos/:portfolioCryptoId';
+const REMOVE_PORTFOLIO_CRYPTO = 'session/portfolio_cryptos';
 
 
 
@@ -19,20 +19,20 @@
 
 
 
-// const setPortfolioStock = (user) => ({
-//   type: SET_PORTFOLIO_STOCK,
-//   payload: user
-// });
+const setPortfolioCrypto = (user) => ({
+  type: SET_PORTFOLIO_CRYPTO,
+  payload: user
+});
 
 
-// const setOnePortfolioStock = (portfolio) => ({
-//     type: SET_ONE_PORTFOLIO_STOCK,
-//     portfolio,
-//   });
+const setOnePortfolioCrypto = (portfolio) => ({
+    type: SET_ONE_PORTFOLIO_CRYPTO,
+    portfolio,
+  });
 
-// const removePortfolioStockId = () => ({
-//   type: REMOVE_PORTFOLIO_STOCK
-// });
+const removePortfolioCryptoId = () => ({
+  type: REMOVE_PORTFOLIO_CRYPTO
+});
 
 
 
@@ -49,54 +49,54 @@
 
 
 
-// export const fetchPortfolioStocks = () => async (dispatch) => {
-//     const response = await fetch("/api/portfolio_stocks/");
-//     if (response.ok) {
-//         const data = await response.json();
-//         if (data.errors) {
-//             return;
-//         }
+export const fetchPortfolioCryptos = () => async (dispatch) => {
+    const response = await fetch("/api/portfolio_cryptos/");
+    if (response.ok) {
+        const data = await response.json();
+        if (data.errors) {
+            return;
+        }
 
-//         dispatch(setPortfolioStock(data));
-//     }
-// };
+        dispatch(setPortfolioCrypto(data));
+    }
+};
 
 
 
 
 
-// export const fetchOnePortfolioStock = (portfolioStockId) => async (dispatch) => {
-//     const response = await fetch(`/api/portfolio_stocks/${portfolioStockId}`);
-//     console.log(response)
-//     if (response.ok) {
+export const fetchOnePortfolioCrypto = (portfolioCryptoId) => async (dispatch) => {
+    const response = await fetch(`/api/portfolio_cryptos/${portfolioCryptoId}`);
+    console.log(response)
+    if (response.ok) {
 
-//       const portfolio_stock = await response.json();
-//       dispatch(setOnePortfolioStock(portfolio_stock));
+      const portfolio_crypto = await response.json();
+      dispatch(setOnePortfolioCrypto(portfolio_crypto));
 
-//     }
-//   };
+    }
+  };
 
 
 
 
 
-// export const deletePortfolioStock = (portfolioStockId) => async (dispatch) => {
-//     try {
-//       const response = await csrfFetch(`/api/portfolio_stocks/${portfolioStockId}`, {
-//         method: "DELETE",
-//       });
+export const deletePortfolioCrypto = (portfolioCryptoId) => async (dispatch) => {
+    try {
+      const response = await csrfFetch(`/api/portfolio_cryptos/${portfolioCryptoId}`, {
+        method: "DELETE",
+      });
 
-//       if (!response.ok) {
-//         throw new Error("Failed to delete portfolio");  // Prevents misleading success alerts
-//       }
+      if (!response.ok) {
+        throw new Error("Failed to delete portfolio crypto");  // Prevents misleading success alerts
+      }
 
-//       dispatch(removePortfolioStockId(portfolioStockId)); // Update Redux state
-//       return "Portfolio Stock deleted successfully"; // Ensure frontend knows it worked
-//     } catch (error) {
-//       console.error("Delete Error:", error); // Log error to console
-//       throw error; // Ensures the frontend properly handles the failure
-//     }
-//   };
+      dispatch(removePortfolioCryptoId(portfolioCryptoId)); // Update Redux state
+      return "Portfolio Crypto deleted successfully"; // Ensure frontend knows it worked
+    } catch (error) {
+      console.error("Delete Error:", error); // Log error to console
+      throw error; // Ensures the frontend properly handles the failure
+    }
+  };
 
 
 
@@ -121,29 +121,29 @@
 
 
 
-// const initialState = { portfolio_stock: null };
+const initialState = { portfolio_crypto: null };
 
 
 
-// function portfolioStockReducer(state = initialState, action) {
-//   switch (action.type) {
+function portfolioCryptoReducer(state = initialState, action) {
+  switch (action.type) {
 
 
 
-//     case SET_PORTFOLIO_STOCK:
-//         return { ...state, portfolio_stock: action.payload };
-//     case SET_ONE_PORTFOLIO_STOCK:
-//         return { portfolio_stock: action.portfolio_stock};
-//     case REMOVE_PORTFOLIO_STOCK:{
-//         const newState = { ...state };
-//         delete newState.portfolio_stock[action.portfolioStockId];
-//         return newState;
-//       }
-//     default:
-//         return state;
-//   }
-// }
+    case SET_PORTFOLIO_CRYPTO:
+        return { ...state, portfolio_crypto: action.payload };
+    case SET_ONE_PORTFOLIO_CRYPTO:
+        return { portfolio_crypto: action.portfolio_crypto};
+    case REMOVE_PORTFOLIO_CRYPTO:{
+        const newState = { ...state };
+        delete newState.portfolio_crypto[action.portfolioCryptoId];
+        return newState;
+      }
+    default:
+        return state;
+  }
+}
 
 
 
-// export default portfolioStockReducer;
+export default portfolioCryptoReducer;

@@ -1,11 +1,11 @@
 
 
-// import { csrfFetch } from "./csrf";
+import { csrfFetch } from "./csrf";
 
 
-// const SET_WATCHLIST_STOCK = 'session/watchlist_stocks';
-// const SET_ONE_WATCHLIST_STOCK = '/api/watchlist_stocks/:watchlistStockId';
-// const REMOVE_WATCHLIST_STOCK = 'session/watchlist_stocks';
+const SET_WATCHLIST_CRYPTO = 'session/watchlist_stocks';
+const SET_ONE_WATCHLIST_CRYPTO = '/api/watchlist_stocks/:watchlistStockId';
+const REMOVE_WATCHLIST_CRYPTO = 'session/watchlist_stocks';
 
 
 
@@ -19,20 +19,20 @@
 
 
 
-// const setWatchlistStock = (user) => ({
-//   type: SET_WATCHLIST_STOCK,
-//   payload: user
-// });
+const setWatchlistCrypto = (user) => ({
+  type: SET_WATCHLIST_CRYPTO,
+  payload: user
+});
 
 
-// const setOneWatchlistStock = (watchlist) => ({
-//     type: SET_ONE_WATCHLIST_STOCK,
-//     watchlist,
-//   });
+const setOneWatchlistCrypto = (watchlist) => ({
+    type: SET_ONE_WATCHLIST_CRYPTO,
+    watchlist,
+  });
 
-// const removeWatchlistStockId = () => ({
-//   type: REMOVE_WATCHLIST_STOCK
-// });
+const removeWatchlistCryptoId = () => ({
+  type: REMOVE_WATCHLIST_CRYPTO
+});
 
 
 
@@ -49,54 +49,54 @@
 
 
 
-// export const fetchWatchlistStocks = () => async (dispatch) => {
-//     const response = await fetch("/api/watchlist_stocks/");
-//     if (response.ok) {
-//         const data = await response.json();
-//         if (data.errors) {
-//             return;
-//         }
+export const fetchWatchlistCryptos = () => async (dispatch) => {
+    const response = await fetch("/api/watchlist_cryptos/");
+    if (response.ok) {
+        const data = await response.json();
+        if (data.errors) {
+            return;
+        }
 
-//         dispatch(setWatchlistStock(data));
-//     }
-// };
+        dispatch(setWatchlistCrypto(data));
+    }
+};
 
 
 
 
 
-// export const fetchOneWatchlistStock = (watchlistStockId) => async (dispatch) => {
-//     const response = await fetch(`/api/watchlist_stocks/${watchlistStockId}`);
-//     console.log(response)
-//     if (response.ok) {
+export const fetchOneWatchlistCrypto = (watchlistCryptoId) => async (dispatch) => {
+    const response = await fetch(`/api/watchlist_cryptos/${watchlistCryptoId}`);
+    console.log(response)
+    if (response.ok) {
 
-//       const watchlist_stock = await response.json();
-//       dispatch(setOneWatchlistStock(watchlist_stock));
+      const watchlist_crypto = await response.json();
+      dispatch(setOneWatchlistCrypto(watchlist_crypto));
 
-//     }
-//   };
+    }
+  };
 
 
 
 
 
-// export const deleteWatchlistStock = (watchlistStockId) => async (dispatch) => {
-//     try {
-//       const response = await csrfFetch(`/api/watchlist_stocks/${watchlistStockId}`, {
-//         method: "DELETE",
-//       });
+export const deleteWatchlistCrypto = (watchlistCryptoId) => async (dispatch) => {
+    try {
+      const response = await csrfFetch(`/api/watchlist_cryptos/${watchlistCryptoId}`, {
+        method: "DELETE",
+      });
 
-//       if (!response.ok) {
-//         throw new Error("Failed to delete watchlist");  // Prevents misleading success alerts
-//       }
+      if (!response.ok) {
+        throw new Error("Failed to delete watchlist");  // Prevents misleading success alerts
+      }
 
-//       dispatch(removeWatchlistStockId(watchlistStockId)); // Update Redux state
-//       return "watchlist Stock deleted successfully"; // Ensure frontend knows it worked
-//     } catch (error) {
-//       console.error("Delete Error:", error); // Log error to console
-//       throw error; // Ensures the frontend properly handles the failure
-//     }
-//   };
+      dispatch(removeWatchlistCryptoId(watchlistCryptoId)); // Update Redux state
+      return "watchlist crypto deleted successfully"; // Ensure frontend knows it worked
+    } catch (error) {
+      console.error("Delete Error:", error); // Log error to console
+      throw error; // Ensures the frontend properly handles the failure
+    }
+  };
 
 
 
@@ -121,29 +121,29 @@
 
 
 
-// const initialState = { watchlist_stock: null };
+const initialState = { watchlist_crypto: null };
 
 
 
-// function watchlistStockReducer(state = initialState, action) {
-//   switch (action.type) {
+function watchlistCryptoReducer(state = initialState, action) {
+  switch (action.type) {
 
 
 
-//     case SET_WATCHLIST_STOCK:
-//         return { ...state, watchlist_stock: action.payload };
-//     case SET_ONE_WATCHLIST_STOCK:
-//         return { watchlist_stock: action.watchlist_stock};
-//     case REMOVE_WATCHLIST_STOCK:{
-//         const newState = { ...state };
-//         delete newState.watchlist_stock[action.watchlistStockId];
-//         return newState;
-//       }
-//     default:
-//         return state;
-//   }
-// }
+    case SET_WATCHLIST_CRYPTO:
+        return { ...state, watchlist_crypto: action.payload };
+    case SET_ONE_WATCHLIST_CRYPTO:
+        return { watchlist_crypto: action.watchlist_crypto};
+    case REMOVE_WATCHLIST_CRYPTO:{
+        const newState = { ...state };
+        delete newState.watchlist_crypto[action.watchlistCryptoId];
+        return newState;
+      }
+    default:
+        return state;
+  }
+}
 
 
 
-// export default watchlistStockReducer
+export default watchlistCryptoReducer

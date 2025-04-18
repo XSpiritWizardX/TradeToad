@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchPortfolios } from "../../redux/portfolio";
 import { fetchPortfolioStocks } from "../../redux/portfolioStocks";
+import { fetchPortfolioCryptos } from "../../redux/portfolioCryptos";
 import './CurrentStocks.css'
 
 
@@ -15,7 +16,8 @@ function CurrentStocksCard() {
 
     useEffect(() => {
         dispatch(fetchPortfolios());
-        dispatch(fetchPortfolioStocks())
+        dispatch(fetchPortfolioStocks());
+        dispatch(fetchPortfolioCryptos())
       }, [dispatch]);
 
   return (

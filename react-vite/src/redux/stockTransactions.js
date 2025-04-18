@@ -1,11 +1,11 @@
 
 
-// import { csrfFetch } from "./csrf";
+import { csrfFetch } from "./csrf";
 
 
-// const SET_PORTFOLIO = 'session/portfolios';
-// const SET_ONE_PORTFOLIO = '/api/portfolios/:portfolioId';
-// const REMOVE_PORTFOLIO = 'session/portfolios';
+const SET_STOCK_TRANSACTION = 'session/stock_transactions';
+const SET_ONE_STOCK_TRANSACTION = '/api/stock_transactions/:stockTransactionId';
+const REMOVE_STOCK_TRANSACTION = 'session/stock_transactions';
 
 
 
@@ -19,20 +19,20 @@
 
 
 
-// const setPortfolio = (user) => ({
-//   type: SET_PORTFOLIO,
-//   payload: user
-// });
+const setStockTransaction = (user) => ({
+  type: SET_STOCK_TRANSACTION,
+  payload: user
+});
 
 
-// const setOnePortfolio = (portfolio) => ({
-//     type: SET_ONE_PORTFOLIO,
-//     portfolio,
-//   });
+const setOneStockTransaction = (stock_transaction) => ({
+    type: SET_ONE_STOCK_TRANSACTION,
+    stock_transaction,
+  });
 
-// const removePortfolioId = () => ({
-//   type: REMOVE_PORTFOLIO
-// });
+const removeStockTransactionId = () => ({
+  type: REMOVE_STOCK_TRANSACTION
+});
 
 
 
@@ -49,54 +49,54 @@
 
 
 
-// export const fetchPortfolios = () => async (dispatch) => {
-//     const response = await fetch("/api/portfolios/");
-//     if (response.ok) {
-//         const data = await response.json();
-//         if (data.errors) {
-//             return;
-//         }
+export const fetchPStockTransaction = () => async (dispatch) => {
+    const response = await fetch("/api/stock_transactions/");
+    if (response.ok) {
+        const data = await response.json();
+        if (data.errors) {
+            return;
+        }
 
-//         dispatch(setPortfolio(data));
-//     }
-// };
+        dispatch(setStockTransaction(data));
+    }
+};
 
 
 
 
 
-// export const fetchOnePortfolio = (portfolioId) => async (dispatch) => {
-//     const response = await fetch(`/api/portfolios/${portfolioId}`);
-//     console.log(response)
-//     if (response.ok) {
+export const fetchOneStockTransaction = (stockTransactionId) => async (dispatch) => {
+    const response = await fetch(`/api/stock_transactions/${stockTransactionId}`);
+    console.log(response)
+    if (response.ok) {
 
-//       const portfolio = await response.json();
-//       dispatch(setOnePortfolio(portfolio));
+      const stockTransaction = await response.json();
+      dispatch(setOneStockTransaction(stockTransaction));
 
-//     }
-//   };
+    }
+  };
 
 
 
 
 
-// export const deletePortfolio = (portfolioId) => async (dispatch) => {
-//     try {
-//       const response = await csrfFetch(`/api/portfolios/${portfolioId}`, {
-//         method: "DELETE",
-//       });
+export const deleteStockTransaction = (stockTransactionId) => async (dispatch) => {
+    try {
+      const response = await csrfFetch(`/api/stock_transactions/${stockTransactionId}`, {
+        method: "DELETE",
+      });
 
-//       if (!response.ok) {
-//         throw new Error("Failed to delete portfolio");  // Prevents misleading success alerts
-//       }
+      if (!response.ok) {
+        throw new Error("Failed to delete stockTransaction");  // Prevents misleading success alerts
+      }
 
-//       dispatch(removePortfolioId(portfolioId)); // Update Redux state
-//       return "Portfolio deleted successfully"; // Ensure frontend knows it worked
-//     } catch (error) {
-//       console.error("Delete Error:", error); // Log error to console
-//       throw error; // Ensures the frontend properly handles the failure
-//     }
-//   };
+      dispatch(removeStockTransactionId(stockTransactionId)); // Update Redux state
+      return "CryptoTransaction deleted successfully"; // Ensure frontend knows it worked
+    } catch (error) {
+      console.error("Delete Error:", error); // Log error to console
+      throw error; // Ensures the frontend properly handles the failure
+    }
+  };
 
 
 
@@ -121,29 +121,29 @@
 
 
 
-// const initialState = { portfolio: null };
+const initialState = { stock_transaction: null };
 
 
 
-// function portfolioReducer(state = initialState, action) {
-//   switch (action.type) {
+function stockTransactionReducer(state = initialState, action) {
+  switch (action.type) {
 
 
 
-//     case SET_PORTFOLIO:
-//         return { ...state, portfolio: action.payload };
-//     case SET_ONE_PORTFOLIO:
-//         return { portfolio: action.portfolio};
-//     case REMOVE_PORTFOLIO:{
-//         const newState = { ...state };
-//         delete newState.portfolios[action.portfolioId];
-//         return newState;
-//       }
-//     default:
-//         return state;
-//   }
-// }
+    case SET_STOCK_TRANSACTION:
+        return { ...state, stock_transaction: action.payload };
+    case SET_ONE_STOCK_TRANSACTION:
+        return { stock_transaction: action.stock_transaction};
+    case REMOVE_STOCK_TRANSACTION:{
+        const newState = { ...state };
+        delete newState.stock_transaction[action.stockTransactionId];
+        return newState;
+      }
+    default:
+        return state;
+  }
+}
 
 
 
-// export default portfolioReducer;
+export default stockTransactionReducer;

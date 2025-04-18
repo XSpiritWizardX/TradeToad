@@ -1,11 +1,11 @@
 
 
-// import { csrfFetch } from "./csrf";
+import { csrfFetch } from "./csrf";
 
 
-// const SET_PORTFOLIO = 'session/portfolios';
-// const SET_ONE_PORTFOLIO = '/api/portfolios/:portfolioId';
-// const REMOVE_PORTFOLIO = 'session/portfolios';
+const SET_CRYPTO_TRANSACTION = 'session/crypto_transactions';
+const SET_ONE_CRYPTO_TRANSACTION = '/api/crypto_transactions/:cryptoTransactionId';
+const REMOVE_CRYPTO_TRANSACTION = 'session/crypto_transactions';
 
 
 
@@ -19,20 +19,20 @@
 
 
 
-// const setPortfolio = (user) => ({
-//   type: SET_PORTFOLIO,
-//   payload: user
-// });
+const setCryptoTransaction = (user) => ({
+  type: SET_CRYPTO_TRANSACTION,
+  payload: user
+});
 
 
-// const setOnePortfolio = (portfolio) => ({
-//     type: SET_ONE_PORTFOLIO,
-//     portfolio,
-//   });
+const setOneCryptoTransaction = (crypto_transaction) => ({
+    type: SET_ONE_CRYPTO_TRANSACTION,
+    crypto_transaction,
+  });
 
-// const removePortfolioId = () => ({
-//   type: REMOVE_PORTFOLIO
-// });
+const removeCryptoTransactionId = () => ({
+  type: REMOVE_CRYPTO_TRANSACTION
+});
 
 
 
@@ -49,54 +49,54 @@
 
 
 
-// export const fetchPortfolios = () => async (dispatch) => {
-//     const response = await fetch("/api/portfolios/");
-//     if (response.ok) {
-//         const data = await response.json();
-//         if (data.errors) {
-//             return;
-//         }
+export const fetchPCryptoTransaction = () => async (dispatch) => {
+    const response = await fetch("/api/crypto_transactions/");
+    if (response.ok) {
+        const data = await response.json();
+        if (data.errors) {
+            return;
+        }
 
-//         dispatch(setPortfolio(data));
-//     }
-// };
+        dispatch(setCryptoTransaction(data));
+    }
+};
 
 
 
 
 
-// export const fetchOnePortfolio = (portfolioId) => async (dispatch) => {
-//     const response = await fetch(`/api/portfolios/${portfolioId}`);
-//     console.log(response)
-//     if (response.ok) {
+export const fetchOneCryptoTransaction = (cryptoTransactionId) => async (dispatch) => {
+    const response = await fetch(`/api/crypto_transactions/${cryptoTransactionId}`);
+    console.log(response)
+    if (response.ok) {
 
-//       const portfolio = await response.json();
-//       dispatch(setOnePortfolio(portfolio));
+      const cryptoTransaction = await response.json();
+      dispatch(setOneCryptoTransaction(cryptoTransaction));
 
-//     }
-//   };
+    }
+  };
 
 
 
 
 
-// export const deletePortfolio = (portfolioId) => async (dispatch) => {
-//     try {
-//       const response = await csrfFetch(`/api/portfolios/${portfolioId}`, {
-//         method: "DELETE",
-//       });
+export const deleteCryptoTransaction = (cryptoTransactionId) => async (dispatch) => {
+    try {
+      const response = await csrfFetch(`/api/crypto_transactions/${cryptoTransactionId}`, {
+        method: "DELETE",
+      });
 
-//       if (!response.ok) {
-//         throw new Error("Failed to delete portfolio");  // Prevents misleading success alerts
-//       }
+      if (!response.ok) {
+        throw new Error("Failed to delete CryptoTransaction");  // Prevents misleading success alerts
+      }
 
-//       dispatch(removePortfolioId(portfolioId)); // Update Redux state
-//       return "Portfolio deleted successfully"; // Ensure frontend knows it worked
-//     } catch (error) {
-//       console.error("Delete Error:", error); // Log error to console
-//       throw error; // Ensures the frontend properly handles the failure
-//     }
-//   };
+      dispatch(removeCryptoTransactionId(cryptoTransactionId)); // Update Redux state
+      return "CryptoTransaction deleted successfully"; // Ensure frontend knows it worked
+    } catch (error) {
+      console.error("Delete Error:", error); // Log error to console
+      throw error; // Ensures the frontend properly handles the failure
+    }
+  };
 
 
 
@@ -121,29 +121,29 @@
 
 
 
-// const initialState = { portfolio: null };
+const initialState = { crypto_transaction: null };
 
 
 
-// function portfolioReducer(state = initialState, action) {
-//   switch (action.type) {
+function cryptoTransactionReducer(state = initialState, action) {
+  switch (action.type) {
 
 
 
-//     case SET_PORTFOLIO:
-//         return { ...state, portfolio: action.payload };
-//     case SET_ONE_PORTFOLIO:
-//         return { portfolio: action.portfolio};
-//     case REMOVE_PORTFOLIO:{
-//         const newState = { ...state };
-//         delete newState.portfolios[action.portfolioId];
-//         return newState;
-//       }
-//     default:
-//         return state;
-//   }
-// }
+    case SET_CRYPTO_TRANSACTION:
+        return { ...state, crypto_transaction: action.payload };
+    case SET_ONE_CRYPTO_TRANSACTION:
+        return { crypto_transaction: action.crypto_transaction};
+    case REMOVE_CRYPTO_TRANSACTION:{
+        const newState = { ...state };
+        delete newState.crypto_transaction[action.cryptoTransactionId];
+        return newState;
+      }
+    default:
+        return state;
+  }
+}
 
 
 
-// export default portfolioReducer;
+export default cryptoTransactionReducer;

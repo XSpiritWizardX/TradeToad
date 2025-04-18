@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPortfolios } from "../../redux/portfolio";
-import { fetchPortfolioStocks } from "../../redux/portfolioStocks";
+// import { fetchPortfolioStocks } from "../../redux/portfolioStocks";
 import './Portfolio.css'
 
 function PortfolioCard() {
