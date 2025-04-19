@@ -16,7 +16,7 @@
   border-radius: 50%;
   margin-right: 26px;
   margin-left: 16px;
-  animation: spin 3s linear infinite;
+  /* animation: spin 3s linear infinite; */
 }
 
 .trade-toad-banner{
@@ -29,19 +29,24 @@
 }
 
 
+.instructions-for-search{
+  color: #B4EC51;
+  margin-bottom: 0px;
+  height: 40px;
+  margin-top: 65px;
+}
 
 
 
 
-
-@keyframes spin {
-  /* Set up your keyframe animation here */
- /* from {
+/* @keyframes spin {
+  Set up your keyframe animation here
+ from {
       transform: rotate(0deg);
   }
   to {
       transform: rotate(360deg);
-  } */
+  }
   0% {
       transform: rotate(0deg);
   }
@@ -51,6 +56,6 @@
    100% {
       transform: rotate(360deg);
    }
-*/
 
   }
+   */
