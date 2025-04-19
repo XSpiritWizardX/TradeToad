@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
+import SearchBar from "../SearchBar/SearchBar";
 import { FcSearch } from "react-icons/fc";
 import "./Navigation.css";
 
@@ -19,7 +20,7 @@ function Navigation() {
         />
 
         <div className="search-container">
-
+            <SearchBar/>
           <FcSearch className="search-icon" />
           <input
             className="search-text-input"
