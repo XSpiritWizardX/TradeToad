@@ -1,10 +1,10 @@
 // import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import PortfolioCard from '../../components/Portfolio/Portfolio';
 import WatchlistCard from '../../components/Watchlist/Watchlist'
 import CurrentStocksCard from '../CurrentStocks/CurrentStocks';
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPortfolios } from "../../redux/portfolio";
 import { fetchCryptos } from '../../redux/cryptos';
@@ -16,26 +16,46 @@ import './Dashboard.css'
 
 function Dashboard() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const user = useSelector(state => state.session.user)
   const portfolios = useSelector(state => state.portfolio.portfolio || [])
   // const cryptos = useSelector(state => state.crypto?.crypto?.cryptos || []);
   // const stocks = useSelector(state => state.stock?.stock?.stocks || []);
 
   useEffect(() => {
-    // first, dispatch the authentication check 
+    // first, check if user is authenticated 
     dispatch(thunkAuthenticate())
-      .then(() => {
-
-      dispatch(fetchPortfolios());
-      dispatch(fetchCryptos())
-      dispatch(fetchStocks())
+      .then((userData) => {
+        if (!userData) {
+          // if not authenticated, redirect to login
+          navigate('/login');
+          return;
+        }
+      // if authenticated, fetch data
+      return Promise.all([
+        dispatch(fetchPortfolios()),
+        dispatch(fetchCryptos()),
+        dispatch(fetchStocks()),
+      ]);
     })
       .catch(err => {
           console.error("Authentication error:", err);
-          // handle authentication failure (e.g., redirect to login)
-      });
-  }, [dispatch]);
+          navigate('/login');   // redirect to login)
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
+  }, [dispatch, navigate]);
   // }, [dispatch, user]);
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (!user) {
+    return <div>Please log in to view your dashboard</div>
+  }
 
   return (
     <div className="dashboard-container">

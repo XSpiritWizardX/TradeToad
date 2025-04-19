@@ -1,11 +1,13 @@
 import os
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, redirect
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
 from .models import db, User
+from flask_session import Session
 
+from .api.csrf_routes import csrf_routes
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 
@@ -26,18 +28,13 @@ from .seeds import seed_commands
 from .config import Config
 
 
-
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
-
-
-
-
 
 
 # Setup login manager
 login = LoginManager(app)
 login.login_view = 'auth.unauthorized'
-
+login.session_protection = "strong"  # added for better session protection
 
 @login.user_loader
 def load_user(id):
@@ -48,6 +45,12 @@ def load_user(id):
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
+
+# Initialize session
+Session(app)  # Add this line to initialize Flask-Session
+
+# Register blueprints
+app.register_blueprint(csrf_routes, url_prefix='/api/csrf')
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 
@@ -65,15 +68,13 @@ app.register_blueprint(portfolio_routes, url_prefix='/api/portfolios')
 app.register_blueprint(watchlist_routes, url_prefix='/api/watchlists')
 
 
-
-
-
-
 db.init_app(app)
 Migrate(app, db)
 
 # Application Security
-CORS(app)
+# CORS(app)    # old version
+# configure CORS to allow credentials:
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173", "supports_credentials": True}})
 
 
 # Since we are deploying with Docker and Flask,

@@ -7,8 +7,7 @@ import { router } from "./router";
 import * as sessionActions from "./redux/session";
 import * as portfolioActions from "./redux/portfolio"
 import "./index.css";
-import { restoreCSRF, csrfFetch } from './redux/csrf';
-
+import { restoreCSRF } from './redux/csrf';
 
 const store = configureStore();
 
@@ -17,9 +16,13 @@ if (import.meta.env.MODE !== "production") {
   window.store = store;
   window.sessionActions = sessionActions;
   window.portfolioActions = portfolioActions;
+}
 
-  restoreCSRF().then(() => {
-    // now that CSRF protection is set up, render the app
+// first restore CSRF, then check authentication, then render
+restoreCSRF().then(() => {
+  // try to authenticate the user
+  store.dispatch(sessionActions.thunkAuthenticate()).finally(() => {
+    // render the app regardless of authentication result
     ReactDOM.createRoot(document.getElementById("root")).render(
       <React.StrictMode>
         <ReduxProvider store={store}>
@@ -28,16 +31,5 @@ if (import.meta.env.MODE !== "production") {
       </React.StrictMode>
     );
   });
-} else {
-  // in production, just render without the CSRF setup --
-  ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-      <ReduxProvider store={store}>
-        <RouterProvider router={router} />
-      </ReduxProvider>
-    </React.StrictMode>
-  );
-
-}
-
+});
 

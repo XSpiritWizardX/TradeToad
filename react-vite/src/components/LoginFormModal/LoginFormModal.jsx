@@ -17,51 +17,73 @@ function LoginFormModal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const serverResponse = await dispatch(
-      thunkLogin({
-        email,
-        password,
-      })
-    );
-
-    if (serverResponse) {
-      setErrors(serverResponse);
-    } else {
-      closeModal()
-      .then(navigate('/dashboard'))
+    try {
+      const serverResponse = await dispatch(
+        thunkLogin({
+          email,
+          password,
+        })
+      );
+      
+      if (serverResponse) {
+        setErrors(serverResponse);
+      } else {
+        // first close the modal
+        await closeModal();
+        // then navigate after a short delay to ensure state is updated
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 100);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
     }
   };
 
   const loginDemo = (e) => {
     e.preventDefault();
-    return dispatch(thunkLogin({
+    dispatch(thunkLogin({
         email: 'demo@aa.io',
         password: 'password'
     }))
-    .then(closeModal)
-    .then(navigate('/dashboard'))
+    .then(() => closeModal())
+    .then(() => {
+      // add delay before navigation
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 100);
+    });
   };
 
   const loginDemo2 = (e) => {
     e.preventDefault();
-    return dispatch(thunkLogin({
+    dispatch(thunkLogin({
         email: 'thechosenone@aa.io',
         password: 'password'
     }))
-    .then(closeModal)
-    .then(navigate('/dashboard'))
+    .then(() => closeModal())
+    .then(() => {
+      // add delay before navigation
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 100);
+    });
   };
 
   const loginDemo3 = (e) => {
     e.preventDefault();
-    return dispatch(thunkLogin({
+    dispatch(thunkLogin({
         email: 'etusks@aa.io',
         password: 'password'
     }))
-    .then(closeModal)
-    .then(navigate('/dashboard'))
+    .then(() => closeModal())
+    .then(() => {
+      // add delay before navigation
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 100);
+    });
   };
-
 
   return (
     <>
