@@ -29,10 +29,13 @@ function Dashboard() {
   // const stocks = useSelector(state => state.stock?.stock?.stocks || []);
 
   useEffect(() => {
-    dispatch(fetchPortfolios());
-    dispatch(fetchCryptos())
-    dispatch(fetchStocks())
-  }, [dispatch]);
+    if(user) {
+
+      dispatch(fetchPortfolios());
+      dispatch(fetchCryptos())
+      dispatch(fetchStocks())
+    }
+  }, [dispatch, user]);
 
   return (
     <div className="dashboard-container">
@@ -46,42 +49,11 @@ function Dashboard() {
 
 
 
-        {/* <div
-        className='top-port-text-and-buttons'
-        > */}
-
-        {/* <div
-        className='port-head-text'
-        >
-
-        <h1
-        className='dash-head-text'
-        >Investing ... $123456789</h1>
-        <h1
-        className='dash-head-text'
-        >2030%^</h1>
-
-        </div> */}
 
 
 
 
 
-        {/* <div
-        className='buttonsz'
-        >
-
-        <button
-        className='fund-me'
-        >Fund Your Portfolio</button>
-
-        <button
-        className='withdraw'
-        >Withdraw</button>
-
-        </div> */}
-
-        {/* </div> */}
 
 
 

@@ -33,6 +33,11 @@ function SignupFormModal() {
         username,
         password,
       })
+
+      // This is where you dispatch the create portfolio
+      //  and create watchlist for each user
+
+
     );
 
     if (serverResponse) {
@@ -41,7 +46,7 @@ function SignupFormModal() {
       closeModal();
 
       // add the create portfolio and watchlist here
-      
+
 
 
     }

@@ -159,7 +159,19 @@ function ProfileButton() {
               <ln
             className='profile-line'
             ></ln>
+                <div
+        className='buttonsz'
+        >
 
+        <button
+        className='fund-me'
+        >Fund Your Portfolio</button>
+
+        <button
+        className='withdraw'
+        >Withdraw</button>
+
+        </div>
                 <button onClick={logout}
 
                 >Log Out</button>
