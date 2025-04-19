@@ -30,7 +30,9 @@ function BuyStockModal() {
   return (
     <>
       <h1>Buy At Price</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}
+      className="buy-form"
+      >
         <label>
          price statedotstockdotprice
         </label>

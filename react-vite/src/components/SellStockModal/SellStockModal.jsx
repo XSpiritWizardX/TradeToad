@@ -30,7 +30,9 @@ function SellStockModal() {
   return (
     <>
       <h1>Sell At Price</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}
+      className="sell-form"
+      >
        <label>Shares
             <input
             type="text"

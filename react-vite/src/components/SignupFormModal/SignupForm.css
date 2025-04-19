@@ -40,3 +40,15 @@ label {
     margin-bottom: 3%;
     justify-content: space-between;
 }
+
+
+.signup-form {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 10px;
+    border-radius: 10px;
+    color: white;
+
+}

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
+import './SearchBar.css'
 function SearchBar() {
 
   const navigate = useNavigate();
@@ -20,25 +20,36 @@ function SearchBar() {
   };
 
   return (
-    <>
-      <h1>Search</h1>
-    
-      <form onSubmit={handleSubmit}>
+    <div
+    className="search-bar-container"
+    >
+      {/* <h1>Search</h1> */}
+
+      <form
+      onSubmit={handleSubmit}
+        className="search-form"
+      >
         <label>
 
           <input
             type="text"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-
+            placeholder="stock = AAPL crypto = X:BTCUSD"
+            className="search-input"
           />
         </label>
 
 
 
-        <button type="submit">Search</button>
+        <button type="submit"
+        className="search-button"
+        >
+            Search
+        </button>
+
         </form>
-    </>
+    </div>
   );
 }
 

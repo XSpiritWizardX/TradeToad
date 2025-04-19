@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import SearchBar from "../SearchBar/SearchBar";
-import { FcSearch } from "react-icons/fc";
+// import { FcSearch } from "react-icons/fc";
 import "./Navigation.css";
 
 function Navigation() {
@@ -19,15 +19,8 @@ function Navigation() {
           className="trade-toad-banner"
         />
 
-        <div className="search-container">
-            <SearchBar/>
-          <FcSearch className="search-icon" />
-          <input
-            className="search-text-input"
-            placeholder="search for a stock">
-          </input>
+        <SearchBar className="search-bar" />
 
-        </div>
 
         <ProfileButton className="profile-button" />
 

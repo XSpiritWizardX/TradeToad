@@ -1,0 +1,30 @@
+.search-bar-container{
+    display: flex;
+    justify-content: center;
+
+    height: 100%;
+    width: 530px;
+
+}
+
+
+.search-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 440px;
+    height: 100px;
+    margin-bottom: 0px;
+    margin-top: 4%;
+}
+
+.search-button{
+height: 40px;
+
+}
+
+.search-input {
+height: 30px;
+width: 300px;
+margin-top: 7%;
+}

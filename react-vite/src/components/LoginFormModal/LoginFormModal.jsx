@@ -66,7 +66,9 @@ function LoginFormModal() {
   return (
     <>
       <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}
+      className="login-form"
+      >
         <label
         className="email-label"
         >

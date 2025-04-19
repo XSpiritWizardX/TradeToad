@@ -41,7 +41,7 @@ function SignupFormModal() {
       closeModal();
 
       // add the create portfolio and watchlist here
-      
+
 
 
     }
@@ -51,7 +51,9 @@ function SignupFormModal() {
     <>
       <h1>Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}
+      className="signup-form"
+      >
         <label>
           First Name
           <input

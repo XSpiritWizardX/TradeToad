@@ -16,7 +16,7 @@
   border-radius: 50%;
   margin-right: 26px;
   margin-left: 16px;
-  /* animation: spin 10s linear infinite; */
+  animation: spin 3s linear infinite;
 }
 
 .trade-toad-banner{
@@ -28,64 +28,20 @@
   margin-right: 26%;
 }
 
-.search-container{
-  display: flex;
-  justify-content: center;
-  width: 20vw;
-  height: 5vh;
-  align-self: end;
-  margin-left: 10%;
-  margin-bottom: 1%;
-  margin-top: 2%;
-}
 
-.search-icon{
-  height: 80%;
-  width: 12%;
-  display: flex;
-  align-self: flex-end;
-}
 
-.search-text-input{
-  display: flex;
-  align-self: flex-end;
-  width: 70%;
-  height: 50%;
-  background-color: white;
-  box-shadow: 2px 4px 6px #FFC857;
-  margin-left: 1px;
-}
 
-@media screen and (max-width:515px) {
-  
-  .search-icon{
-    height: 30px;
-    width: 30px;
-    padding-bottom: 24px;
-  }
-  
-  .search-text-input{
-    width: 50%;
-    height: 3vh;
-    background-color: white;
-    box-shadow: 2px 4px 6px #FFC857;
-  }
-}
 
-@media screen and (max-width:315px) {
-  .search-icon{
-    padding-bottom: 30px;
-  }
-}
 
-/* @keyframes spin {
+
+@keyframes spin {
   /* Set up your keyframe animation here */
-  /* from {
+ /* from {
       transform: rotate(0deg);
   }
   to {
       transform: rotate(360deg);
-  }
+  } */
   0% {
       transform: rotate(0deg);
   }
@@ -95,4 +51,4 @@
    100% {
       transform: rotate(360deg);
    }
-*/
+  }

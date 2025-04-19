@@ -40,24 +40,22 @@ h1 {
 
 label {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    /* background-color: white; */
+
 }
 
 
-form {
+/* form {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     margin: 10px;
     border-radius: 10px;
     color: white;
-}
+} */
 
 
 input {
-    /* width: 372px; */
-    /* margin-bottom: 8px;
-    margin:10px, 10px; */
+
     border-color:#FFC857;
     color: black;
 }

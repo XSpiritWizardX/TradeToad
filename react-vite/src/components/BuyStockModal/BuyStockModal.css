@@ -1,3 +1,17 @@
 .buy-modal-button{
     width: 96%;
 }
+
+
+.buy-form{
+
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin: 10px;
+        border-radius: 10px;
+        color: white;
+
+
+}

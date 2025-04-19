@@ -9,3 +9,17 @@
     display: flex;
     justify-content: space-between;
 }
+
+
+.sell-form{
+
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin: 10px;
+        border-radius: 10px;
+        color: white;
+
+
+}
