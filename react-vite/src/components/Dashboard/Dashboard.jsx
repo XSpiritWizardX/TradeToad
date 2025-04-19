@@ -4,7 +4,6 @@ import PortfolioCard from '../../components/Portfolio/Portfolio';
 import WatchlistCard from '../../components/Watchlist/Watchlist'
 import CurrentStocksCard from '../CurrentStocks/CurrentStocks';
 
-
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPortfolios } from "../../redux/portfolio";
@@ -12,13 +11,7 @@ import { fetchCryptos } from '../../redux/cryptos';
 import { fetchStocks } from '../../redux/stocks';
 import { thunkAuthenticate } from '../../redux/session';
 
-
 import './Dashboard.css'
-
-
-
-
-
 
 
 function Dashboard() {
@@ -29,224 +22,156 @@ function Dashboard() {
   // const stocks = useSelector(state => state.stock?.stock?.stocks || []);
 
   useEffect(() => {
-    if(thunkAuthenticate(user)) {
+    // first, dispatch the authentication check 
+    dispatch(thunkAuthenticate())
+      .then(() => {
 
       dispatch(fetchPortfolios());
       dispatch(fetchCryptos())
       dispatch(fetchStocks())
-    }
-  }, [dispatch, user]);
+    })
+      .catch(err => {
+          console.error("Authentication error:", err);
+          // handle authentication failure (e.g., redirect to login)
+      });
+  }, [dispatch]);
+  // }, [dispatch, user]);
 
   return (
     <div className="dashboard-container">
 
-
-
       <h1>
         Welcome, {user?.firstName} {user?.lastName} !
-        </h1>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      </h1>
 
       <div className="dashboard-content">
-        <PortfolioCard
-        className="portfolio-card"
-        />
+        <PortfolioCard className="portfolio-card"/>
 
+        <div className='current-stock-and-watchlist'>
+          <h1 className='side-bar-header-text'>Portfolio</h1>
 
+        <CurrentStocksCard className='current-stock-card'/>
 
-        <div
-        className='current-stock-and-watchlist'
-        >
-          <h1
-          className='side-bar-header-text'
-          >Portfolio</h1>
-        <CurrentStocksCard
-        className='current-stock-card'
-        />
-
-        <h1
-        className='side-bar-header-text'
-        >Watchlist</h1>
-        <WatchlistCard
-        className='watchlist-card'
-        />
+        <h1 className='side-bar-header-text'>Watchlist</h1>
+        <WatchlistCard className='watchlist-card'/>
+        
         </div>
-
-
-
-
       </div>
 
+        <div className='time-frame-container'>
 
-        <div
-        className='time-frame-container'
-        >
-
-        <button
-        className='time-frame'
-        >
+        <button className='time-frame'>
           Live
         </button>
-        <button
-        className='time-frame'
-        >
+        
+        <button className='time-frame'>
           1 Day
         </button>
-        <button
-        className='time-frame'
-        >
+        
+        <button className='time-frame'>
           1 Week
         </button>
-        <button
-        className='time-frame'
-        >
+        
+        <button className='time-frame'>
           1 Month
         </button>
-        <button
-        className='time-frame'
-        >
+
+        <button className='time-frame'>
           3 Months
         </button>
-        <button
-        className='time-frame'
-        >
+
+        <button className='time-frame'>
           1 Year
         </button>
-        <button
-        className='time-frame'
-        >
+
+        <button className='time-frame'>
           All Time
         </button>
 
-        <h1
-        className='dash-head-text'
-        >
+        <h1 className='dash-head-text'>
           Available Cash = ${portfolios?.portfolios?.[0]?.available_cash}
         </h1>
         </div>
 
-
-
-
-
-
-
-
-        <div
-        className='foot-text'
-        >
+        <div className='foot-text'>
             <p>Tune in for more</p>
         </div>
 
-        <div
-        className='landing-page-copy'
-        >
-            <div>
-        <h3>Article</h3>
-        <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        <br/>
-         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-         <br/>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          <br/>
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-            </div>
-
-
-            <div>
-        <h3>Article</h3>
-        <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        <br/>
-         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-         <br/>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          <br/>
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-            </div>
-            <div>
-        <h3>Article</h3>
-        <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        <br/>
-         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-         <br/>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          <br/>
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-            </div>
-            <div>
-        <h3>Article</h3>
-        <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        <br/>
-         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-         <br/>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          <br/>
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-            </div>
-            <div>
-        <h3>Article</h3>
-        <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        <br/>
-         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-         <br/>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          <br/>
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-            </div>
-            <div>
-        <h3>Article</h3>
-        <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        <br/>
-         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-         <br/>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          <br/>
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-            </div>
-            <div>
-        <h3>Article</h3>
-        <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        <br/>
-         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-         <br/>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          <br/>
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-            </div>
+        <div className='landing-page-copy'>
+          <div>
+          <h3>Article</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <br/>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              <br/>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              <br/>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+          <div>
+          <h3>Article</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <br/>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              <br/>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              <br/>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+          <div>
+          <h3>Article</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <br/>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              <br/>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              <br/>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+          <div>
+          <h3>Article</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <br/>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              <br/>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              <br/>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+          <div>
+          <h3>Article</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <br/>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              <br/>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              <br/>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+          <div>
+          <h3>Article</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <br/>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              <br/>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              <br/>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
 
         </div>
-
-
 
         <h1
       className='para-stock-choice'
@@ -258,11 +183,9 @@ function Dashboard() {
 
 {/* MAP THROUGH STOCKS */}
 
-        <div
-        className='stock-choices-dashboard'
-        >
+        <div className='stock-choices-dashboard'>
 
-<NavLink
+          <NavLink
             className="stock-choices-card"
             to='/stocks/AAPL'
           >

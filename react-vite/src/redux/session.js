@@ -1,3 +1,5 @@
+import { csrfFetch } from './csrf';
+
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 
@@ -11,16 +13,18 @@ const removeUser = () => ({
 });
 
 export const thunkAuthenticate = () => async (dispatch) => {
-  console.log('trying to get csrf')
-	const response = await fetch("/api/auth/");
-	if (response.ok) {
-		const data = await response.json();
-		if (data.errors) {
-			return;
-		}
-
-		dispatch(setUser(data));
-	}
+  console.log('trying to get csrf');
+  try {
+    const response = await csrfFetch("/api/auth/");
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(setUser(data));
+      return data;
+    }
+  } catch(error) {
+    console.error("Authentication error:", error);
+    return null;
+  }
 };
 
 export const thunkLogin = (credentials) => async dispatch => {

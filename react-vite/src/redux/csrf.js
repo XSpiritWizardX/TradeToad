@@ -3,17 +3,6 @@
 import Cookies from 'js-cookie';
 
 
-
-
-
-
-
-
-
-
-
-
-
 export async function csrfFetch(url, options = {}) {
   // set options.method to 'GET' if there is no method
   options.method = options.method || 'GET';
@@ -42,11 +31,9 @@ export async function csrfFetch(url, options = {}) {
 
 
 
-
-
-
-
 // call this to get the "XSRF-TOKEN" cookie, should only be used in development
+// ensure that restoreCSRF() is called when your application initializes. 
+// typically, this is done in the main entry file (like index.js or main.jsx) before rendering the React application
 export function restoreCSRF() {
 
     return csrfFetch('/api/csrf/restore');
