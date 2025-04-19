@@ -35,7 +35,7 @@ function SearchBar() {
             type="text"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            placeholder="stock = AAPL crypto = X:BTCUSD"
+            placeholder="stock = AAPL crypto = X:DOGEUSD"
             className="search-input"
           />
         </label>

@@ -1,5 +1,5 @@
 // import { useSelector } from 'react-redux';
-
+import { useSelector } from 'react-redux';
 import './StockShow.css'
 import { NavLink, useParams } from 'react-router-dom';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
@@ -8,6 +8,8 @@ import SellStockModal from '../SellStockModal/SellStockModal'
 import StockChart from '../StockChart/StockChart';
 
 function StockShow() {
+    const user = useSelector((store) => store.session.user);
+
 //   const sessionUser = useSelector(state => state.session.user);
   // Redirect if not logged in
 //   if (!sessionUser) return <Navigate to="/" />;
@@ -23,53 +25,80 @@ function StockShow() {
             <StockChart symbol={stockID || cryptoId} />
         </div>
 
+
+
             <div className='user-trade-menu'>
-                <h1>Trade</h1>
-
-                <div className='button-cont-stockshow'>
-
-                  <OpenModalButton
-                    className='buy-button'
-                    buttonText="Buy"
-                    // onItemClick={closeMenu}
-                    modalComponent={<BuyStockModal />}
-                  />
-
-                  <OpenModalButton
-                    className='sell-button'
-                    buttonText="Sell"
-                    // onItemClick={closeMenu}
-                    modalComponent={<SellStockModal />}
-                  />
-
-                  <button className='add-watch-button'>
-                    Add to watchlist
-                  </button>
-
-                </div>
 
 
-                <p>Technical data</p>
+                {user ? (
 
-                <div className='tech-data'>
-                  <p>PRICE</p>
-                  <p>VOLUME</p>
-                  <p>VOLATILITY</p>
-                  <p>MARKET-CAP</p>
+                  <>
 
-                </div>
+                  <h1>Trade</h1>
+
+                  <div className='button-cont-stockshow'>
+
+                    <OpenModalButton
+                      className='buy-button'
+                      buttonText="Buy"
+                      // onItemClick={closeMenu}
+                      modalComponent={<BuyStockModal />}
+                    />
+
+                    <OpenModalButton
+                      className='sell-button'
+                      buttonText="Sell"
+                      // onItemClick={closeMenu}
+                      modalComponent={<SellStockModal />}
+                    />
+
+                    <button className='add-watch-button'>
+                      Add to watchlist
+                    </button>
+
+                  </div>
+
+
+
+
+                  <p>Technical data</p>
+
+                  <div className='tech-data'>
+                    <p>PRICE</p>
+                    <p>VOLUME</p>
+                    <p>VOLATILITY</p>
+                    <p>MARKET-CAP</p>
+
+                  </div>
+                  </>
+                  )
+                  :
+                  (
+                    <>
+
+
+
+
+
+
+                    <p>Technical data</p>
+
+                    <div className='tech-data'>
+                      <p>PRICE</p>
+                      <p>VOLUME</p>
+                      <p>VOLATILITY</p>
+                      <p>MARKET-CAP</p>
+
+                    </div>
+                    </>
+                  )
+                }
+
+
             </div>
       </div>
 
-      {/* Reference image section - use this to see AAPL chart */}
-        {/* <h1 className='stock-show-head-text'>
-          APPL<br/>
-        Apple
-          <br/>
-          $208.60
-        </h1>
-            <img src="https://res.cloudinary.com/dl6ls3rgu/image/upload/v1743130771/apple-stock-example_pk547s.webp" alt="apple-example-image"
-            className='example-apple-img'/> */}
+
 
         <div className='time-frame-container'>
 

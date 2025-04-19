@@ -1,3 +1,6 @@
+# SCORECARD LINK
+https://docs.google.com/spreadsheets/d/1LEo8fvagS0C1CYbCv1TjlcTCVm0mepi0wzotv_KhjsM/edit?usp=sharing
+
 # Flask React Project
 
 This is the starter for the Flask React project.
