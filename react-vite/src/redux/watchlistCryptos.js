@@ -3,9 +3,9 @@
 import { csrfFetch } from "./csrf";
 
 
-const SET_WATCHLIST_CRYPTO = 'session/watchlist_stocks';
-const SET_ONE_WATCHLIST_CRYPTO = '/api/watchlist_stocks/:watchlistStockId';
-const REMOVE_WATCHLIST_CRYPTO = 'session/watchlist_stocks';
+const SET_WATCHLIST_CRYPTO = 'session/watchlist_cryptos';
+const SET_ONE_WATCHLIST_CRYPTO = '/api/watchlist_cryptos/:watchlistCryptoId';
+const REMOVE_WATCHLIST_CRYPTO = 'session/watchlist_cryptos';
 
 
 

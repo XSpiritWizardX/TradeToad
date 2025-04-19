@@ -4,15 +4,15 @@ from sqlalchemy.sql import text
 
 def seed_cryptos():
     btc = Crypto(
-        symbol='BTC', company='Bitcoin', market_cap=1_584_000_000_000)
+        symbol='X:BTCUSD', company='BTC Bitcoin', market_cap=1_584_000_000_000)
     eth = Crypto(
-        symbol='ETH', company='Ethereum', market_cap=184_000_000_000)
+        symbol='X:ETHUSD', company='ETH Ethereum', market_cap=184_000_000_000)
     doge = Crypto(
-        symbol='DOGE', company='Dogecoin', market_cap=22_000_000_000)
+        symbol='X:DOGEUSD', company='DOGE Dogecoin', market_cap=22_000_000_000)
     solana = Crypto(
-        symbol='SOL', company='Solana', market_cap=57_000_000_000)
+        symbol='X:SOLUSD', company='SOL Solana', market_cap=57_000_000_000)
     xrp = Crypto(
-        symbol='XRP', company='XRP', market_cap=115_000_000_000)
+        symbol='X:XRPUSD', company='XRP XRP', market_cap=115_000_000_000)
 
 
 

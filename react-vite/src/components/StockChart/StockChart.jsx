@@ -15,7 +15,7 @@ function StockChart() {
       try {
         setLoading(true);
         console.log(`Fetching stock data for ${symbol}...`);
-        
+
         const response = await fetch(`/api/stocks/${symbol}`);
         if (!response.ok) {
           const errorText = await response.text();
@@ -44,21 +44,25 @@ function StockChart() {
   const chartData = stockData.closing.map((close, index) => ({
     date: new Date(stockData.aggs[index].timestamp).toLocaleDateString(),
     close,
+    open: stockData.open[index],
     high: stockData.highs[index],
     low: stockData.lows[index]
   }));
 
   return (
     <div className="stock-chart-container">
-      <h2>{stockData.symbol} Stock Price</h2>
+      <h2>{stockData.symbol} Price</h2>
       <div className="chart-wrapper">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="100%"
+        className="response-contain"
+        >
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis domain={['auto', 'auto']} />
             <Tooltip />
             <Legend />
+            <Line type="monotone" dataKey="open" stroke="#04D9FF" dot={false} />
             <Line type="monotone" dataKey="close" stroke="#8884d8" dot={false} />
             <Line type="monotone" dataKey="high" stroke="#82ca9d" dot={false} />
             <Line type="monotone" dataKey="low" stroke="#ff7300" dot={false} />

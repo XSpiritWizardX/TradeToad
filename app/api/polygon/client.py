@@ -13,7 +13,7 @@ cache_expiry = {}
 CACHE_DURATION = 3600  # cache for 1 hour
 
 
-def apiCall(symbol="AAPL"):
+def apiCall(symbol):
     # clear cache if needed for testing fresh API calls:
     # cache.clear()
     # cache_expiry.clear()
@@ -35,6 +35,7 @@ def apiCall(symbol="AAPL"):
 
     # create local variables
     aggs = []       # aggregate data
+    open = []
     closing = []
     highs = []
     lows = []
@@ -51,6 +52,7 @@ def apiCall(symbol="AAPL"):
             limit=5000,
         ):
             aggs.append(a)
+            open.append(a.open)
             closing.append(a.close)
             highs.append(a.high)
             lows.append(a.low)
@@ -58,6 +60,7 @@ def apiCall(symbol="AAPL"):
         result = {
             "symbol": symbol,
             "data_points": len(aggs),
+            "open": open,
             "closing": closing,
             "highs": highs,
             "lows": lows,
@@ -90,31 +93,7 @@ if __name__ == "__main__":
     print(f'Symbol: {result["symbol"]}\n')
     print(f'number of results: {result["data_points"]}')
     print(f'(showing first 50)\n')
+    print(f'open: {result["open"][:50]}\n')
     print(f'closing: {result["closing"][:50]}\n')
     print(f'highs: {result["highs"][:50]}\n')
     print(f'lows: {result["lows"][:50]}\n')
-
-
-
-
-
-# use code snippets later?
-
-# def prices(result):
-#     closing = []
-#     for a in result:
-#         closing.append(a.close)
-#     return closing
-
-# closingPrices = prices(result)
-# print(f'closingPrices: {closingPrices}\n')
-
-
-# def prices(result):
-#     highs = []
-#     for a in result:
-#         highs.append(a.high)
-#     return highs
-
-# highPrices = prices(result)
-# print(f'highPrices: {highPrices}')
