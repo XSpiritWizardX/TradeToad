@@ -15,7 +15,7 @@ import { useState } from "react";
 function Navigation() {
 // const [errors , setErrors] = useState("")
 const [symbol, setSymbol] = useState("")
-
+  // const user = useSelector(state => state.session.user)
 
   const handleSubmit = async () => {
     // e.preventDefault();

@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPortfolios } from "../../redux/portfolio";
 import { fetchCryptos } from '../../redux/cryptos';
 import { fetchStocks } from '../../redux/stocks';
-
+import { thunkAuthenticate } from '../../redux/session';
 
 
 import './Dashboard.css'
@@ -29,7 +29,7 @@ function Dashboard() {
   // const stocks = useSelector(state => state.stock?.stock?.stocks || []);
 
   useEffect(() => {
-    if(user) {
+    if(thunkAuthenticate(user)) {
 
       dispatch(fetchPortfolios());
       dispatch(fetchCryptos())
