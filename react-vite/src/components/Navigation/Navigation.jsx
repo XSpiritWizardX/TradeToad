@@ -3,8 +3,39 @@ import ProfileButton from "./ProfileButton";
 import SearchBar from "../SearchBar/SearchBar";
 // import { FcSearch } from "react-icons/fc";
 import "./Navigation.css";
+// import {apiCall} from "../../../../app/api/polygon/client.py"
+// import * as stockActions from '../../redux/stocks';
+// import { useSelector, useDispatch } from "react-redux";
+// import { useState } from "react";
+import { Navigate } from "react-router-dom";
+import { useState } from "react";
+
+
+
 
 function Navigation() {
+// const [errors , setErrors] = useState("")
+const [symbol, setSymbol] = useState("")
+  // const user = useSelector(state => state.session.user)
+
+  const handleSubmit = async () => {
+    // e.preventDefault();
+
+
+
+
+
+
+
+        Navigate(`/api/stocks/${symbol}`)
+
+
+
+
+
+  };
+
+
   return (
     <div className="header">
 
@@ -18,6 +49,12 @@ function Navigation() {
           alt="banner-trade-toad"
           className="trade-toad-banner"
         />
+          <p
+          className="instructions-for-search"
+          >
+          search for a stock or crypto like
+          NFLX or X:BTCUSD
+          </p>
 
         <SearchBar className="search-bar" />
 

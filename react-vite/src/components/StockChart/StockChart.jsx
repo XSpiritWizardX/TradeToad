@@ -53,7 +53,9 @@ function StockChart() {
     <div className="stock-chart-container">
       <h2>{stockData.symbol} Price</h2>
       <div className="chart-wrapper">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="100%"
+        className="response-contain"
+        >
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />

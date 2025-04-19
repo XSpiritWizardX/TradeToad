@@ -3,17 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPortfolios } from "../../redux/portfolio";
 // import { fetchPortfolioStocks } from "../../redux/portfolioStocks";
 import './Portfolio.css'
+import { thunkAuthenticate } from '../../redux/session';
 
 function PortfolioCard() {
   const dispatch = useDispatch();
   const portfolios = useSelector(state => state.portfolio.portfolio || [])
   // const portfolioStocks = useSelector(state => state.portfolioStocks.portfolioStocks || [])
-
+  const user = useSelector(state => state.session.user)
 
   useEffect(() => {
-    dispatch(fetchPortfolios());
+
+    if(thunkAuthenticate(user)) {
+
+      dispatch(fetchPortfolios());
+    }
     // dispatch(fetchPortfolioStocks())
-  }, [dispatch]);
+  }, [dispatch, user]);
   // const sessionUser = useSelector(state => state.session.user);
 
   // Redirect if not logged in

@@ -25,7 +25,7 @@
   justify-self: center;
   align-self: center;
   margin-top: 10px;
-  margin-right: 26%;
+  margin-right: 10%;
 }
 
 
@@ -51,4 +51,6 @@
    100% {
       transform: rotate(360deg);
    }
+*/
+
   }

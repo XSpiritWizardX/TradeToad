@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
@@ -12,18 +12,19 @@ auth_routes = Blueprint('auth', __name__, "")
 
 @auth_routes.route('/')
 def authenticate():
-    print('trying something here')
-    print(f"Current user: {current_user}, Authenticated: {current_user.is_authenticated}")
-    print("CSRF Token from request:", request.cookies.get('csrf_token'))
-
-
     """
     Authenticates a user.
     """
+    print(f"Session data: {session}")
+    print(f"Current user: {current_user}")
+    print(f"Is authenticated: {current_user.is_authenticated}")
+    print("Request cookies:", request.cookies)
+    print("CSRF Token from request:", request.cookies.get('csrf_token'))
+
     if current_user.is_authenticated:
         print("user is authenticated")
         return current_user.to_dict()
-    return {'errors': {'message': 'Unauthorized'}}, 401
+    return {'errors': {'authentication': 'Unauthorized'}}, 401
 
 
 @auth_routes.route('/login', methods=['POST'])
@@ -38,7 +39,7 @@ def login():
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
-        login_user(user)
+        login_user(user, remember=True)   # remember=True to persist the session
         print("trying to login")
         db.session.commit()  # Ensure session persists
         return user.to_dict()
@@ -71,7 +72,7 @@ def sign_up():
         )
         db.session.add(user)
         db.session.commit()
-        login_user(user)
+        login_user(user, remember=True)  # remember=True to persist session
         return user.to_dict()
     return form.errors, 401
 
