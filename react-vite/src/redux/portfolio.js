@@ -30,6 +30,10 @@ const setOnePortfolio = (portfolio) => ({
     portfolio,
   });
 
+
+
+
+
 const removePortfolioId = () => ({
   type: REMOVE_PORTFOLIO
 });
@@ -88,7 +92,7 @@ export const createPortfolio = (portfolio) => async (dispatch) => {
     })
   })
   const data = await response.json();
-  dispatch(createPortfolio(data));
+  dispatch(setOnePortfolio(data));
 }
 
 

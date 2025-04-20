@@ -1,33 +1,33 @@
 // import { useSelector } from 'react-redux';
 import { useSelector } from 'react-redux';
 import './StockShow.css'
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import BuyStockModal from '../BuyStockModal/BuyStockModal';
 import SellStockModal from '../SellStockModal/SellStockModal'
 import StockChart from '../StockChart/StockChart';
-import { useDispatch } from 'react-redux';
-import * as stockDataActions from '../../redux/stockPrices'
-import { useEffect } from 'react';
+// import { useDispatch } from 'react-redux';
+// import * as stockDataActions from '../../redux/stockPrices'
+// import { useEffect } from 'react';
 function StockShow() {
 
 
 
   // const { stockID } = useParams();
   // const {cryptoId} = useParams();
-  const {symbol} = useParams()
-  const dispatch = useDispatch();
+  // const {symbol} = useParams()
+  // const dispatch = useDispatch();
   // const navigate = useNavigate();
   const user = useSelector(state => state.session.user)
   // const portfolios = useSelector(state => state.portfolio.portfolio || [])
   // const cryptos = useSelector(state => state.crypto?.crypto?.cryptos || []);
   // const stocks = useSelector(state => state.stock?.stock?.stocks || []);
 
-  useEffect(() => {
-    // first, check if user is authenticated
-    dispatch(stockDataActions.fetchOneStockData(symbol))
+  // useEffect(() => {
+  //   // first, check if user is authenticated
+  //   dispatch(stockDataActions.fetchOneStockData(symbol))
 
-  }, [dispatch]);
+  // }, [dispatch]);
   // }, [dispatch, user]);
 
 
@@ -40,7 +40,7 @@ function StockShow() {
       <div className='top-section'>
 
         <div className='chart-container'>
-            <StockChart symbol={symbol} />
+            <StockChart  />
         </div>
 
 
