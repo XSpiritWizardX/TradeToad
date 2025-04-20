@@ -132,7 +132,7 @@ function portfolioReducer(state = initialState, action) {
         }
       }
       return newState;
-    };
+    }
 
     // case REMOVE_PORTFOLIO:{
     //     const newState = { ...state };
