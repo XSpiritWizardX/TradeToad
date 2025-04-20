@@ -99,7 +99,7 @@ function portfolioReducer(state = initialState, action) {
     case SET_PORTFOLIO:
         return { ...state, portfolio: action.payload };
     case SET_ONE_PORTFOLIO:
-        return { portfolio: action.portfolio};
+        return { portfolio: action.payload };
     case REMOVE_PORTFOLIO:{
         const newState = { ...state };
         delete newState.portfolios[action.portfolioId];
