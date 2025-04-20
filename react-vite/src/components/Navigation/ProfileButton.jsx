@@ -1,16 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaUserCircle } from 'react-icons/fa';
-// import { CiMenuBurger } from "react-icons/ci";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { thunkLogout } from "../../redux/session";
-
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
-// import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignupFormModal/SignupFormModal";
-
+import PortfolioDeleteModal from "../PortfolioDeleteModal/PortfolioDeleteModal";
 import './ProfileButton.css'
 
 
@@ -20,7 +17,6 @@ function ProfileButton() {
   const navigate = useNavigate();
   const user = useSelector((store) => store.session.user);
   const ulRef = useRef();
-
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
     setShowMenu(!showMenu);
@@ -51,6 +47,9 @@ function ProfileButton() {
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
+
+
+
   return (
     <div
     className="pro-divvy"
@@ -59,10 +58,6 @@ function ProfileButton() {
       className="menu-button"
       onClick={toggleMenu}
       >
-        {/* <div className='menu-icon'>
-        <CiMenuBurger />
-        </div> */}
-
         <FaUserCircle
         className="user-circle"
         />
@@ -77,11 +72,7 @@ function ProfileButton() {
              className='auth-container-user'
              >
 
-              {/* <p
-              className="account-info"
-              >
-                  Welcome,
-              </p> */}
+
               <p
               className="account-info"
               >
@@ -114,16 +105,7 @@ function ProfileButton() {
              <ln
             className='profile-line'
             ></ln>
-              {/* <NavLink
-              to='/coming-soon'
-              className="nav-link-dropdown"
-              >
-              Add Credit Card
-              </NavLink>
 
-              <ln
-            className='profile-line'
-            ></ln> */}
               <br/>
 
               <NavLink
@@ -138,14 +120,7 @@ function ProfileButton() {
               <ln
             className='profile-line'
             ></ln>
-              {/* <NavLink
-              to='/coming-soon'
-              className="nav-link-dropdown"
-              >
-              Withdraw
-              </NavLink> */}
 
-              {/* <br/> */}
 
               <NavLink
               to='/learning-center'
@@ -153,35 +128,43 @@ function ProfileButton() {
               >
               Learning Center
               </NavLink>
-              {/* <button>Add Credit Card</button> */}
+
 
               <br/>
               <ln
             className='profile-line'
             ></ln>
-                <div
-        className='buttonsz'
-        >
+
+
+
+
+        {/* <button
+        className='create-me'
+        onClick={handleNewPortfolioSubmit()}
+        >Create A New Portfolio</button> */}
 
         <button
-        className='fund-me'
-        >Fund Your Portfolio</button>
+        className='fund100-me'
+        >Add $100 </button>
 
-        <button
-        className='withdraw'
-        >Withdraw</button>
+              <OpenModalButton
+                buttonText="Delete Portfolio"
+                // onItemClick={closeMenu}
+                modalComponent={<PortfolioDeleteModal />}
+                className="login"
+              />
 
-        </div>
-                <button onClick={logout}
 
-                >Log Out</button>
 
-                {/* <OpenModalButton
-                buttonText="Log Out"
-                onButtonClick={logout}
-                modalComponent={<LoginFormModal />}
-                className="logout"
-                /> */}
+
+
+      <button
+      onClick={logout}
+       >
+        Log Out
+       </button>
+
+
 
 
             </div>
