@@ -8,6 +8,8 @@ import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import PortfolioDeleteModal from "../PortfolioDeleteModal/PortfolioDeleteModal";
+import PortfolioCreateModal from "../PortfolioCreateModal/PortfolioCreateModal";
+import PortfolioUpdateModal from "../PortfolioUpdateModal/PortfolioUpdateModal";
 import './ProfileButton.css'
 
 
@@ -142,10 +144,20 @@ function ProfileButton() {
         className='create-me'
         onClick={handleNewPortfolioSubmit()}
         >Create A New Portfolio</button> */}
+              <OpenModalButton
+                buttonText="Create Portfolio"
+                // onItemClick={closeMenu}
+                modalComponent={<PortfolioCreateModal />}
+                className="login"
+              />
 
-        <button
-        className='fund100-me'
-        >Add $100 </button>
+             <OpenModalButton
+                buttonText="Update Portfolio"
+                // onItemClick={closeMenu}
+                modalComponent={<PortfolioUpdateModal />}
+                className="login"
+              />
+
 
               <OpenModalButton
                 buttonText="Delete Portfolio"

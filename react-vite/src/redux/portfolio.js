@@ -76,7 +76,20 @@ export const fetchOnePortfolio = (portfolioId) => async (dispatch) => {
     }
   };
 
-
+export const createPortfolio = (portfolio) => async (dispatch) => {
+  const {user_id, total_cash, available_cash} = portfolio
+  const response = await csrfFetch("/api/portfolios", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      user_id,
+      total_cash,
+      available_cash
+    })
+  })
+  const data = await response.json();
+  dispatch(createPortfolio(data));
+}
 
 
 
