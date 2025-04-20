@@ -16,6 +16,9 @@ import watchlistCryptoReducer from "./watchlistCryptos";
 import portfolioCryptoReducer from "./portfolioCryptos";
 import cryptoTransactionReducer from "./cryptoTransactions";
 import stockTransactionReducer from "./stockTransactions";
+import stockDataReducer from "./stockPrices";
+
+
 
 const rootReducer = combineReducers({
   session: sessionReducer,
@@ -28,7 +31,8 @@ const rootReducer = combineReducers({
   watchlistCrypto: watchlistCryptoReducer,
   portfolioCrypto: portfolioCryptoReducer,
   cryptoTransaction: cryptoTransactionReducer,
-  stockTransaction: stockTransactionReducer
+  stockTransaction: stockTransactionReducer,
+  stockData: stockDataReducer
 });
 
 let enhancer;

@@ -6,15 +6,33 @@ import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import BuyStockModal from '../BuyStockModal/BuyStockModal';
 import SellStockModal from '../SellStockModal/SellStockModal'
 import StockChart from '../StockChart/StockChart';
-
+import { useDispatch } from 'react-redux';
+import * as stockDataActions from '../../redux/stockPrices'
+import { useEffect } from 'react';
 function StockShow() {
-    const user = useSelector((store) => store.session.user);
 
-//   const sessionUser = useSelector(state => state.session.user);
-  // Redirect if not logged in
-//   if (!sessionUser) return <Navigate to="/" />;
-  const { stockID } = useParams();
-  const {cryptoId} = useParams();
+
+
+  // const { stockID } = useParams();
+  // const {cryptoId} = useParams();
+  const {symbol} = useParams()
+  const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  const user = useSelector(state => state.session.user)
+  // const portfolios = useSelector(state => state.portfolio.portfolio || [])
+  // const cryptos = useSelector(state => state.crypto?.crypto?.cryptos || []);
+  // const stocks = useSelector(state => state.stock?.stock?.stocks || []);
+
+  useEffect(() => {
+    // first, check if user is authenticated
+    dispatch(stockDataActions.fetchOneStockData(symbol))
+
+  }, [dispatch]);
+  // }, [dispatch, user]);
+
+
+
+
 
   return (
     <div className="dashboard-container">
@@ -22,7 +40,7 @@ function StockShow() {
       <div className='top-section'>
 
         <div className='chart-container'>
-            <StockChart symbol={stockID || cryptoId} />
+            <StockChart symbol={symbol} />
         </div>
 
 

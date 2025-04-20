@@ -4,7 +4,7 @@
 
 
 // const SET_PORTFOLIO_STOCK = 'session/portfolio_stocks';
-// const SET_ONE_PORTFOLIO_STOCK = '/api/portfolio_stocks/:portfolioStockId';
+const SET_ONE_STOCK_DATA = '/api/stocks/:symbol';
 // const REMOVE_PORTFOLIO_STOCK = 'session/portfolio_stocks';
 
 
@@ -25,10 +25,10 @@
 // });
 
 
-// const setOnePortfolioStock = (portfolio) => ({
-//     type: SET_ONE_PORTFOLIO_STOCK,
-//     portfolio,
-//   });
+const setOneStockData = (stock) => ({
+    type: SET_ONE_STOCK_DATA,
+    payload:stock,
+  });
 
 // const removePortfolioStockId = () => ({
 //   type: REMOVE_PORTFOLIO_STOCK
@@ -65,16 +65,16 @@
 
 
 
-// export const fetchOnePortfolioStock = (portfolioStockId) => async (dispatch) => {
-//     const response = await fetch(`/api/portfolio_stocks/${portfolioStockId}`);
-//     console.log(response)
-//     if (response.ok) {
+export const fetchOneStockData = (symbol) => async (dispatch) => {
+    const response = await fetch(`/api/stocks/${symbol}`);
+    console.log(response)
+    if (response.ok) {
 
-//       const portfolio_stock = await response.json();
-//       dispatch(setOnePortfolioStock(portfolio_stock));
+      const stockData = await response.json();
+      dispatch(setOneStockData(stockData));
 
-//     }
-//   };
+    }
+  };
 
 
 
@@ -121,29 +121,25 @@
 
 
 
-// const initialState = { portfolio_stock: null };
+const initialState = { stock_data: null };
 
 
 
-// function portfolioStockReducer(state = initialState, action) {
-//   switch (action.type) {
+function stockDataReducer(state = initialState, action) {
+  switch (action.type) {
 
 
 
-//     case SET_PORTFOLIO_STOCK:
-//         return { ...state, portfolio_stock: action.payload };
-//     case SET_ONE_PORTFOLIO_STOCK:
-//         return { portfolio_stock: action.portfolio_stock};
-//     case REMOVE_PORTFOLIO_STOCK:{
-//         const newState = { ...state };
-//         delete newState.portfolio_stock[action.portfolioStockId];
-//         return newState;
-//       }
-//     default:
-//         return state;
-//   }
-// }
+
+    case SET_ONE_STOCK_DATA:
+        return { stock_data: action.stock_data};
+
+
+    default:
+        return state;
+  }
+}
 
 
 
-// export default portfolioStockReducer;
+export default stockDataReducer;
