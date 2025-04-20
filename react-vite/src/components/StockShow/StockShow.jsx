@@ -8,30 +8,47 @@ import SellStockModal from '../SellStockModal/SellStockModal'
 import StockChart from '../StockChart/StockChart';
 import { useDispatch } from 'react-redux';
 import * as stockDataActions from '../../redux/stockPrices'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+
 function StockShow() {
-
-
 
   // const { stockID } = useParams();
   // const {cryptoId} = useParams();
-  const {symbol} = useParams()
+  const { symbol } = useParams()
   const dispatch = useDispatch();
   // const navigate = useNavigate();
   const user = useSelector(state => state.session.user)
-  // const portfolios = useSelector(state => state.portfolio.portfolio || [])
-  // const cryptos = useSelector(state => state.crypto?.crypto?.cryptos || []);
   // const stocks = useSelector(state => state.stock?.stock?.stocks || []);
+  const stockData = useSelector(state => state.stockPrices?.currentStock);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // first, check if user is authenticated
+    setIsLoading(true);
+
     dispatch(stockDataActions.fetchOneStockData(symbol))
+      .then(() => setIsLoading(false))
+      .catch(() => setIsLoading(false));
+  }, [dispatch, symbol]);
 
-  }, [dispatch]);
-  // }, [dispatch, user]);
+  // format price to 2 decimal places
+  const formatPrice = (price) => {
+    return price ? `$${parseFloat(price).toFixed(2)}` : 'N/A';
+  };
 
-
-
+  // format large numbers (like volume and market cap)
+  const formatLargeNumber = (num) => {
+    if (!num) return 'N/A';
+    
+    if (num >= 1000000000) {
+      return `$${(num / 1000000000).toFixed(2)}B`;
+    } else if (num >= 1000000) {
+      return `$${(num / 1000000).toFixed(2)}M`;
+    } else if (num >= 1000) {
+      return `$${(num / 1000).toFixed(2)}K`;
+    }
+    return `$${num}`;
+  };
 
 
   return (
@@ -42,8 +59,6 @@ function StockShow() {
         <div className='chart-container'>
             <StockChart symbol={symbol} />
         </div>
-
-
 
             <div className='user-trade-menu'>
 
@@ -77,37 +92,34 @@ function StockShow() {
                   </div>
 
 
-
-
                   <p>Technical data</p>
 
                   <div className='tech-data'>
                     <p>PRICE</p>
+                    <p>{isLoading ? 'Loading...' : formatPrice(stockData?.closing?.[stockData?.closing?.length - 1])}</p>
                     <p>VOLUME</p>
-                    <p>VOLATILITY</p>
+                    <p>{isLoading ? 'Loading...' : formatLargeNumber(stockData?.volume)}</p>
                     <p>MARKET-CAP</p>
-
+                    <p>{isLoading ? 'Loading...' : formatLargeNumber(stockData?.market_cap)}</p>
                   </div>
+
                   </>
                   )
                   :
                   (
                     <>
 
-
-
-
-
-
                     <p>Technical data</p>
 
                     <div className='tech-data'>
-                      <p>PRICE</p>
-                      <p>VOLUME</p>
-                      <p>VOLATILITY</p>
-                      <p>MARKET-CAP</p>
-
+                    <p>PRICE</p>
+                    <p>{isLoading ? 'Loading...' : formatPrice(stockData?.closing?.[stockData?.closing?.length - 1])}</p>
+                    <p>VOLUME</p>
+                    <p>{isLoading ? 'Loading...' : formatLargeNumber(stockData?.volume)}</p>
+                    <p>MARKET-CAP</p>
+                    <p>{isLoading ? 'Loading...' : formatLargeNumber(stockData?.market_cap)}</p>
                     </div>
+
                     </>
                   )
                 }
