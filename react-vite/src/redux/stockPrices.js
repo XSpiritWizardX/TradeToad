@@ -10,17 +10,25 @@ const setOneStockData = (stock) => ({
 
 
 export const fetchOneStockData = (symbol) => async (dispatch) => {
+  console.log("Fetching data for symbol:", symbol);
   try {
-    const response = await fetch(`/api/stocks/${symbol}`);
-    console.log("Response", response);
+    const url = `/api/stocks/${symbol}`;
+    console.log("API URL:", url);
+    const response = await fetch(url);
+    console.log("Response status:", response.status);
     
     if (response.ok) {
       const stockData = await response.json();
       dispatch(setOneStockData(stockData));
       return stockData;
+    } else {
+      console.error("API error:", response.status, response.statusText);
+      // might want to dispatch an error action here
+    
     }
   } catch (error) {
     console.error("Error fetching stock data:", error);
+    // might want to dispatch an error action here
   }
 };
 
@@ -32,7 +40,7 @@ const initialState = {
 };
 
 // Reducer
-export function stockDataReducer(state = initialState, action) {
+function stockDataReducer (state = initialState, action) {
   switch (action.type) {
     case SET_ONE_STOCK_DATA:
       return {
@@ -46,6 +54,8 @@ export function stockDataReducer(state = initialState, action) {
   }
 }
 
+
+export default stockDataReducer;
 
 
 // // const SET_PORTFOLIO_STOCK = 'session/portfolio_stocks';
@@ -140,4 +150,4 @@ export function stockDataReducer(state = initialState, action) {
 
 
 
-export default stockDataReducer;
+// export default stockDataReducer;

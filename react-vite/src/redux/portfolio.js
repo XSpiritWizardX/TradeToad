@@ -1,22 +1,8 @@
-
-
 import { csrfFetch } from "./csrf";
-
 
 const SET_PORTFOLIO = 'session/portfolios';
 const SET_ONE_PORTFOLIO = '/api/portfolios/:portfolioId';
 const REMOVE_PORTFOLIO = 'session/portfolios';
-
-
-
-
-
-
-
-
-
-
-
 
 
 const setPortfolio = (user) => ({
@@ -27,70 +13,62 @@ const setPortfolio = (user) => ({
 
 const setOnePortfolio = (portfolio) => ({
     type: SET_ONE_PORTFOLIO,
-    portfolio,
+    payload: portfolio,
   });
+
 
 const removePortfolioId = () => ({
   type: REMOVE_PORTFOLIO
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export const fetchPortfolios = () => async (dispatch) => {
-	const response = await fetch("/api/portfolios/");
+	const response = await csrfFetch('/api/portfolios/', {
+    credentials: 'include'
+  });
 	if (response.ok) {
 		const data = await response.json();
 		if (data.errors) {
 			return;
 		}
-
 		dispatch(setPortfolio(data));
 	}
 };
 
 
-
-
-
 export const fetchOnePortfolio = (portfolioId) => async (dispatch) => {
-    const response = await fetch(`/api/portfolios/${portfolioId}`);
+    const response = await csrfFetch(`/api/portfolios/${portfolioId}`, {
+      credentials: 'include'
+    });
     console.log(response)
     if (response.ok) {
-
       const portfolio = await response.json();
       dispatch(setOnePortfolio(portfolio));
-
     }
   };
 
-export const createPortfolio = (portfolio) => async (dispatch) => {
-  const {user_id, total_cash, available_cash} = portfolio
-  const response = await csrfFetch("/api/portfolios", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      user_id,
-      total_cash,
-      available_cash
-    })
-  })
-  const data = await response.json();
-  dispatch(createPortfolio(data));
-}
 
+export const createPortfolio = (portfolioData) => async (dispatch) => {
+  // const {user_id, total_cash, available_cash} = portfolioData
+  
+  try {
+    const response = await csrfFetch('/api/portfolios/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(portfolioData),
+      credentials: 'include'   // send auth. cookies in request
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(setPortfolio(data));
+      return data;
+    }
+  } catch (error) {
+    console.error('Error creating portfolio:', error);
+    throw error;
+  }
+}
 
 
 export const deletePortfolio = (portfolioId) => async (dispatch) => {
@@ -112,36 +90,11 @@ export const deletePortfolio = (portfolioId) => async (dispatch) => {
   };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const initialState = { portfolio: null };
-
 
 
 function portfolioReducer(state = initialState, action) {
   switch (action.type) {
-
-
 
     case SET_PORTFOLIO:
         return { ...state, portfolio: action.payload };

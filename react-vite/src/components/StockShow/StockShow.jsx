@@ -23,6 +23,8 @@ function StockShow() {
   const stockData = useSelector(state => state.stockPrices?.currentStock);
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log("Symbol from URL params:", symbol);
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -124,11 +126,8 @@ function StockShow() {
                   )
                 }
 
-
             </div>
       </div>
-
-
 
         <div className='time-frame-container'>
 
