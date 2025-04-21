@@ -1,7 +1,7 @@
 // import { useSelector } from 'react-redux';
 import { useSelector } from 'react-redux';
 import './StockShow.css'
-import { NavLink } from 'react-router-dom';
+import { NavLink , useParams} from 'react-router-dom';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import BuyStockModal from '../BuyStockModal/BuyStockModal';
 import SellStockModal from '../SellStockModal/SellStockModal'
