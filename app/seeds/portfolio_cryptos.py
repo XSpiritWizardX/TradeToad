@@ -27,11 +27,6 @@ def seed_portfolio_cryptos():
         portfolio_id=7, crypto_id=1, quantity=1800.25)
 
 
-
-
-
-
-
     db.session.add(c1)
     db.session.add(c2)
     db.session.add(c3)
@@ -45,9 +40,6 @@ def seed_portfolio_cryptos():
     db.session.add(c11)
 
 
-
-
-
     db.session.commit()
 
 
@@ -59,7 +51,7 @@ def seed_portfolio_cryptos():
 # it will reset the primary keys for you as well.
 def undo_portfolio_cryptos():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.cryptos RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.portfolio_cryptos RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM portfolio_cryptos"))
 

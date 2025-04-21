@@ -27,11 +27,6 @@ def seed_portfolio_stocks():
         portfolio_id=7, stock_id=1, quantity=1800.25)
 
 
-
-
-
-
-
     db.session.add(p1)
     db.session.add(p2)
     db.session.add(p3)
@@ -45,9 +40,6 @@ def seed_portfolio_stocks():
     db.session.add(p11)
 
 
-
-
-
     db.session.commit()
 
 
@@ -59,7 +51,7 @@ def seed_portfolio_stocks():
 # it will reset the primary keys for you as well.
 def undo_portfolio_stocks():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.stocks RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.portfolio_stocks RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM portfolio_stocks"))
 

@@ -1,21 +1,14 @@
-
-
-
 // import * as portfolioActions from '../../redux/portfolio';
 // import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import './PortfolioUpdateModal.css';
 // import { useSelector } from 'react-redux';
-//
+
 
 function PortfolioUpdateModal() {
 //   const dispatch = useDispatch();
   const { closeModal } = useModal();
     // const portfolios = useSelector((state) => state.portfolio.portfolio)
-
-
-
-
 
 
   return (
@@ -32,16 +25,12 @@ function PortfolioUpdateModal() {
     //   onSubmit={handleSubmit}
       >
 
-
-
-
         <button type="submit"
         //   onClick={handleSubmit}
-          className='delete-spotty-button'
+          className='update-port-button'
         >
           Yes (Update Portfolio // add $100)
           </button>
-
 
           <button type="submit"
           onClick={closeModal}
@@ -50,16 +39,10 @@ function PortfolioUpdateModal() {
           No (Keep Portfolio the Same)
           </button>
 
-
       </form>
     </div>
-
-
   );
 }
-
-
-
 
 
 

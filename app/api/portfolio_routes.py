@@ -4,6 +4,7 @@ from app.models import Portfolio, db
 
 portfolio_routes = Blueprint('portfolios', __name__)
 
+
 @portfolio_routes.route('/')
 @login_required
 def get_portfolios():
@@ -13,12 +14,30 @@ def get_portfolios():
     portfolios = Portfolio.query.filter_by(user_id=current_user.id).all()
     return jsonify({'portfolios': [portfolio.to_dict() for portfolio in portfolios]})
 
+
+@portfolio_routes.route('/<int:id>')
+@login_required
+def get_portfolio(id):
+    """
+    Get a portfolio by ID for the logged-in user.
+    """
+    portfolio = Portfolio.query.filter_by(id=id, user_id=current_user.id).first()
+    
+    if not portfolio:
+        return jsonify({'error': 'Portfolio not found'}), 404
+        
+    return jsonify(portfolio.to_dict())
+
+
 @portfolio_routes.route('/', methods=['POST'])
 @login_required
 def create_portfolio():
     """
     Create a new portfolio for the logged-in user.
     """
+    print(f'Creating portfolio for user: {current_user.id}')
+    print(f'Request data: {request.get_json()}')
+    
     data = request.get_json()
     user_id = data.get("user_id")
     total_cash = data.get("total_cash", 0.00)
@@ -33,6 +52,7 @@ def create_portfolio():
 
     return jsonify(new_portfolio.to_dict()), 201
 
+
 @portfolio_routes.route('/<int:id>', methods=['PUT'])
 @login_required
 def update_portfolio(id):
@@ -45,15 +65,23 @@ def update_portfolio(id):
         return jsonify({'error': 'Portfolio not found'}), 404
 
     data = request.get_json()
-    # new_balance = data.get("balance")
-    # not sure but I replaced "balance" with "total_cash"
-    new_total_cash = data.get("total_cash")
+    
+    new_total_cash = data.get('total_cash')
+    new_available_cash = data.get('available_cash')
+    new_name = data.get('name')
 
     if new_total_cash is not None:
         portfolio.total_cash = new_total_cash
 
+    if new_available_cash is not None:
+        portfolio.available_cash = new_available_cash
+        
+    if new_name is not None:
+        portfolio.name = new_name
+
     db.session.commit()
     return jsonify(portfolio.to_dict())
+
 
 @portfolio_routes.route('/<int:id>', methods=['DELETE'])
 @login_required

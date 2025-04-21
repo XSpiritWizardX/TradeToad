@@ -1,161 +1,164 @@
-
-
 import { csrfFetch } from "./csrf";
 
-
-const SET_PORTFOLIO = 'session/portfolios';
-const SET_ONE_PORTFOLIO = '/api/portfolios/:portfolioId';
-const REMOVE_PORTFOLIO = 'session/portfolios';
-
-
-
-
-
+const CREATE_PORTFOLIO = 'session/createPortfolio';
+// const SET_PORTFOLIO = 'session/portfolios';
+// const SET_ONE_PORTFOLIO = '/api/portfolios/:portfolioId';
+const SET_ONE_PORTFOLIO = 'session/onePortfolio';
+// const REMOVE_PORTFOLIO = 'session/portfolios';
+const REMOVE_PORTFOLIO = 'session/removePortfolio';
+const GET_PORTFOLIOS = 'session/getPortfolios';
 
 
+// const setPortfolio = (user) => ({
+//   type: SET_PORTFOLIO,
+//   payload: user
+// });
 
-
-
-
-
-
-const setPortfolio = (user) => ({
-  type: SET_PORTFOLIO,
-  payload: user
+const addPortfolio = (portfolio) => ({
+  type: CREATE_PORTFOLIO,
+  payload: portfolio
 });
-
 
 const setOnePortfolio = (portfolio) => ({
     type: SET_ONE_PORTFOLIO,
-    portfolio,
+    payload: portfolio,
   });
 
+const removePortfolioId = (portfolioId) => ({
+  type: REMOVE_PORTFOLIO,
+  portfolioId
+});
 
-
-
-
-const removePortfolioId = () => ({
-  type: REMOVE_PORTFOLIO
+const getPortfolios = (portfolios) => ({
+  type: GET_PORTFOLIOS,
+  payload: portfolios
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Thunk action creators
 export const fetchPortfolios = () => async (dispatch) => {
-	const response = await fetch("/api/portfolios/");
-	if (response.ok) {
-		const data = await response.json();
-		if (data.errors) {
-			return;
-		}
+  try {
+    const response = await csrfFetch('/api/portfolios/', {
+      credentials: 'include'
+    });
 
-		dispatch(setPortfolio(data));
-	}
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(getPortfolios(data));
+      return data;
+    }
+  } catch (error) {
+    console.error('Error fetching portfolios:', error);
+    throw error;
+  }
 };
 
 
-
-
-
 export const fetchOnePortfolio = (portfolioId) => async (dispatch) => {
-    const response = await fetch(`/api/portfolios/${portfolioId}`);
-    console.log(response)
-    if (response.ok) {
+  try {
+    const response = await csrfFetch(`/api/portfolios/${portfolioId}`, {
+      credentials: 'include'
+    });
+    console.log('fetchOnePortfolio response:', response)
 
+    if (response.ok) {
       const portfolio = await response.json();
       dispatch(setOnePortfolio(portfolio));
-
+      return portfolio;
     }
-  };
+  } catch (error) {
+    console.error('Error fetching portfolio:', error);
+    throw error;
+  }
+};
 
-export const createPortfolio = (portfolio) => async (dispatch) => {
-  const {user_id, total_cash, available_cash} = portfolio
-  const response = await csrfFetch("/api/portfolios", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      user_id,
-      total_cash,
-      available_cash
-    })
-  })
-  const data = await response.json();
-  dispatch(setPortfolio(data));
-}
 
+export const createPortfolio = (portfolioData) => async (dispatch) => {
+  try {
+    const response = await csrfFetch('/api/portfolios/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(portfolioData),
+      credentials: 'include'   // send auth. cookies in request
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      dispatch(addPortfolio(data));
+      // after creating a portfolio, fetch all portfolios to update the state
+      dispatch(fetchPortfolios());
+      return data;
+    } else {
+      // handle non-OK responses
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to create portfolio');
+    }
+  } catch (error) {
+    console.error('Error creating portfolio:', error);
+    throw error;
+  }
+};
 
 
 export const deletePortfolio = (portfolioId) => async (dispatch) => {
     try {
       const response = await csrfFetch(`/api/portfolios/${portfolioId}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete portfolio");  // Prevents misleading success alerts
+        throw new Error('Failed to delete portfolio');  // Prevents misleading success alerts
       }
 
       dispatch(removePortfolioId(portfolioId)); // Update Redux state
-      return "Portfolio deleted successfully"; // Ensure frontend knows it worked
+      return 'Portfolio deleted successfully'; // Ensure frontend knows it worked
     } catch (error) {
-      console.error("Delete Error:", error); // Log error to console
+      console.error('Delete Error:', error); // Log error to console
       throw error; // Ensures the frontend properly handles the failure
     }
   };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const initialState = { portfolio: null };
 
 
-
+// Reducer
 function portfolioReducer(state = initialState, action) {
   switch (action.type) {
 
-
-
-    case SET_PORTFOLIO:
+    case CREATE_PORTFOLIO:
         return { ...state, portfolio: action.payload };
+
     case SET_ONE_PORTFOLIO:
-        return { portfolio: action.portfolio};
-    case REMOVE_PORTFOLIO:{
-        const newState = { ...state };
-        delete newState.portfolios[action.portfolioId];
-        return newState;
+        return { ...state, portfolio: action.payload };
+
+    // updated to handle deletion of single portfolio or entry in port array:
+    case REMOVE_PORTFOLIO: {
+      const newState = { ...state };
+      if (newState.portfolio && newState.portfolio.portfolios) {
+        // if we have a portfolios array, filter out the deleted one
+        newState.portfolio.portfolios = newState.portfolio.portfolios.filter(
+          portfolio => portfolio.id !== action.portfolioId
+        );
+      } else {
+        // if we're dealing with a single portfolio and it matches the ID, set to null
+        if (newState.portfolio && newState.portfolio.id === action.portfolioId) {
+          newState.portfolio = null;
+        }
       }
+      return newState;
+    }
+
+    case GET_PORTFOLIOS:
+      return { ...state, portfolio: action.payload };
+
+    // case REMOVE_PORTFOLIO:{
+    //     const newState = { ...state };
+    //     delete newState.portfolios[action.portfolioId];
+    //     return newState;
+    //   }
+
     default:
         return state;
   }

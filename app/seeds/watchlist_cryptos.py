@@ -13,10 +13,6 @@ def seed_watchlist_cryptos():
     elon5 = Watchlist_Crypto(watchlist_id=7, crypto_id=5)
 
 
-
-
-
-
     db.session.add(demoWatch)
     db.session.add(marnieWatch)
     db.session.add(elon1)
@@ -24,9 +20,6 @@ def seed_watchlist_cryptos():
     db.session.add(elon3)
     db.session.add(elon4)
     db.session.add(elon5)
-
-
-
 
 
     db.session.commit()
