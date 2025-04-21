@@ -7,4 +7,4 @@ __pycache__/
 *.db
 instance/*.db
 instance/dev.db
-flask_session/
+flask_session/*
