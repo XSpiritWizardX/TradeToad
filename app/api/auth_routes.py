@@ -1,82 +1,90 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session, jsonify
 from app.models import User, db
-from app.forms import LoginForm
-from app.forms import SignUpForm
+from app.forms import LoginForm, SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
-# from flask_wtf.csrf import CSRFProtect
-# csrf = CSRFProtect()
-# csrf.init_app()
-# csrf._disable_on_debug = True  # Not for production
-auth_routes = Blueprint('auth', __name__, "")
+from sqlalchemy.exc import IntegrityError
+
+auth_routes = Blueprint('auth', __name__, url_prefix='/auth')
 
 
 @auth_routes.route('/')
 def authenticate():
-    print('trying something here')
-    print(f"Current user: {current_user}, Authenticated: {current_user.is_authenticated}")
-    print("CSRF Token from request:", request.cookies.get('csrf_token'))
-
-
-    """
-    Authenticates a user.
-    """
-    if current_user.is_authenticated:
-        print("user is authenticated")
-        return current_user.to_dict()
-    return {'errors': {'message': 'Unauthorized'}}, 401
+    """Authenticates a user."""
+    try:
+        if current_user.is_authenticated:
+            return current_user.to_dict()
+        return {'errors': {'authentication': 'Unauthorized'}}, 401
+    except Exception as e:
+        return {'errors': {'server': str(e)}}, 500
 
 
 @auth_routes.route('/login', methods=['POST'])
 def login():
-    """
-    Logs a user in
-    """
+    """Logs a user in."""
     form = LoginForm()
-    # Get the csrf_token from the request cookie and put it into the
-    # form manually to validate_on_submit can be used
-    form['csrf_token'].data = request.cookies['csrf_token']
-    if form.validate_on_submit():
-        # Add the user to the session, we are logged in!
-        user = User.query.filter(User.email == form.data['email']).first()
-        login_user(user)
-        print("trying to login")
-        db.session.commit()  # Ensure session persists
-        return user.to_dict()
-    return form.errors, 401
+
+    try:
+        form['csrf_token'].data = request.cookies.get('csrf_token')
+        if not form['csrf_token'].data:
+            return {'errors': {'csrf_token': 'Missing CSRF token'}}, 400
+
+        if form.validate_on_submit():
+            user = User.query.filter(User.email == form.data['email']).first()
+            if user:
+                login_user(user, remember=True)
+                return user.to_dict()
+            return {'errors': {'email': 'Invalid credentials'}}, 401
+        return form.errors, 401
+
+    except Exception as e:
+        return {'errors': {'server': str(e)}}, 500
 
 
-@auth_routes.route('/logout')
+@auth_routes.route('/logout', methods=['GET'])
+@login_required
 def logout():
-    """
-    Logs a user out
-    """
-    logout_user()
-    return {'message': 'User logged out'}
+    """Logs a user out."""
+    try:
+        logout_user()
+        return {'message': 'User logged out'}
+    except Exception as e:
+        return {'errors': {'server': str(e)}}, 500
 
 
 @auth_routes.route('/signup', methods=['POST'])
 def sign_up():
-    """
-    Creates a new user and logs them in
-    """
+    """Creates a new user and logs them in."""
     form = SignUpForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
-    if form.validate_on_submit():
-        user = User(
-            username=form.data['username'],
-            email=form.data['email'],
-            password=form.data['password']
-        )
-        db.session.add(user)
-        db.session.commit()
-        login_user(user)
-        return user.to_dict()
-    return form.errors, 401
+
+    try:
+        form['csrf_token'].data = request.cookies.get('csrf_token')
+        if not form['csrf_token'].data:
+            return {'errors': {'csrf_token': 'Missing CSRF token'}}, 400
+
+        if form.validate_on_submit():
+            user = User(
+                firstName=form.data['firstName'],
+                lastName=form.data['lastName'],
+                username=form.data['username'],
+                email=form.data['email'],
+                password=form.data['password'],
+            )
+            db.session.add(user)
+            db.session.commit()
+            login_user(user, remember=True)
+            return user.to_dict()
+
+        return form.errors, 401
+
+    except IntegrityError as ie:
+        db.session.rollback()
+        return {'errors': {'database': 'Email or username already exists.'}}, 400
+
+    except Exception as e:
+        return {'errors': {'server': str(e)}}, 500
 
 
 @auth_routes.route('/unauthorized')
 def unauthorized():
-    """
-    Returns unauthorized JSON when flask-login authentication fails
-    """
+    """Returns unauthorized JSON when flask-login authentication fails."""
     return {'errors': {'message': 'Unauthorized'}}, 401
