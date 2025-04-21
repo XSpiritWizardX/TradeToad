@@ -18,9 +18,12 @@
 .landing-page-copy{
     display: flex;
     justify-self: start;
-
+   
 }
 
+.landing-page-copy p{
+margin: 10px auto;
+}
 .foot{
     display: flex;
     /* justify-content: start; */
