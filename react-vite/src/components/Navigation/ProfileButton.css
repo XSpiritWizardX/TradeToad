@@ -7,6 +7,8 @@
     flex-direction: column;
     top: 120px;
     right: 20px;
+    /* top: 37px;
+    right: 100px; */
     border-radius: 10px;
     z-index: 1;
     color: white;
@@ -125,6 +127,16 @@
         flex-direction: column;
         top: 37px;
         right: 100px;
+    }
+
+    .menu-button{
+        margin-right: 3%;
+    }
+}
+@media screen and (max-width:1900px) {
+    .profile-dropdown{
+        top: 37px;
+        right: 90px;
     }
 
     .menu-button{
