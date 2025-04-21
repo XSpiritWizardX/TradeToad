@@ -51,13 +51,13 @@ function PortfolioCard() {
               <br/>
               ${totalCash}
             </h1>
-            <h1 className='investing-money-portfolio2'>$1234567.89
+            <h1 className='investing-money-portfolio2'>$999589.89
             {/* change this to a <h2> and adjust style ^ */}
             <span className="separation">
               &#183;
             </span>
 
-            (1.00%)
+            (+ 1.00%)
 
             <span className="separation">
               &#183;

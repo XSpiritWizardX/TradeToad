@@ -21,6 +21,7 @@ def upgrade():
     op.create_table('portfolios',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), sa.ForeignKey("users.id"), nullable=False),
+    sa.Column('name', sa.String(length=50), nullable=False),
     sa.Column('total_cash', sa.Numeric(precision=15, scale=2), nullable=False),
     sa.Column('available_cash', sa.Numeric(precision=15, scale=2), nullable=False),
     sa.PrimaryKeyConstraint('id')

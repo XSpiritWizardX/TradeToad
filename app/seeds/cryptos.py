@@ -15,19 +15,11 @@ def seed_cryptos():
         symbol='XRP', company='XRP XRP', market_cap=115_000_000_000)
 
 
-
-
-
-
     db.session.add(btc)
     db.session.add(eth)
     db.session.add(doge)
     db.session.add(solana)
     db.session.add(xrp)
-
-
-
-
 
 
     db.session.commit()
