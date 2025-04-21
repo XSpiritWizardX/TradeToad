@@ -92,7 +92,7 @@ export const createPortfolio = (portfolio) => async (dispatch) => {
     })
   })
   const data = await response.json();
-  dispatch(setOnePortfolio(data));
+  dispatch(setPortfolio(data));
 }
 
 

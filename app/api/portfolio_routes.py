@@ -20,14 +20,14 @@ def create_portfolio():
     Create a new portfolio for the logged-in user.
     """
     data = request.get_json()
-    name = data.get("name")
+    user_id = data.get("user_id")
     total_cash = data.get("total_cash", 0.00)
     available_cash = data.get("available_cash", 0.00)
 
-    if not name:
-        return jsonify({'error': 'Portfolio name is required'}), 400
+    if not user_id:
+        return jsonify({'error': 'User is required'}), 400
 
-    new_portfolio = Portfolio(user_id=current_user.id, name=name, total_cash=total_cash, available_cash=available_cash)
+    new_portfolio = Portfolio(user_id=current_user.id, total_cash=total_cash, available_cash=available_cash)
     db.session.add(new_portfolio)
     db.session.commit()
 
