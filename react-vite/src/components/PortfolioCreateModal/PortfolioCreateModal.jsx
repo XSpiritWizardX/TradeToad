@@ -10,7 +10,9 @@ function PortfolioCreateModal() {
   const sessionUser = useSelector(state => state.session.user);
   console.log(`Trying to get user ID: ${ sessionUser }`)
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();    // prevent default form submission
+
     try {
       // Default portfolio data plus user_id from sessionUser
       const portfolioData = {
@@ -24,7 +26,7 @@ function PortfolioCreateModal() {
       alert("Portfolio created successfully!");
       closeModal();
     } catch (error) {
-      alert(error.message);
+      alert(error.message || "Failed to create portfolio");
     }
   };
 
@@ -39,14 +41,14 @@ function PortfolioCreateModal() {
       <form onSubmit={handleSubmit}>
         <button 
           type="submit"
-          onClick={handleSubmit}
-          className='delete-spotty-button'
+          className='create-port-button'
         >
           Yes (Create Portfolio)
         </button>
 
         <button 
-          type="submit"
+          // changed "type=submit" to type="button" so it doesn't submit the form
+          type="button"
           onClick={closeModal}
           className='keep-spot-button'
         >

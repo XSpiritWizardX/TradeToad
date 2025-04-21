@@ -74,7 +74,6 @@ export const fetchOnePortfolio = (portfolioId) => async (dispatch) => {
 
 
 export const createPortfolio = (portfolioData) => async (dispatch) => {
-  // const {user_id, total_cash, available_cash} = portfolioData
   try {
     const response = await csrfFetch('/api/portfolios/', {
       method: 'POST',
@@ -85,8 +84,15 @@ export const createPortfolio = (portfolioData) => async (dispatch) => {
 
     if (response.ok) {
       const data = await response.json();
+
       dispatch(addPortfolio(data));
+      // after creating a portfolio, fetch all portfolios to update the state
+      dispatch(fetchPortfolios());
       return data;
+    } else {
+      // handle non-OK responses
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to create portfolio');
     }
   } catch (error) {
     console.error('Error creating portfolio:', error);
