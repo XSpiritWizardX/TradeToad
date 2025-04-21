@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as portfolioActions from '../../redux/portfolio';
 import { useModal } from '../../context/Modal';
 import './PortfolioCreateModal.css';
@@ -7,11 +7,14 @@ import './PortfolioCreateModal.css';
 function PortfolioCreateModal() {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
+  const sessionUser = useSelector(state => state.session.user);
+  console.log(`Trying to get user ID: ${ sessionUser }`)
 
   const handleSubmit = async () => {
     try {
-      // Default portfolio data
+      // Default portfolio data plus user_id from sessionUser
       const portfolioData = {
+        user_id: sessionUser.id,
         name: "My Portfolio",
         total_cash: 100.00,
         available_cash: 100.00

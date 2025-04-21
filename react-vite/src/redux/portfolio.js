@@ -1,27 +1,37 @@
 import { csrfFetch } from "./csrf";
 
-const SET_PORTFOLIO = 'session/portfolios';
+const CREATE_PORTFOLIO = 'session/createPortfolio';
+// const SET_PORTFOLIO = 'session/portfolios';
 // const SET_ONE_PORTFOLIO = '/api/portfolios/:portfolioId';
 const SET_ONE_PORTFOLIO = 'session/onePortfolio';
 // const REMOVE_PORTFOLIO = 'session/portfolios';
 const REMOVE_PORTFOLIO = 'session/removePortfolio';
+const GET_PORTFOLIOS = 'session/getPortfolios';
 
 
-const setPortfolio = (user) => ({
-  type: SET_PORTFOLIO,
-  payload: user
+// const setPortfolio = (user) => ({
+//   type: SET_PORTFOLIO,
+//   payload: user
+// });
+
+const addPortfolio = (portfolio) => ({
+  type: CREATE_PORTFOLIO,
+  payload: portfolio
 });
-
 
 const setOnePortfolio = (portfolio) => ({
     type: SET_ONE_PORTFOLIO,
     payload: portfolio,
   });
 
-
 const removePortfolioId = (portfolioId) => ({
   type: REMOVE_PORTFOLIO,
   portfolioId
+});
+
+const getPortfolios = (portfolios) => ({
+  type: GET_PORTFOLIOS,
+  payload: portfolios
 });
 
 
@@ -34,7 +44,7 @@ export const fetchPortfolios = () => async (dispatch) => {
 
     if (response.ok) {
       const data = await response.json();
-      dispatch(setPortfolio(data));
+      dispatch(getPortfolios(data));
       return data;
     }
   } catch (error) {
@@ -75,7 +85,7 @@ export const createPortfolio = (portfolioData) => async (dispatch) => {
 
     if (response.ok) {
       const data = await response.json();
-      dispatch(setPortfolio(data));
+      dispatch(addPortfolio(data));
       return data;
     }
   } catch (error) {
@@ -111,7 +121,7 @@ const initialState = { portfolio: null };
 function portfolioReducer(state = initialState, action) {
   switch (action.type) {
 
-    case SET_PORTFOLIO:
+    case CREATE_PORTFOLIO:
         return { ...state, portfolio: action.payload };
 
     case SET_ONE_PORTFOLIO:
@@ -133,6 +143,9 @@ function portfolioReducer(state = initialState, action) {
       }
       return newState;
     }
+
+    case GET_PORTFOLIOS:
+      return { ...state, portfolio: action.payload };
 
     // case REMOVE_PORTFOLIO:{
     //     const newState = { ...state };
