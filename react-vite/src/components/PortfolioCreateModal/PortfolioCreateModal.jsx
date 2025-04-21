@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as portfolioActions from '../../redux/portfolio';
 import { useModal } from '../../context/Modal';
 import './PortfolioCreateModal.css';
@@ -6,6 +7,7 @@ import './PortfolioCreateModal.css';
 
 function PortfolioCreateModal() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { closeModal } = useModal();
   const sessionUser = useSelector(state => state.session.user);
   console.log(`Trying to get user ID: ${ sessionUser }`)
@@ -25,6 +27,7 @@ function PortfolioCreateModal() {
       await dispatch(portfolioActions.createPortfolio(portfolioData));
       alert("Portfolio created successfully!");
       closeModal();
+      navigate('/dashboard');
     } catch (error) {
       alert(error.message || "Failed to create portfolio");
     }

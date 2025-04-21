@@ -8,8 +8,8 @@ import './WatchlistDeleteModal.css';
 
 function WatchlistDeleteModal() {
   const dispatch = useDispatch();
-  const { closeModal } = useModal();
   const navigate = useNavigate();
+  const { closeModal } = useModal();
   const [selectedWatchlistId, setSelectedWatchlistId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);

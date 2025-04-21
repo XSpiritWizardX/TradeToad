@@ -1,12 +1,24 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <style>
+    /* critical CSS to prevent FOUC (Flash of Unstyled Content) */
+    .foot {
+      opacity: 0;
+      visibility: hidden;
+    }
+    body.css-loaded .foot {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.3s;
+    }
+  </style>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/icontoad.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TRADE TOAD</title>
-    <script type="module" crossorigin src="/assets/index-c678ae9f.js"></script>
-    <link rel="stylesheet" href="/assets/index-8d14233e.css">
+    <script type="module" crossorigin src="/assets/index-c8e3dfee.js"></script>
+    <link rel="stylesheet" href="/assets/index-78de46d6.css">
   </head>
   <body>
     <div id="root"></div>

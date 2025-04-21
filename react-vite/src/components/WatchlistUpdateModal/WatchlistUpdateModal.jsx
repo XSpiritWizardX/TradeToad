@@ -8,8 +8,8 @@ import './WatchlistUpdateModal.css';
 
 function WatchlistUpdateModal() {
   const dispatch = useDispatch();
-  const { closeModal } = useModal();
   const navigate = useNavigate();
+  const { closeModal } = useModal();
   const [selectedWatchlistId, setSelectedWatchlistId] = useState('');
   const [name, setName] = useState('');
   const [isLoading, setIsLoading] = useState(true);

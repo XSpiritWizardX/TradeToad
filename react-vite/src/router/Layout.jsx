@@ -5,22 +5,28 @@ import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation/Navigation";
 import FooterCard from "../components/Footer/Footer";
+import "./Layout.css";
+
 
 export default function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  
   useEffect(() => {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
+  
 
   return (
-    <>
+    <div className="app-container">
       <ModalProvider>
         <Navigation />
-        {isLoaded && <Outlet />}
-        <FooterCard/>
+        <div className="main-content">
+          {isLoaded && <Outlet />}
+        </div>
+        <FooterCard />
         <Modal />
       </ModalProvider>
-    </>
+    </div>
   );
 }

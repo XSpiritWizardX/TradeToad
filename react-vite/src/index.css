@@ -1,34 +1,38 @@
 /* TODO: Add sitewide styles */
 
-
-html{
+html {
     background-color: black;
+    overflow-y: scroll; /* Always show vertical scrollbar */
+    margin-right: 0 !important; /* Prevent content shift */
 }
 
+body {
+    width: 100vw;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
 
-h2{
+h2 {
     color: #ffffff;
 }
 
-h3{
+h3 {
     color: #ffffff;
 }
 
-h5{
+h5 {
     color: rgb(255, 255, 255);
 }
 
-h4{
+h4 {
     color: #ffffff;
 }
 
-p{
+p {
     display: flex;
     justify-self: center;
     color: white;
     margin-bottom: 5%;
 }
-
 
 h1 {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -37,12 +41,10 @@ h1 {
     color: white;
 }
 
-
 label {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
 }
-
 
 /* form {
     display: flex;
@@ -53,13 +55,10 @@ label {
     color: white;
 } */
 
-
 input {
-
     border-color:#FFC857;
     color: black;
 }
-
 
 button {
     margin-top: 10px;
@@ -74,7 +73,6 @@ button {
     text-decoration: none;
     border-radius: 10%;
 }
-
 
 button:hover{
     cursor: pointer;

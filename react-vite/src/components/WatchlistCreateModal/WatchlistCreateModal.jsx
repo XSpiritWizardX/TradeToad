@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as watchlistActions from '../../redux/watchlist';
 import { useModal } from '../../context/Modal';
 import './WatchlistCreateModal.css';
@@ -7,6 +8,7 @@ import './WatchlistCreateModal.css';
 
 function WatchlistCreateModal() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { closeModal } = useModal();
   const sessionUser = useSelector(state => state.session.user);
   const [name, setName] = useState("My Watchlist");
@@ -30,6 +32,7 @@ function WatchlistCreateModal() {
       setIsCreating(false);
       alert("Watchlist created successfully!");
       closeModal();
+      navigate('/dashboard');
     } catch (error) {
       setIsCreating(false);
       alert(error.message || "Failed to create watchlist");

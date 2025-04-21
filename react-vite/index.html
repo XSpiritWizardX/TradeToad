@@ -1,6 +1,18 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <style>
+    /* critical CSS to prevent FOUC (Flash of Unstyled Content) */
+    .foot {
+      opacity: 0;
+      visibility: hidden;
+    }
+    body.css-loaded .foot {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.3s;
+    }
+  </style>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/icontoad.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
