@@ -1,5 +1,3 @@
-Now, let's update the PortfolioUpdateModal.css to match this styling:
-
 .portfolio-select {
     width: 60%;
     margin-left: 20%; 
@@ -31,12 +29,10 @@ Now, let's update the PortfolioUpdateModal.css to match this styling:
     width: 350px;
 }
 
-/* Additional styles for form fields */
 .form-fields {
     width: 60%;
     margin-left: 20%;
-    margin-bottom: 30px; /* Add extra space at the bottom */
-    position: relative;
+    margin-bottom: 30px; 
 }
 
 .form-group {
@@ -45,8 +41,6 @@ Now, let's update the PortfolioUpdateModal.css to match this styling:
     position: relative;
     min-height: 70px; 
 }
-
-
 
 .form-group label {
     display: block;

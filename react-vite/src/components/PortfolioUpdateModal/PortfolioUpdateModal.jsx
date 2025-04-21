@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as portfolioActions from '../../redux/portfolio';
 import { useModal } from '../../context/Modal';
@@ -19,7 +19,10 @@ function PortfolioUpdateModal() {
   
   // get portfolios from Redux state
   const portfoliosData = useSelector((state) => state.portfolio.portfolio);
-  const portfolios = portfoliosData?.portfolios || [];
+  // memoize the portfolios array to prevent extra useEffect hooks from running
+  const portfolios = useMemo(() => {
+    return portfoliosData?.portfolios || [];
+  }, [portfoliosData]);
 
   useEffect(() => {
     // fetch portfolios when component mounts
@@ -34,8 +37,12 @@ function PortfolioUpdateModal() {
       }
     };
 
-    loadPortfolios();
-  }, [dispatch]);
+    if (!portfolios.length) {
+      loadPortfolios();
+    } else {
+      setIsLoading(false);
+    }
+  }, [dispatch, portfolios.length]);
 
   // update form fields when a portfolio is selected
   useEffect(() => {
@@ -48,7 +55,6 @@ function PortfolioUpdateModal() {
       }
     }
   }, [selectedPortfolioId, portfolios]);
-  // warning  The 'portfolios' logical expression could make the dependencies of useEffect Hook (at line 50) change on every render. To fix this, wrap the initialization of 'portfolios' in its own useMemo() Hook  react-hooks/exhaustive-deps
 
   const validateForm = () => {
     const newErrors = {};
@@ -94,7 +100,6 @@ function PortfolioUpdateModal() {
         available_cash: parseFloat(availableCash)
       };
       
-      // add updatePortfolio action to the redux/portfolio.js file
       await dispatch(portfolioActions.updatePortfolio(selectedPortfolioId, portfolioData));
       
       setIsUpdating(false);
@@ -221,6 +226,5 @@ function PortfolioUpdateModal() {
     </div>
   );
 }
-
 
 export default PortfolioUpdateModal;
