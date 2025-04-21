@@ -7,6 +7,7 @@ const SET_ONE_PORTFOLIO = 'session/onePortfolio';
 // const REMOVE_PORTFOLIO = 'session/portfolios';
 const REMOVE_PORTFOLIO = 'session/removePortfolio';
 const GET_PORTFOLIOS = 'session/getPortfolios';
+const UPDATE_PORTFOLIO = 'session/updatePortfolio';
 
 
 // const setPortfolio = (user) => ({
@@ -14,11 +15,14 @@ const GET_PORTFOLIOS = 'session/getPortfolios';
 //   payload: user
 // });
 
+
+// action creators
 const addPortfolio = (portfolio) => ({
   type: CREATE_PORTFOLIO,
   payload: portfolio
 });
 
+// change this to updatePortfolio
 const setOnePortfolio = (portfolio) => ({
     type: SET_ONE_PORTFOLIO,
     payload: portfolio,
@@ -34,6 +38,10 @@ const getPortfolios = (portfolios) => ({
   payload: portfolios
 });
 
+const updatePortfolioAction = (portfolio) => ({
+  type: UPDATE_PORTFOLIO,
+  payload: portfolio
+});
 
 // Thunk action creators
 export const fetchPortfolios = () => async (dispatch) => {
@@ -102,23 +110,49 @@ export const createPortfolio = (portfolioData) => async (dispatch) => {
 
 
 export const deletePortfolio = (portfolioId) => async (dispatch) => {
-    try {
-      const response = await csrfFetch(`/api/portfolios/${portfolioId}`, {
-        method: 'DELETE',
-      });
+  try {
+    const response = await csrfFetch(`/api/portfolios/${portfolioId}`, {
+      method: 'DELETE',
+    });
 
-      if (!response.ok) {
-        throw new Error('Failed to delete portfolio');  // Prevents misleading success alerts
-      }
-
-      dispatch(removePortfolioId(portfolioId)); // Update Redux state
-      return 'Portfolio deleted successfully'; // Ensure frontend knows it worked
-    } catch (error) {
-      console.error('Delete Error:', error); // Log error to console
-      throw error; // Ensures the frontend properly handles the failure
+    if (!response.ok) {
+      throw new Error('Failed to delete portfolio');  // Prevents misleading success alerts
     }
-  };
 
+    dispatch(removePortfolioId(portfolioId)); // Update Redux state
+    return 'Portfolio deleted successfully'; // Ensure frontend knows it worked
+  } catch (error) {
+    console.error('Delete Error:', error); // Log error to console
+    throw error; // Ensures the frontend properly handles the failure
+  }
+};
+
+
+export const updatePortfolio = (portfolioId, portfolioData) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/portfolios/${portfolioId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(portfolioData),
+      credentials: 'include'
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(updatePortfolioAction(data));
+      // after updating, fetch all portfolios to update the state
+      dispatch(fetchPortfolios());
+      return data;
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to update portfolio');
+    }
+  } catch (error) {
+    console.error('Error updating portfolio:', error);
+    throw error;
+  }
+};
+    
 
 const initialState = { portfolio: null };
 
@@ -153,11 +187,8 @@ function portfolioReducer(state = initialState, action) {
     case GET_PORTFOLIOS:
       return { ...state, portfolio: action.payload };
 
-    // case REMOVE_PORTFOLIO:{
-    //     const newState = { ...state };
-    //     delete newState.portfolios[action.portfolioId];
-    //     return newState;
-    //   }
+    case UPDATE_PORTFOLIO:
+      return { ...state, portfolio: action.payload };
 
     default:
         return state;

@@ -1,4 +1,4 @@
-.portfolio-select {
+.watchlist-select {
     width: 60%;
     margin-left: 20%; 
     padding: 5px;
@@ -25,28 +25,27 @@
     box-shadow: 4px 2px black;
 }
 
-.delete-confirm {
+.delete-confirm{
     width: 350px;
 }
 
 .form-fields {
-    width: 60%;
-    margin-left: 20%;
-    margin-bottom: 30px; 
+    margin: 15px 0;
+    padding: 0 20px;
 }
 
 .form-group {
     margin-bottom: 15px;
     text-align: left;
     position: relative;
-    min-height: 70px; 
+    min-height: 70px;
 }
 
 .form-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    color: #FFC857; 
+    color: white;
 }
 
 .form-group input {
@@ -54,42 +53,33 @@
     padding: 5px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    height: 36px; /* Explicitly set a fixed height */
-    max-height: 36px; /* Add a max-height as well */
-    min-height: 36px; /* And a min-height for good measure */
-    box-sizing: border-box; /* Ensure padding doesn't add to the height */
+    height: 36px;
+    max-height: 36px;
+    min-height: 36px;
+    box-sizing: border-box;
 }
 
 .form-group input.error {
     border-color: #ff6b6b;
-    height: 36px; /* Maintain the same height even in error state */
-    max-height: 36px;
 }
 
 .error-message {
     color: #ff6b6b;
     font-size: 12px;
-    /* margin-top: 3px; */
     position: absolute;
-    bottom: -18px; /* Position below the input */
+    bottom: -18px;
     left: 0;
     width: 100%;
 }
 
 .button-container {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.button-container button {
-    padding: 8px 15px;
-    cursor: pointer;
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
 .loading {
     text-align: center;
     padding: 20px;
+    color: white;
 }
-

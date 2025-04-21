@@ -10,9 +10,9 @@ class Watchlist(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
-
+    name = db.Column(db.String(50), nullable=False, default="My Watchlist")
+    
     # relationships
-
     user = db.relationship("User", back_populates="watchlist")
     watchlist_stock = db.relationship("Watchlist_Stock", back_populates="watchlist", cascade="all, delete-orphan")
     watchlist_crypto = db.relationship("Watchlist_Crypto", back_populates="watchlist", cascade="all, delete-orphan")
@@ -21,4 +21,5 @@ class Watchlist(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
+            'name': self.name, 
         }

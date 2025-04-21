@@ -2,20 +2,22 @@ import { useState, useEffect } from 'react';
 import * as portfolioActions from '../../redux/portfolio';
 import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
+import { useNavigate } from 'react-router-dom';
 import './PortfolioDeleteModal.css';
 
 function PortfolioDeleteModal() {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
+  const navigate = useNavigate();
   const [selectedPortfolioId, setSelectedPortfolioId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  
-  // Get portfolios from Redux state
+  const [isDeleting, setIsDeleting] = useState(false);
+  // get portfolios from Redux state
   const portfoliosData = useSelector((state) => state.portfolio.portfolio);
   const portfolios = portfoliosData?.portfolios || [];
 
   useEffect(() => {
-    // Fetch portfolios when component mounts if not already loaded
+    // fetch portfolios when component mounts if not already loaded
     const loadPortfolios = async () => {
       try {
         setIsLoading(true);
@@ -43,10 +45,14 @@ function PortfolioDeleteModal() {
     }
 
     try {
+      setIsDeleting(true);
       await dispatch(portfolioActions.deletePortfolio(selectedPortfolioId));
+      setIsDeleting(false);
       alert("Portfolio deleted successfully!");
       closeModal();
+      navigate('/dashboard');
     } catch (error) {
+      setIsDeleting(false);
       alert(error.message || "Failed to delete portfolio");
     }
   };
@@ -59,7 +65,7 @@ function PortfolioDeleteModal() {
     return (
       <div className='delete-confirm'>
         <h1>No Portfolios</h1>
-        <p>You dont have any portfolios to delete.</p>
+        <p>You don&apos;t have any portfolios to delete.</p>
         <button 
           onClick={closeModal}
           className='keep-spot-button'
@@ -84,6 +90,7 @@ function PortfolioDeleteModal() {
           onChange={(e) => setSelectedPortfolioId(e.target.value)}
           className='portfolio-select'
           required
+          disabled={isDeleting}
         >
           <option value="">-- Select a portfolio --</option>
           {portfolios.map(portfolio => (
@@ -97,15 +104,18 @@ function PortfolioDeleteModal() {
           <button 
             type="submit"
             className='delete-port-button'
-            disabled={!selectedPortfolioId}
+            disabled={!selectedPortfolioId || isDeleting}
           >
-            Yes (Delete Portfolio)
+            {/* Yes (Delete Portfolio) */}
+            {/* Updating the text to show feedback */}
+            {isDeleting ? "Deleting..." : "Yes (Delete Portfolio)"} 
           </button>
 
           <button 
-            type="button" // Changed from submit to prevent form submission
+            type="button" // Changed from "submit" to prevent form submission
             onClick={closeModal}
             className='keep-spot-button'
+            disabled={isDeleting}
           >
             No (Keep Portfolio)
           </button>

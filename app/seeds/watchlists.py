@@ -4,16 +4,13 @@ from sqlalchemy.sql import text
 
 # Adds a demo user, you can add other users here if you want
 def seed_watchlists():
-    demoWatch = Watchlist(user_id="1")
-    marnieWatch = Watchlist(user_id="2")
-    bobbieWatch = Watchlist(user_id="3")
-    trixieWatch = Watchlist(user_id="4")
-    janeWatch = Watchlist(user_id="5")
-    lukeWatch = Watchlist(user_id="6")
-    elonWatch = Watchlist(user_id="7")
-
-
-
+    demoWatch = Watchlist(user_id=1, name="Tech Stocks")
+    marnieWatch = Watchlist(user_id=2, name="Crypto Favorites")
+    bobbieWatch = Watchlist(user_id=3, name="Blue Chips")
+    trixieWatch = Watchlist(user_id=4, name="Growth Stocks")
+    janeWatch = Watchlist(user_id=5, name="Dividend Stocks")
+    lukeWatch = Watchlist(user_id=6, name="Penny Stocks")
+    elonWatch = Watchlist(user_id=7, name="ETFs")
 
 
     db.session.add(demoWatch)
@@ -23,7 +20,6 @@ def seed_watchlists():
     db.session.add(janeWatch)
     db.session.add(lukeWatch)
     db.session.add(elonWatch)
-
 
 
     db.session.commit()
