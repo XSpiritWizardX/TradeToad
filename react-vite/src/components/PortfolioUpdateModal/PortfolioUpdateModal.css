@@ -1,0 +1,101 @@
+Now, let's update the PortfolioUpdateModal.css to match this styling:
+
+.portfolio-select {
+    width: 60%;
+    margin-left: 20%; 
+    padding: 5px;
+    margin-bottom: 15px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    text-align-last: center;
+}
+
+.confirm-delete-text {
+    margin: 0px 60px;
+}
+
+.update-port-button {
+    color: white;
+    background-color: rgb(54, 156, 67);
+    box-shadow: 4px 2px black;
+}
+
+.keep-spot-button {
+    color: white;
+    background-color: rgba(196, 15, 15, 0.699);
+    box-shadow: 4px 2px black;
+}
+
+.delete-confirm {
+    width: 350px;
+}
+
+/* Additional styles for form fields */
+.form-fields {
+    width: 60%;
+    margin-left: 20%;
+    margin-bottom: 30px; /* Add extra space at the bottom */
+    position: relative;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+    position: relative;
+    min-height: 70px; 
+}
+
+
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #FFC857; 
+}
+
+.form-group input {
+    width: 100%;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    height: 36px; /* Explicitly set a fixed height */
+    max-height: 36px; /* Add a max-height as well */
+    min-height: 36px; /* And a min-height for good measure */
+    box-sizing: border-box; /* Ensure padding doesn't add to the height */
+}
+
+.form-group input.error {
+    border-color: #ff6b6b;
+    height: 36px; /* Maintain the same height even in error state */
+    max-height: 36px;
+}
+
+.error-message {
+    color: #ff6b6b;
+    font-size: 12px;
+    /* margin-top: 3px; */
+    position: absolute;
+    bottom: -18px; /* Position below the input */
+    left: 0;
+    width: 100%;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.button-container button {
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+}
+
