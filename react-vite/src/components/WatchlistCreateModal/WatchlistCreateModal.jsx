@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as watchlistActions from '../../redux/watchlist';
 import { useModal } from '../../context/Modal';
@@ -8,47 +9,68 @@ function WatchlistCreateModal() {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const sessionUser = useSelector(state => state.session.user);
+  const [name, setName] = useState("My Watchlist");
+  const [isCreating, setIsCreating] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();    // prevent default form submission
-
+    e.preventDefault();
+  
+    if (isCreating) return;
+  
     try {
-      // Default watchlist data plus user_id from sessionUser
+      setIsCreating(true);
+      
       const watchlistData = {
-        user_id: sessionUser.id
+        user_id: sessionUser.id,
+        name: name
       };
       
       await dispatch(watchlistActions.createWatchlist(watchlistData));
+      
+      setIsCreating(false);
       alert("Watchlist created successfully!");
       closeModal();
     } catch (error) {
+      setIsCreating(false);
       alert(error.message || "Failed to create watchlist");
     }
   };
 
   return (
     <div className='create-confirm'>
-      <h1>Confirm New Watchlist</h1>
-
-      <p className='confirm-create-text'>
-        Are you sure you want to create a watchlist?
-      </p>
+      <h1>Create New Watchlist</h1>
       
       <form onSubmit={handleSubmit}>
+        <div className="form-fields">
+          <div className="form-group">
+            <label htmlFor="name">Watchlist Name:</label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              disabled={isCreating}
+            />
+          </div>
+        </div>
+        
         <div className="button-container">
           <button 
             type="submit"
             className='delete-spotty-button'
+            disabled={isCreating}
           >
-            Yes (Create Watchlist)
+            {isCreating ? "Creating..." : "Create Watchlist"}
           </button>
-
+  
           <button 
-            type="button"  // Changed from "submit" to prevent form submission
+            type="button"
             onClick={closeModal}
             className='keep-spot-button'
+            disabled={isCreating}
           >
-            No (Return)
+            Cancel
           </button>
         </div>
       </form>
