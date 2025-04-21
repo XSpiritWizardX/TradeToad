@@ -19,7 +19,6 @@ import stockTransactionReducer from "./stockTransactions";
 import stockDataReducer from "./stockPrices";
 
 
-
 const rootReducer = combineReducers({
   session: sessionReducer,
   stock: stockReducer,
@@ -32,7 +31,7 @@ const rootReducer = combineReducers({
   portfolioCrypto: portfolioCryptoReducer,
   cryptoTransaction: cryptoTransactionReducer,
   stockTransaction: stockTransactionReducer,
-  stockData: stockDataReducer
+  stockData: stockDataReducer,
 });
 
 let enhancer;
@@ -48,5 +47,6 @@ if (import.meta.env.MODE === "production") {
 const configureStore = (preloadedState) => {
   return createStore(rootReducer, preloadedState, enhancer);
 };
+
 
 export default configureStore;

@@ -39,21 +39,23 @@ function PortfolioCreateModal() {
       </p>
       
       <form onSubmit={handleSubmit}>
-        <button 
-          type="submit"
-          className='create-port-button'
-        >
-          Yes (Create Portfolio)
-        </button>
+        <div className="button-container">
+          <button 
+            type="submit"
+            className='create-port-button'
+          >
+            Yes (Create Portfolio)
+          </button>
 
-        <button 
-          // changed "type=submit" to type="button" so it doesn't submit the form
-          type="button"
-          onClick={closeModal}
-          className='keep-spot-button'
-        >
-          No (Return)
-        </button>
+          <button 
+            // use "type=submit" to type="button" so it doesn't submit the form
+            type="button"
+            onClick={closeModal}
+            className='keep-spot-button'
+          >
+            No (Return)
+          </button>
+        </div>
       </form>
     </div>
   );

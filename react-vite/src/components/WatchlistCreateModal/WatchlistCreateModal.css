@@ -1,6 +1,5 @@
 .create-confirm {
     width: 350px;
-    padding: 20px;
     text-align: center;
 }
 
@@ -13,6 +12,11 @@
     margin: 0px 60px;
     color: white;
     margin-bottom: 20px;
+}
+
+.form-fields {
+    margin: 15px 0;
+    padding: 0 20px;
 }
 
 .form-group {

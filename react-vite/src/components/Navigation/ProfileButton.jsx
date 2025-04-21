@@ -10,7 +10,10 @@ import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import PortfolioDeleteModal from "../PortfolioDeleteModal/PortfolioDeleteModal";
 import PortfolioCreateModal from "../PortfolioCreateModal/PortfolioCreateModal";
 import PortfolioUpdateModal from "../PortfolioUpdateModal/PortfolioUpdateModal";
-import './ProfileButton.css'
+import WatchlistCreateModal from "../WatchlistCreateModal/WatchlistCreateModal";
+import WatchlistUpdateModal from "../WatchlistUpdateModal/WatchlistUpdateModal";
+import WatchlistDeleteModal from "../WatchlistDeleteModal/WatchlistDeleteModal";
+import "./ProfileButton.css"
 
 
 function ProfileButton() {
@@ -50,8 +53,6 @@ function ProfileButton() {
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
 
-
-
   return (
     <div
     className="pro-divvy"
@@ -73,7 +74,6 @@ function ProfileButton() {
              <div
              className='auth-container-user'
              >
-
 
               <p
               className="account-info"
@@ -101,7 +101,6 @@ function ProfileButton() {
               Dashboard
               </NavLink>
 
-
              <br/>
 
              <ln
@@ -123,7 +122,6 @@ function ProfileButton() {
             className='profile-line'
             ></ln>
 
-
               <NavLink
               to='/learning-center'
               className="nav-link-dropdown"
@@ -131,19 +129,11 @@ function ProfileButton() {
               Learning Center
               </NavLink>
 
-
               <br/>
               <ln
             className='profile-line'
             ></ln>
 
-
-
-
-        {/* <button
-        className='create-me'
-        onClick={handleNewPortfolioSubmit()}
-        >Create A New Portfolio</button> */}
               <OpenModalButton
                 buttonText="Create Portfolio"
                 // onItemClick={closeMenu}
@@ -158,26 +148,33 @@ function ProfileButton() {
                 className="login"
               />
 
-
               <OpenModalButton
                 buttonText="Delete Portfolio"
                 // onItemClick={closeMenu}
                 modalComponent={<PortfolioDeleteModal />}
                 className="login"
+              /><br></br>
+
+              <OpenModalButton
+                buttonText="Create Watchlist"
+                modalComponent={<WatchlistCreateModal />}
               />
 
+              <OpenModalButton
+                buttonText="Update Watchlist"
+                modalComponent={<WatchlistUpdateModal />}
+              />
 
-
-
+              <OpenModalButton
+                buttonText="Delete Watchlist"
+                modalComponent={<WatchlistDeleteModal />}
+              />
 
       <button
       onClick={logout}
        >
         Log Out
        </button>
-
-
-
 
             </div>
           )

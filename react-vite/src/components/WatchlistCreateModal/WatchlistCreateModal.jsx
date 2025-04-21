@@ -40,7 +40,7 @@ function WatchlistCreateModal() {
         name: name
       };
       
-      const result = await dispatch(watchlistActions.createWatchlist(watchlistData));
+      await dispatch(watchlistActions.createWatchlist(watchlistData));
       setIsCreating(false);
       alert("Watchlist created successfully!");
       closeModal();
