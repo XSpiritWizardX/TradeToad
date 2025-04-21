@@ -15,18 +15,11 @@ def seed_crypto_transactions():
         user_id=5, crypto_id=5, shares=200000000.00, price=147.74, action='BUY')
 
 
-
-
-
-
     db.session.add(trans1)
     db.session.add(trans2)
     db.session.add(trans3)
     db.session.add(trans4)
     db.session.add(trans5)
-
-
-
 
 
     db.session.commit()

@@ -8,6 +8,7 @@ class Portfolio(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
+    name = db.Column(db.String(50), nullable=False)  
     total_cash = db.Column(db.Numeric(precision=15, scale=2, asdecimal=True), nullable=False)
     available_cash = db.Column(db.Numeric(precision=15, scale=2, asdecimal=True), nullable=False)
 
@@ -21,6 +22,7 @@ class Portfolio(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
+            'name': self.name,
             'total_cash': self.total_cash,
             'available_cash': self.available_cash,
         }

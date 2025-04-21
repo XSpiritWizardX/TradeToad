@@ -4,25 +4,19 @@ from sqlalchemy.sql import text
 
 def seed_portfolios():
     p1 = Portfolio(
-        user_id=1, total_cash=1000000.05, available_cash=10.77)
+        user_id=1, name='port1', total_cash=1000000.05, available_cash=10.77)
     p2 = Portfolio(
-        user_id=2, total_cash=1000000.11, available_cash=3000.88)
+        user_id=2, name='port2', total_cash=1000000.11, available_cash=3000.88)
     p3 = Portfolio(
-        user_id=3, total_cash=1000000.45, available_cash=2160.89)
+        user_id=3, name='port3', total_cash=1000000.45, available_cash=2160.89)
     p4 = Portfolio(
-        user_id=4, total_cash=1000000.55, available_cash=392000.15)
+        user_id=4, name='port4', total_cash=1000000.55, available_cash=392000.15)
     p5 = Portfolio(
-        user_id=5, total_cash=1000000.66, available_cash=1800.25)
+        user_id=5, name='port5', total_cash=1000000.66, available_cash=1800.25)
     p6 = Portfolio(
-        user_id=6, total_cash=1000000.66, available_cash=1800.25)
+        user_id=6, name='port6', total_cash=1000000.66, available_cash=1800.25)
     p7 = Portfolio(
-        user_id=7, total_cash=1000000.66, available_cash=1800.25)
-
-
-
-
-
-
+        user_id=7, name='port7', total_cash=1000000.66, available_cash=1800.25)
 
 
     db.session.add(p1)
@@ -32,11 +26,6 @@ def seed_portfolios():
     db.session.add(p5)
     db.session.add(p6)
     db.session.add(p7)
-
-
-
-
-
 
 
     db.session.commit()
@@ -50,7 +39,7 @@ def seed_portfolios():
 # it will reset the primary keys for you as well.
 def undo_portfolios():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.stocks RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.portfolios RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM portfolios"))
 
