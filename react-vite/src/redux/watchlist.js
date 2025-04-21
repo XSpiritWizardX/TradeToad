@@ -20,7 +20,7 @@ const addWatchlist = (watchlist) => ({
 
 const removeWatchlistId = (watchlistId) => ({
   type: REMOVE_WATCHLIST,
-  watchlistId
+  payload: watchlistId
 });
 
 const getWatchlists = (watchlists) => ({
@@ -51,22 +51,6 @@ export const fetchWatchlists = () => async (dispatch) => {
   }
 };
 
-// export const fetchOneWatchlist = (watchlistId) => async (dispatch) => {
-//   try {
-//     const response = await csrfFetch(`/api/watchlists/${watchlistId}`, {
-//       credentials: 'include'
-//     });
-
-//     if (response.ok) {
-//       const watchlist = await response.json();
-//       // dispatch(setOneWatchlist(watchlist));
-//       return watchlist;
-//     }
-//   } catch (error) {
-//     console.error('Error fetching watchlist:', error);
-//     throw error;
-//   }
-// };
 
 export const createWatchlist = (watchlistData) => async (dispatch) => {
   try {

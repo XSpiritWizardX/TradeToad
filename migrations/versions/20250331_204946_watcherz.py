@@ -21,7 +21,8 @@ def upgrade():
     op.create_table('watchlists',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), sa.ForeignKey("users.id"), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.Column('name', sa.String(length=50), nullable=False, server_default="My Watchlist")
     )
     # ### end Alembic commands ###
 
