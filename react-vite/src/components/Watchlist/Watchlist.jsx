@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {fetchWatchlists} from "../../redux/watchlist"
 import { fetchWatchlistCryptos } from "../../redux/watchlistCryptos";
 import { fetchWatchlistStocks } from "../../redux/watchlistStocks";
@@ -8,7 +8,9 @@ import './Watchlist.css'
 
 function Watchlist() {
   const dispatch = useDispatch();
-  
+  const watchlist = useSelector((state) => state.watchlist.watchlist || []);
+  // const watchlistStocks = useSelector((state) => state.watchlistStocks);
+  // const watchlistCryptos = useSelector((state) => state.watchlistCryptos);
    useEffect(() => {
         dispatch(fetchWatchlists());
         dispatch(fetchWatchlistStocks());
@@ -19,7 +21,7 @@ function Watchlist() {
 
 
 
-        <h1
+        {/* <h1
         className='current-head-text'
         >Crypto</h1>
 
@@ -43,16 +45,28 @@ function Watchlist() {
             percentage change ^%
             </p>
 
-      </div>
+      </div> */}
+
+<h1 className='current-head-text'>Watchlists</h1>
+          {/* <p>{watchlist?.watchlists?.[0]?.name}</p>
+          <p>{watchlist?.watchlists?.[1]?.name}</p>
+          <p>{watchlist?.watchlists?.[2]?.name}</p>
+          <p>{watchlist?.watchlists?.[3]?.name}</p>
+          <p>{watchlist?.watchlists?.[4]?.name}</p>
+          <p>{watchlist?.watchlists?.[5]?.name}</p>
+          <p>{watchlist?.watchlists?.[6]?.name}</p> */}
+
+{watchlist?.watchlists?.map((item, index) => (
+  <div key={index} className='watch-stock-container'>
+    <p className='para-watch'>{item.name}</p>
+  </div>
+))}
 
 
 
 
 
-
-
-
-      <h1
+      {/* <h1
       className='current-head-text'
       >
         Stocks
@@ -81,7 +95,7 @@ function Watchlist() {
             percentage change ^%
             </p>
 
-      </div>
+      </div> */}
 
 
 
