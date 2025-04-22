@@ -6,12 +6,12 @@ import { fetchPortfolios } from "../../redux/portfolio";
 import { fetchPortfolioStocks } from "../../redux/portfolioStocks";
 import { fetchPortfolioCryptos } from "../../redux/portfolioCryptos";
 import './CurrentStocks.css'
-
+import { useSelector } from "react-redux";
 
 function CurrentStocksCard() {
     const dispatch = useDispatch();
     // const portfolios = useSelector(state => state.portfolio.portfolio || [])
-    // const portfolioStocks = useSelector(state => state.portfolio_stock.portfolio_stock || [])
+    const portfolio_stock = useSelector(state => state.portfolioStock.portfolio_stock || [])
 
 
     useEffect(() => {
@@ -23,7 +23,7 @@ function CurrentStocksCard() {
   return (
     <div className="current-stocks-container">
 
-        
+
 
       {/* <h1
       className='current-head-text'
@@ -58,9 +58,12 @@ function CurrentStocksCard() {
 
 
 
+{/* <p>
+        {portfolio_stock?.portfolio_stocks?.[0]?.stock_id}
 
+</p> */}
 
-      {/* <h1
+      <h1
       className='current-head-text'
       >
        Stocks
@@ -68,26 +71,39 @@ function CurrentStocksCard() {
 
 
         <div
-      className='watch-stock-container'
+      className='current-stock-container'
       >
 
-        <p
-        className='para-watch'
-        >
-            stock name
-            </p>
-        <p
-        className='para-watch'
-        >
-            stock price
-            </p>
-        <p
-        className='para-watch'
-        >
-            percentage change ^%
-            </p>
+{portfolio_stock?.portfolio_stocks?.map((item, index) => (
+  <div key={index} className='current-stockz'>
 
-      </div> */}
+    <p className='port-stocks'>stock_id: .{item.stock_id}</p>
+
+    <p className='port-stocks'>port: .{item.portfolio_id}</p>
+    <p className='port-stocks'>Quantity: .{item.quantity}</p>
+
+    <div
+    className="current-stock-button-container"
+    >
+
+    <button
+    className="buy-button-on-currentstocks"
+    >
+      Buy
+      </button>
+    <button
+    className="sell-button-on-currentstocks"
+    >
+      Sell
+      </button>
+
+      </div>
+
+
+  </div>
+))}
+
+      </div>
 
 
 
