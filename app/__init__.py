@@ -5,7 +5,6 @@ from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
 from .models import db, User
-from flask_session import Session
 
 from .api.csrf_routes import csrf_routes
 from .api.user_routes import user_routes
@@ -45,9 +44,6 @@ def load_user(id):
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
-
-# Initialize session
-Session(app)  # Add this line to initialize Flask-Session
 
 # Register blueprints
 app.register_blueprint(csrf_routes, url_prefix='/api/csrf')

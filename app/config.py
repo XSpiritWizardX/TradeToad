@@ -1,5 +1,4 @@
 import os
-from datetime import timedelta
 
 
 class Config:
@@ -10,18 +9,14 @@ class Config:
     # (only 'postgresql') but heroku's postgres add-on automatically sets the
     # url in the hidden config vars to start with postgres.
     # so the connection uri must be updated here (for production)
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DATABASE_URL').replace('postgres://', 'postgresql://')
+    _database_url = os.environ.get('DATABASE_URL')
+    if _database_url and _database_url.startswith('postgres://'):
+        _database_url = _database_url.replace('postgres://', 'postgresql://', 1)
+    SQLALCHEMY_DATABASE_URI = _database_url or os.environ.get(
+        'SQLALCHEMY_DATABASE_URI',
+        f"sqlite:///{os.path.join(os.path.abspath(os.path.dirname(__file__)), 'dev.db')}"
+    )
     SQLALCHEMY_ECHO = True
-
-
-# Session configuration
-    SESSION_TYPE = 'filesystem'
-    SESSION_PERMANENT = True
-    PERMANENT_SESSION_LIFETIME = timedelta(days=7)
-    SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
-    SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Lax'  # Set to 'Strict' in production
     
     # CSRF configuration
     WTF_CSRF_ENABLED = True
