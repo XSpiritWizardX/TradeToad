@@ -4,19 +4,19 @@ from sqlalchemy.sql import text
 
 def seed_portfolios():
     p1 = Portfolio(
-        user_id=1, name='port1', total_cash=1000000.05, available_cash=10.77)
+        user_id=1, name='port1', total_cash=25000.00, available_cash=25000.00)
     p2 = Portfolio(
-        user_id=2, name='port2', total_cash=1000000.11, available_cash=3000.88)
+        user_id=2, name='port2', total_cash=18000.00, available_cash=12000.00)
     p3 = Portfolio(
-        user_id=3, name='port3', total_cash=1000000.45, available_cash=2160.89)
+        user_id=3, name='port3', total_cash=15000.00, available_cash=9000.00)
     p4 = Portfolio(
-        user_id=4, name='port4', total_cash=1000000.55, available_cash=392000.15)
+        user_id=4, name='port4', total_cash=12000.00, available_cash=12000.00)
     p5 = Portfolio(
-        user_id=5, name='port5', total_cash=1000000.66, available_cash=1800.25)
+        user_id=5, name='port5', total_cash=8000.00, available_cash=5000.00)
     p6 = Portfolio(
-        user_id=6, name='port6', total_cash=1000000.66, available_cash=1800.25)
+        user_id=6, name='port6', total_cash=6000.00, available_cash=6000.00)
     p7 = Portfolio(
-        user_id=7, name='port7', total_cash=1000000.66, available_cash=1800.25)
+        user_id=7, name='port7', total_cash=10000.00, available_cash=7000.00)
 
 
     db.session.add(p1)

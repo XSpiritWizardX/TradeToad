@@ -23,7 +23,7 @@ class Portfolio_Stock(db.Model):
             'id': self.id,
             'portfolio_id': self.portfolio_id,
             'stock_id': self.stock_id,
-            'quantity': self.quantity,
+            'quantity': float(self.quantity),
             # 'stock': self.stock.to_dict()  # Include stock details
         }
     # NOTE line 24: "Include stock details" is not in schema diagram

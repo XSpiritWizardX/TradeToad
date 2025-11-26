@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Watchlist_Crypto, db
+from sqlalchemy.orm import joinedload
+
+from app.models import Watchlist, Watchlist_Crypto, db
 
 
 
@@ -17,7 +19,12 @@ def get_watchlist_cryptos():
     """
     Get all watchlist_cryptos for the logged-in user.
     """
-    watchlist_cryptos = Watchlist_Crypto.query.all()
+    watchlist = Watchlist.query.filter_by(user_id=current_user.id).first()
+    if not watchlist:
+        return jsonify({'watchlist_cryptos': []})
+
+    watchlist_cryptos = Watchlist_Crypto.query.options(joinedload(Watchlist_Crypto.crypto))\
+        .filter_by(watchlist_id=watchlist.id).all()
     return jsonify({'watchlist_cryptos': [watchlist_crypto.to_dict() for watchlist_crypto in watchlist_cryptos]})
 
 
@@ -35,7 +42,11 @@ def create_watchlist_crypto():
 
 
 
-    new_watchlist_crypto = Watchlist_Crypto(user_id=current_user.id, watchlist_id=watchlist_id, crypto_id=crypto_id)
+    watchlist = Watchlist.query.filter_by(id=watchlist_id, user_id=current_user.id).first()
+    if not watchlist:
+        return jsonify({'error': 'Watchlist not found for user'}), 404
+
+    new_watchlist_crypto = Watchlist_Crypto(watchlist_id=watchlist_id, crypto_id=crypto_id)
     db.session.add(new_watchlist_crypto)
     db.session.commit()
 
@@ -53,9 +64,9 @@ def delete_watchlist_crypto(id):
     """
     Delete a user's watchlist_crypto.
     """
-    watchlist_crypto = Watchlist_Crypto.query.filter_by(id=id, user_id=current_user.id).first()
+    watchlist_crypto = Watchlist_Crypto.query.get(id)
 
-    if not watchlist_crypto:
+    if not watchlist_crypto or watchlist_crypto.watchlist.user_id != current_user.id:
         return jsonify({'error': 'Watchlist_Crypto not found'}), 404
 
     db.session.delete(watchlist_crypto)

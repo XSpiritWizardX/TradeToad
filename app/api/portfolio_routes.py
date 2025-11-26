@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import Portfolio, db
+from app.services.portfolio_summary import build_portfolio_summary
 
 portfolio_routes = Blueprint('portfolios', __name__)
 
@@ -11,8 +12,23 @@ def get_portfolios():
     """
     Get all portfolios for the logged-in user.
     """
-    portfolios = Portfolio.query.filter_by(user_id=current_user.id).all()
-    return jsonify({'portfolios': [portfolio.to_dict() for portfolio in portfolios]})
+    portfolio = Portfolio.query.filter_by(user_id=current_user.id).first()
+    if not portfolio:
+        return jsonify({'portfolios': []})
+    return jsonify({'portfolios': [portfolio.to_dict()]})
+
+
+@portfolio_routes.route('/summary')
+@login_required
+def get_portfolio_summary():
+    """
+    Return the single portfolio with valuations and holdings breakdown.
+    """
+    portfolio = Portfolio.query.filter_by(user_id=current_user.id).first()
+    if not portfolio:
+        return jsonify({'portfolio': None}), 404
+    summary = build_portfolio_summary(portfolio)
+    return jsonify({'portfolio': summary})
 
 
 @portfolio_routes.route('/<int:id>')
@@ -35,9 +51,10 @@ def create_portfolio():
     """
     Create a new portfolio for the logged-in user.
     """
-    print(f'Creating portfolio for user: {current_user.id}')
-    print(f'Request data: {request.get_json()}')
-    
+    existing = Portfolio.query.filter_by(user_id=current_user.id).first()
+    if existing:
+        return jsonify(existing.to_dict()), 200
+
     data = request.get_json()
     name = data.get("name")
     total_cash = data.get("total_cash", 0.00)

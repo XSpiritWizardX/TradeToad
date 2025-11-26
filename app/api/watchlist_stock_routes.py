@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
+from sqlalchemy.orm import joinedload
 
-from app.models import Watchlist_Stock, db
+from app.models import Watchlist, Watchlist_Stock, db
 
 
 
@@ -22,7 +23,12 @@ def get_watchlist_stocks():
     """
     Get all watchlist_stocks for the logged-in user.
     """
-    watchlist_stocks = Watchlist_Stock.query.all()
+    watchlist = Watchlist.query.filter_by(user_id=current_user.id).first()
+    if not watchlist:
+        return jsonify({'watchlist_stocks': []})
+
+    watchlist_stocks = Watchlist_Stock.query.options(joinedload(Watchlist_Stock.stock))\
+        .filter_by(watchlist_id=watchlist.id).all()
     return jsonify({'watchlist_stocks': [watchlist_stock.to_dict() for watchlist_stock in watchlist_stocks]})
 
 
@@ -40,7 +46,11 @@ def create_watchlist_stock():
 
 
 
-    new_watchlist_stock = Watchlist_Stock(user_id=current_user.id, watchlist_id=watchlist_id, stock_id=stock_id)
+    watchlist = Watchlist.query.filter_by(id=watchlist_id, user_id=current_user.id).first()
+    if not watchlist:
+        return jsonify({'error': 'Watchlist not found for user'}), 404
+
+    new_watchlist_stock = Watchlist_Stock(watchlist_id=watchlist_id, stock_id=stock_id)
     db.session.add(new_watchlist_stock)
     db.session.commit()
 
@@ -58,9 +68,9 @@ def delete_watchlist_stock(id):
     """
     Delete a user's watchlist_stock.
     """
-    watchlist_stock = Watchlist_Stock.query.filter_by(id=id, user_id=current_user.id).first()
+    watchlist_stock = Watchlist_Stock.query.get(id)
 
-    if not watchlist_stock:
+    if not watchlist_stock or watchlist_stock.watchlist.user_id != current_user.id:
         return jsonify({'error': 'Watchlist_Stock not found'}), 404
 
     db.session.delete(watchlist_stock)

@@ -23,6 +23,6 @@ class Portfolio(db.Model):
             'id': self.id,
             'user_id': self.user_id,
             'name': self.name,
-            'total_cash': self.total_cash,
-            'available_cash': self.available_cash,
+            'total_cash': float(self.total_cash),
+            'available_cash': float(self.available_cash),
         }

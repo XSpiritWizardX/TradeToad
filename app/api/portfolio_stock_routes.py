@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Portfolio_Stock, db
+from sqlalchemy.orm import joinedload
+
+from app.models import Portfolio, Portfolio_Stock, db
 
 
 
@@ -15,7 +17,12 @@ def get_portfolio_stocks():
     """
     Get all portfolio_stocks for the logged-in user.
     """
-    portfolio_stocks = Portfolio_Stock.query.all()
+    portfolio = Portfolio.query.filter_by(user_id=current_user.id).first()
+    if not portfolio:
+        return jsonify({'portfolio_stocks': []})
+
+    portfolio_stocks = Portfolio_Stock.query.options(joinedload(Portfolio_Stock.stock))\
+        .filter_by(portfolio_id=portfolio.id).all()
     return jsonify({'portfolio_stocks': [portfolio_stock.to_dict() for portfolio_stock in portfolio_stocks]})
 
 
@@ -32,10 +39,11 @@ def create_portfolio_stock():
     stock_id = data.get("stock_id")
     quantity = data.get("quantity")
 
-    # if not name:
-    #     return jsonify({'error': 'Portfolio_Stock name is required'}), 400
+    portfolio = Portfolio.query.filter_by(id=portfolio_id, user_id=current_user.id).first()
+    if not portfolio:
+        return jsonify({'error': 'Portfolio not found for user'}), 404
 
-    new_portfolio_stock = Portfolio_Stock(user_id=current_user.id, portfolio_id=portfolio_id, stock_id=stock_id, quantity=quantity)
+    new_portfolio_stock = Portfolio_Stock(portfolio_id=portfolio_id, stock_id=stock_id, quantity=quantity)
     db.session.add(new_portfolio_stock)
     db.session.commit()
 
@@ -50,9 +58,9 @@ def update_portfolio_stock(id):
     """
     Update a portfolio_stock's quantity.
     """
-    portfolio_stock = Portfolio_Stock.query.filter_by(id=id, user_id=current_user.id).first()
+    portfolio_stock = Portfolio_Stock.query.get(id)
 
-    if not portfolio_stock:
+    if not portfolio_stock or portfolio_stock.portfolio.user_id != current_user.id:
         return jsonify({'error': 'Portfolio_Stock not found'}), 404
 
     data = request.get_json()
@@ -73,9 +81,9 @@ def delete_portfolio_stock(id):
     """
     Delete a user's portfolio_stock.
     """
-    portfolio_stock = Portfolio_Stock.query.filter_by(id=id, user_id=current_user.id).first()
+    portfolio_stock = Portfolio_Stock.query.get(id)
 
-    if not portfolio_stock:
+    if not portfolio_stock or portfolio_stock.portfolio.user_id != current_user.id:
         return jsonify({'error': 'Portfolio_Stock not found'}), 404
 
     db.session.delete(portfolio_stock)

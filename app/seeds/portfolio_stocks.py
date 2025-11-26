@@ -4,27 +4,27 @@ from sqlalchemy.sql import text
 
 def seed_portfolio_stocks():
     p1 = Portfolio_Stock(
-        portfolio_id=1, stock_id=1, quantity=10.77)
+        portfolio_id=1, stock_id=1, quantity=10)
     p2 = Portfolio_Stock(
-        portfolio_id=1, stock_id=2, quantity=3000.88)
+        portfolio_id=2, stock_id=2, quantity=5)
     p3 = Portfolio_Stock(
-        portfolio_id=3, stock_id=3, quantity=2160.89)
+        portfolio_id=3, stock_id=3, quantity=8)
     p4 = Portfolio_Stock(
-        portfolio_id=4, stock_id=4, quantity=392000.15)
+        portfolio_id=4, stock_id=4, quantity=12)
     p5 = Portfolio_Stock(
-        portfolio_id=5, stock_id=5, quantity=1800.25)
+        portfolio_id=5, stock_id=5, quantity=15)
     p6 = Portfolio_Stock(
-        portfolio_id=6, stock_id=5, quantity=1800.25)
+        portfolio_id=6, stock_id=5, quantity=4)
     p7 = Portfolio_Stock(
-        portfolio_id=7, stock_id=5, quantity=1800.25)
+        portfolio_id=7, stock_id=1, quantity=6)
     p8 = Portfolio_Stock(
-        portfolio_id=7, stock_id=4, quantity=1800.25)
+        portfolio_id=7, stock_id=4, quantity=3)
     p9 = Portfolio_Stock(
-        portfolio_id=7, stock_id=3, quantity=1800.25)
+        portfolio_id=7, stock_id=3, quantity=2)
     p10 = Portfolio_Stock(
-        portfolio_id=7, stock_id=2, quantity=1800.25)
+        portfolio_id=7, stock_id=2, quantity=1)
     p11 = Portfolio_Stock(
-        portfolio_id=7, stock_id=1, quantity=1800.25)
+        portfolio_id=7, stock_id=5, quantity=5)
 
 
     db.session.add(p1)

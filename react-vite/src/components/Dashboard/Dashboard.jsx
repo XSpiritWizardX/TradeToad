@@ -1,340 +1,488 @@
-// import { useSelector } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
-import PortfolioCard from '../../components/Portfolio/Portfolio';
-import WatchlistCard from '../../components/Watchlist/Watchlist'
-import CurrentStocksCard from '../CurrentStocks/CurrentStocks';
-
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { fetchPortfolios } from "../../redux/portfolio";
-import { fetchCryptos } from '../../redux/cryptos';
-import { fetchStocks } from '../../redux/stocks';
-import { thunkAuthenticate } from '../../redux/session';
-
-import './Dashboard.css'
-
+import { fetchPortfolioStocks } from "../../redux/portfolioStocks";
+import { fetchPortfolioCryptos } from "../../redux/portfolioCryptos";
+import { fetchStocks } from "../../redux/stocks";
+import { fetchCryptos } from "../../redux/cryptos";
+import { fetchPStockTransaction, createStockTransaction } from "../../redux/stockTransactions";
+import { fetchPCryptoTransaction, createCryptoTransaction } from "../../redux/cryptoTransactions";
+import StockChart from "../StockChart/StockChart";
+import "./Dashboard.css";
 
 function Dashboard() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  const user = useSelector(state => state.session.user)
-  const portfolios = useSelector(state => state.portfolio.portfolio || [])
-  // const cryptos = useSelector(state => state.crypto?.crypto?.cryptos || []);
-  // const stocks = useSelector(state => state.stock?.stock?.stocks || []);
+  const portfolioState = useSelector((state) => state.portfolio.portfolio);
+  const holdingsState = useSelector((state) => state.portfolioStock.portfolio_stock);
+  const stocksState = useSelector((state) => state.stock.stock);
+  const transactionsState = useSelector((state) => state.stockTransaction.stock_transaction);
+  const cryptosState = useSelector((state) => state.crypto.crypto);
+  const cryptoTxState = useSelector((state) => state.cryptoTransaction.crypto_transaction);
+  const portfolioCryptosState = useSelector((state) => state.portfolioCrypto.portfolio_crypto);
+  const user = useSelector((state) => state.session.user);
+
+  const [selectedSymbol, setSelectedSymbol] = useState("");
+  const [shares, setShares] = useState("");
+  const [cashAmount, setCashAmount] = useState("");
+  const [tradeMode, setTradeMode] = useState("shares"); // "shares" | "cash"
+  const [side, setSide] = useState("BUY");
+  const [latestPrice, setLatestPrice] = useState(null);
+  const [status, setStatus] = useState("");
+  const [assetType, setAssetType] = useState("stock");
+  const [holdingsValue, setHoldingsValue] = useState(0);
+  const pricePollRef = useRef(null);
+  const [timeframe, setTimeframe] = useState("1D");
+  const [positionRows, setPositionRows] = useState([]);
 
   useEffect(() => {
-    // first, check if user is authenticated 
-    dispatch(thunkAuthenticate())
-      .then((userData) => {
-        if (!userData) {
-          // if not authenticated, redirect to login
-          navigate('/login');
+    if (user) {
+      dispatch(fetchPortfolios());
+      dispatch(fetchPortfolioStocks());
+      dispatch(fetchPortfolioCryptos());
+      dispatch(fetchStocks());
+      dispatch(fetchPStockTransaction());
+      dispatch(fetchCryptos());
+      dispatch(fetchPCryptoTransaction());
+    }
+  }, [dispatch, user]);
+
+  const stocksList = useMemo(() => Array.isArray(stocksState?.stocks) ? stocksState.stocks : [], [stocksState]);
+  const cryptosList = useMemo(() => Array.isArray(cryptosState?.cryptos) ? cryptosState.cryptos : [], [cryptosState]);
+  const holdings = useMemo(
+    () => Array.isArray(holdingsState?.portfolio_stocks)
+      ? holdingsState.portfolio_stocks.filter((h) => h?.stock && h?.stock?.symbol)
+      : [],
+    [holdingsState]
+  );
+  const cryptoHoldings = useMemo(
+    () => Array.isArray(portfolioCryptosState?.portfolio_cryptos)
+      ? portfolioCryptosState.portfolio_cryptos.filter((c) => c?.crypto && c?.crypto?.symbol)
+      : [],
+    [portfolioCryptosState]
+  );
+
+  useEffect(() => {
+    if (!selectedSymbol) {
+      if (assetType === "stock") {
+        if (holdings.length) setSelectedSymbol(holdings[0].stock.symbol);
+        else if (stocksList.length) setSelectedSymbol(stocksList[0].symbol);
+        else setSelectedSymbol("AAPL");
+      } else if (assetType === "crypto") {
+        if (cryptosList.length) setSelectedSymbol(cryptosList[0].symbol);
+        else setSelectedSymbol("BTC");
+      }
+    }
+  }, [selectedSymbol, holdings, stocksList, cryptosList, assetType]);
+
+  useEffect(() => {
+    async function loadPrice() {
+      if (!selectedSymbol) return;
+      try {
+        const base = assetType === "crypto" ? "/api/cryptos" : "/api/stocks";
+        const res = await fetch(`${base}/${selectedSymbol}?days=5`);
+        if (!res.ok) throw new Error("price fetch failed");
+        const data = await res.json();
+        const last = data?.closing?.[data.closing.length - 1];
+        setLatestPrice(last ?? null);
+      } catch (err) {
+        console.error(err);
+        setLatestPrice(null);
+      }
+    }
+    loadPrice();
+    if (pricePollRef.current) clearInterval(pricePollRef.current);
+    pricePollRef.current = setInterval(loadPrice, 20_000);
+    return () => {
+      if (pricePollRef.current) clearInterval(pricePollRef.current);
+    };
+  }, [selectedSymbol, assetType]);
+
+  const availableCash = portfolioState?.portfolios?.[0]?.available_cash ?? 0;
+  const totalValue = availableCash + holdingsValue;
+  const accountValue = totalValue;
+
+  const orders = (transactionsState?.stock_transactions || []).map((t) => {
+    const fallback = stocksList.find((s) => s.id === t.stock_id);
+    const symbol = t.symbol || fallback?.symbol || "—";
+    const price = Number(t.price || 0);
+    const sharesNum = Number(t.shares || 0);
+    return {
+      symbol,
+      side: t.action,
+      shares: sharesNum,
+      price,
+      total: sharesNum * price
+    };
+  });
+
+  const cryptoOrders = (cryptoTxState?.crypto_transactions || []).map((t) => {
+    const fallback = cryptosList.find((c) => c.id === t.crypto_id);
+    const symbol = t.symbol || fallback?.symbol || "—";
+    const price = Number(t.price || 0);
+    const sharesNum = Number(t.shares || 0);
+    return {
+      symbol,
+      side: t.action,
+      shares: sharesNum,
+      price,
+      total: sharesNum * price
+    };
+  });
+
+  useEffect(() => {
+    async function loadHoldingsValue() {
+      const positions = [];
+      let total = 0;
+
+      const loadStock = async (h) => {
+        try {
+          const res = await fetch(`/api/stocks/${h.stock.symbol}?days=2`);
+          if (!res.ok) throw new Error();
+          const data = await res.json();
+          const last = data?.closing?.[data.closing.length - 1] || 0;
+          const qty = Number(h.quantity || 0);
+          const value = qty * last;
+          positions.push({ symbol: h.stock.symbol, qty, price: last, value });
+          total += value;
+        } catch {
+          const qty = Number(h.quantity || 0);
+          positions.push({ symbol: h.stock.symbol, qty, price: 0, value: 0 });
+        }
+      };
+
+      const loadCrypto = async (c) => {
+        try {
+          const res = await fetch(`/api/cryptos/${c.crypto.symbol}?days=2`);
+          if (!res.ok) throw new Error();
+          const data = await res.json();
+          const last = data?.closing?.[data.closing.length - 1] || 0;
+          const qty = Number(c.quantity || 0);
+          const value = qty * last;
+          positions.push({ symbol: c.crypto.symbol, qty, price: last, value });
+          total += value;
+        } catch {
+          const qty = Number(c.quantity || 0);
+          positions.push({ symbol: c.crypto.symbol, qty, price: 0, value: 0 });
+        }
+      };
+
+      try {
+        await Promise.all([
+          ...holdings.map(loadStock),
+          ...cryptoHoldings.map(loadCrypto)
+        ]);
+        setPositionRows(positions);
+        setHoldingsValue(total);
+      } catch {
+        setPositionRows([]);
+        setHoldingsValue(0);
+      }
+    }
+    loadHoldingsValue();
+  }, [holdings, cryptoHoldings]);
+
+  const portfolioSeries = useMemo(() => {
+    const base = totalValue || 1;
+    const multipliers = [0.95, 0.98, 1.0, 1.02, 1.05, 1.03, 1.08];
+    return multipliers.map((m, idx) => ({
+      label: `Day ${idx + 1}`,
+      value: Number((base * m).toFixed(2)),
+    }));
+  }, [totalValue]);
+
+  const computedShares = useMemo(() => {
+    if (!latestPrice) return 0;
+    if (tradeMode === "cash") {
+      const cash = Number(cashAmount || 0);
+      return cash > 0 ? cash / latestPrice : 0;
+    }
+    return Number(shares || 0);
+  }, [tradeMode, cashAmount, shares, latestPrice]);
+
+  const onTrade = async () => {
+    setStatus("");
+    const payload = {
+      shares: computedShares,
+      price: latestPrice,
+      action: side
+    };
+    try {
+      let resp;
+      if (assetType === "crypto") {
+        const cryptoMeta = cryptosList.find((c) => c.symbol === selectedSymbol);
+        if (!cryptoMeta) {
+          setStatus("Unknown symbol");
           return;
         }
-      // if authenticated, fetch data
-      return Promise.all([
-        dispatch(fetchPortfolios()),
-        dispatch(fetchCryptos()),
-        dispatch(fetchStocks()),
-      ]);
-    })
-      .catch(err => {
-          console.error("Authentication error:", err);
-          navigate('/login');   // redirect to login)
-      })
-      .finally(() => {
-        setIsLoading(false);
-      })
-  }, [dispatch, navigate]);
-  // }, [dispatch, user]);
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
-
-  if (!user) {
-    return <div>Please log in to view your dashboard</div>
-  }
+        resp = await dispatch(createCryptoTransaction({ ...payload, crypto_id: cryptoMeta.id }));
+      } else {
+        const stockMeta = stocksList.find((s) => s.symbol === selectedSymbol);
+        if (!stockMeta) {
+          setStatus("Unknown symbol");
+          return;
+        }
+        resp = await dispatch(createStockTransaction({ ...payload, stock_id: stockMeta.id }));
+      }
+      if (resp?.error) {
+        setStatus(resp.error);
+        return;
+      }
+      setStatus(`${assetType.toUpperCase()} ${side} executed`);
+      setShares("");
+      setCashAmount("");
+      dispatch(fetchPortfolios());
+      dispatch(fetchPortfolioStocks());
+      dispatch(fetchPStockTransaction());
+      dispatch(fetchPCryptoTransaction());
+    } catch (err) {
+      setStatus(err.message);
+    }
+  };
 
   return (
-    <div className="dashboard-container">
-
-      <h1>
-        Welcome, {user?.firstName} {user?.lastName} !
-      </h1>
-
-      <div className="dashboard-content">
-        <PortfolioCard className="portfolio-card"/>
-
-        <div className='current-stock-and-watchlist'>
-          <h1 className='side-bar-header-text'>Portfolio</h1>
-
-        <CurrentStocksCard className='current-stock-card'/>
-
-        <h1 className='side-bar-header-text'>Watchlist</h1>
-        <WatchlistCard className='watchlist-card'/>
-        
+    <div className="dash-page">
+      <div className="top-strip">
+        <div className="brand-dot">●</div>
+        <div className="market-status">Market Open</div>
+        <div className="quick-pills">
+          <span className="pill ghost">Stock Trading</span>
+          <span className="pill ghost">Options</span>
+          <span className="pill ghost">Monitoring</span>
+        </div>
+        <div className="status-badges">
+          <span className="badge live">Live</span>
+          <span className="badge neutral">Data secured</span>
         </div>
       </div>
-
-        <div className='time-frame-container'>
-
-        <button className='time-frame'>
-          Live
-        </button>
-        
-        <button className='time-frame'>
-          1 Day
-        </button>
-        
-        <button className='time-frame'>
-          1 Week
-        </button>
-        
-        <button className='time-frame'>
-          1 Month
-        </button>
-
-        <button className='time-frame'>
-          3 Months
-        </button>
-
-        <button className='time-frame'>
-          1 Year
-        </button>
-
-        <button className='time-frame'>
-          All Time
-        </button>
-
-        <h1 className='dash-head-text'>
-          Available Cash = ${portfolios?.portfolios?.[0]?.available_cash}
-        </h1>
-        </div>
-
-        <div className='foot-text'>
-            <p>Tune in for more</p>
-        </div>
-
-        <div className='landing-page-copy'>
-          <div>
-          <h3>Article</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              <br/>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              <br/>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-              <br/>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
-          <div>
-          <h3>Article</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              <br/>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              <br/>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-              <br/>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
-          <div>
-          <h3>Article</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              <br/>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              <br/>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-              <br/>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
-          <div>
-          <h3>Article</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              <br/>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              <br/>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-              <br/>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
-          <div>
-          <h3>Article</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              <br/>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              <br/>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-              <br/>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
-          <div>
-          <h3>Article</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              <br/>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              <br/>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-              <br/>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+      <div className="dash-grid">
+        <section className="panel sidebar">
+          <div className="panel-section account-card">
+            <div className="account-top">
+              <div>
+                <div className="muted">Individual</div>
+                <div className="account-value">
+                  ${accountValue.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                </div>
+                <div className="account-change positive">Live balance</div>
+              </div>
+              <button className="pill ghost">Deposit</button>
+            </div>
+            <div className="mini-chart">
+              <ResponsiveContainer width="100%" height={90}>
+                <AreaChart data={portfolioSeries}>
+                  <defs>
+                    <linearGradient id="miniGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#23e889" stopOpacity={0.6} />
+                      <stop offset="95%" stopColor="#23e889" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#15202d" />
+                  <XAxis dataKey="label" hide />
+                  <YAxis hide />
+                  <Tooltip />
+                  <Area type="monotone" dataKey="value" stroke="#23e889" fill="url(#miniGradient)" strokeWidth={2} dot={false} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="overview">
+              <div>
+                <div className="muted">Portfolio value</div>
+                <div className="stat-large">${accountValue.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+              </div>
+              <div>
+                <div className="muted">Available</div>
+                <div className="stat-large">${availableCash.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+              </div>
+              <div>
+                <div className="muted">Holdings</div>
+                <div className="stat-large">${holdingsValue.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+              </div>
+            </div>
           </div>
 
-        </div>
+          <div className="panel-section movers">
+            <div className="section-title">Positions</div>
+            <div className="mover-list">
+              {positionRows.map((pos) => (
+                <div key={pos.symbol} className="mover-row">
+                  <div className="mover-symbol">{pos.symbol}</div>
+                  <div className="mover-price">Qty {pos.qty}</div>
+                  <div className="mover-price">${pos.value.toFixed(2)}</div>
+                </div>
+              ))}
+              {!positionRows.length && <div className="muted">No holdings yet.</div>}
+            </div>
+          </div>
+        </section>
 
-        <h1
-      className='para-stock-choice'
-      >
-      Stock Choices
-      </h1>
-
-
-
-{/* MAP THROUGH STOCKS */}
-
-        <div className='stock-choices-dashboard'>
-
-          <NavLink
-            className="stock-choices-card"
-            to='/stocks/AAPL'
-          >
-            <button>
-              APPLE
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/META'
-              className="stock-choices-card"
-          >
-            <button>
-              FACEBOOK
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/AMZN'
-              className="stock-choices-card"
-          >
-            <button>
-              AMAZON
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/TSLA'
-              className="stock-choices-card"
-          >
-            <button>
-              TESLA
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/GOOGL'
-              className="stock-choices-card"
-          >
-            <button>
-              GOOGLE
-            </button>
-          </NavLink>
-
-
-          <NavLink
-            to='/stocks/NFLX'
-              className="stock-choices-card"
-          >
-            <button>
-              NETFLIX
-            </button>
-          </NavLink>
-
-
-          <NavLink
-            to='/stocks/X:BTCUSD'
-              className="stock-choices-card"
-          >
-            <button>
-              BITCOIN
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/X:DOGEUSD'
-              className="stock-choices-card"
-          >
-            <button>
-              DOGECOIN
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/X:ETHUSD'
-              className="stock-choices-card"
-          >
-            <button>
-              ETHEREUM
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/X:LINKUSD'
-              className="stock-choices-card"
-          >
-            <button>
-              CHAINLINK
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/X:XRPUSD'
-              className="stock-choices-card"
-          >
-            <button>
-              XRP
-            </button>
-          </NavLink>
-
-
-           </div>
-
-
-
-
-
-{/* MAPP THOUGH CRYPTOS */}
-
-           <div>
-
-
-
-
-
-
-
-
-
-
-
-
+        <section className="panel main">
+          <div className="toolbar">
+            <div className="toolbar-left">
+              <button className="tab-btn active">Trading</button>
+              <button className="tab-btn ghost">Monitoring</button>
+            </div>
+            <div className="toolbar-right">
+              <div className="ticker">{selectedSymbol}</div>
+              <div className="muted">{latestPrice ? `$${latestPrice.toFixed(2)}` : "—"}</div>
+              <span className="badge live">Real-time</span>
+            </div>
           </div>
 
+            <div className="chart-card">
+              <div className="timeframe-strip">
+                {["LIVE", "1D", "1W", "1M", "3M", "1Y", "5Y"].map((tf) => (
+                  <button
+                    key={tf}
+                    className={`tf-btn ${tf === timeframe ? "active" : ""}`}
+                    onClick={() => setTimeframe(tf)}
+                  >
+                    {tf}
+                  </button>
+                ))}
+              </div>
+            <StockChart
+              key={`${selectedSymbol}-${assetType}-${timeframe}`}
+              symbol={selectedSymbol}
+              days={{ LIVE: 3, "1D": 7, "1W": 30, "1M": 90, "3M": 180, "1Y": 365, "5Y": 1825 }[timeframe] || 60}
+              assetType={assetType}
+            />
+          </div>
 
+          <div className="chart-card">
+            <div className="section-title">Portfolio Performance</div>
+            <ResponsiveContainer width="100%" height={220}>
+              <AreaChart data={portfolioSeries}>
+                <defs>
+                  <linearGradient id="portfolioArea" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#23e889" stopOpacity={0.35} />
+                    <stop offset="95%" stopColor="#23e889" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#1b2735" />
+                <XAxis dataKey="label" tick={{ fill: "#94a3b8" }} />
+                <YAxis tick={{ fill: "#94a3b8" }} />
+                <Tooltip />
+                <Area type="monotone" dataKey="value" stroke="#23e889" fill="url(#portfolioArea)" strokeWidth={2} dot={false} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
 
+          <div className="options-table">
+            <div className="section-title">Recent orders</div>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Symbol</th>
+                    <th>Side</th>
+                    <th>Shares</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...orders, ...cryptoOrders].map((o, idx) => (
+                    <tr key={idx}>
+                      <td>{o.symbol}</td>
+                      <td>{o.side}</td>
+                      <td>{o.shares}</td>
+                      <td>${Number(o.price || 0).toFixed(2)}</td>
+                      <td>${Number(o.total || 0).toFixed(2)}</td>
+                    </tr>
+                  ))}
+                  {orders.length + cryptoOrders.length === 0 && (
+                    <tr>
+                      <td colSpan="5" className="muted">No orders yet.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
 
-
-
+        <section className="panel right">
+          <div className="panel-section order-card">
+            <div className="section-title">Trade</div>
+            <div className="order-row spaced">
+              <label className="muted">Asset</label>
+              <div className="side-choices">
+                <button className={`tab-btn ${assetType === "stock" ? "active" : ""}`} onClick={() => { setAssetType("stock"); setSelectedSymbol(""); }}>Stock</button>
+                <button className={`tab-btn ${assetType === "crypto" ? "active" : ""}`} onClick={() => { setAssetType("crypto"); setSelectedSymbol(""); }}>Crypto</button>
+              </div>
+            </div>
+            <div className="order-row spaced">
+              <label className="muted">Symbol</label>
+              <select
+                className="order-input"
+                value={selectedSymbol}
+                onChange={(e) => setSelectedSymbol(e.target.value)}
+              >
+                {(assetType === "stock" ? stocksList : cryptosList).map((s) => (
+                  <option key={`${s.id}-${s.symbol}`} value={s.symbol}>{s.symbol}</option>
+                ))}
+              </select>
+            </div>
+            <div className="order-row spaced">
+              <label className="muted">Side</label>
+              <div className="side-choices">
+                <button className={`tab-btn ${side === "BUY" ? "active" : ""}`} onClick={() => setSide("BUY")}>Buy</button>
+                <button className={`tab-btn ${side === "SELL" ? "active" : ""}`} onClick={() => setSide("SELL")}>Sell</button>
+              </div>
+            </div>
+            <div className="order-row spaced">
+              <label className="muted">Mode</label>
+              <div className="side-choices">
+                <button className={`tab-btn ${tradeMode === "shares" ? "active" : ""}`} onClick={() => { setTradeMode("shares"); setCashAmount(""); }}>Shares</button>
+                <button className={`tab-btn ${tradeMode === "cash" ? "active" : ""}`} onClick={() => { setTradeMode("cash"); setShares(""); }}>Cash</button>
+              </div>
+            </div>
+            {tradeMode === "shares" && (
+              <div className="order-row">
+                <div className="muted">Shares</div>
+                <input
+                  className="order-input"
+                  type="number"
+                  min="0"
+                  step="0.0001"
+                  value={shares}
+                  onChange={(e) => setShares(e.target.value)}
+                  placeholder="0"
+                />
+              </div>
+            )}
+            {tradeMode === "cash" && (
+              <div className="order-row">
+                <div className="muted">Amount ($)</div>
+                <input
+                  className="order-input"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={cashAmount}
+                  onChange={(e) => setCashAmount(e.target.value)}
+                  placeholder="0.00"
+                />
+              </div>
+            )}
+            <div className="order-row spaced">
+              <div className="muted">Market Price</div>
+              <div className="order-value">{latestPrice ? `$${latestPrice.toFixed(2)}` : "—"}</div>
+            </div>
+            <div className="order-row spaced">
+              <div className="muted">Estimated Total</div>
+              <div className="order-value">
+                {latestPrice && computedShares ? `$${(computedShares * latestPrice).toFixed(2)}` : "$0.00"}
+              </div>
+            </div>
+            <button className="cta" onClick={onTrade} disabled={!computedShares || !selectedSymbol}>
+              Review Order
+            </button>
+            {status && <div className="muted">{status}</div>}
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

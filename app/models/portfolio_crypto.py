@@ -24,6 +24,6 @@ class Portfolio_Crypto(db.Model):
             'id': self.id,
             'portfolio_id': self.portfolio_id,
             'crypto_id': self.crypto_id,
-            'quantity': self.quantity,
+            'quantity': float(self.quantity),
             # 'stock': self.stock.to_dict()  # Include stock details
         }

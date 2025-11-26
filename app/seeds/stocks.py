@@ -4,15 +4,15 @@ from sqlalchemy.sql import text
 
 def seed_stocks():
     meta = Stock(
-        symbol='META', company='META  Meta Platforms Inc', market_cap=1300000000000)
+        symbol='META', company='Meta Platforms Inc', market_cap=1300000000000)
     apple = Stock(
-        symbol='AAPL', company='AAPL Apple Inc', market_cap=3030000000000)
+        symbol='AAPL', company='Apple Inc', market_cap=3030000000000)
     amazon = Stock(
-        symbol='AMZN', company='AMZN Amazon Inc', market_cap=2160000000000)
+        symbol='AMZN', company='Amazon Inc', market_cap=2160000000000)
     netflix = Stock(
-        symbol='NFLX', company='NFLX Netflix Inc', market_cap=392000000000)
+        symbol='NFLX', company='Netflix Inc', market_cap=392000000000)
     google = Stock(
-        symbol='GOOGL', company='GOOGL Alphabet Inc', market_cap=1840000000000)
+        symbol='GOOGL', company='Alphabet Inc', market_cap=1840000000000)
 
 
     db.session.add(meta)

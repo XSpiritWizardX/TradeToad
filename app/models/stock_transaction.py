@@ -25,7 +25,7 @@ class Stock_Transaction(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "stock_id": self.stock_id,
-            "shares": self.shares,
-            "price": self.price,
+            "shares": float(self.shares),
+            "price": float(self.price),
             "action": self.action,
         }

@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Portfolio_Crypto, db
+from sqlalchemy.orm import joinedload
+
+from app.models import Portfolio, Portfolio_Crypto, db
 
 
 portfolio_crypto_routes = Blueprint('portfolio_cryptos', __name__, "")
@@ -16,7 +18,12 @@ def get_portfolio_cryptos():
     """
     Get all portfolio_cryptos for the logged-in user.
     """
-    portfolio_cryptos = Portfolio_Crypto.query.all()
+    portfolio = Portfolio.query.filter_by(user_id=current_user.id).first()
+    if not portfolio:
+        return jsonify({'portfolio_cryptos': []})
+
+    portfolio_cryptos = Portfolio_Crypto.query.options(joinedload(Portfolio_Crypto.crypto))\
+        .filter_by(portfolio_id=portfolio.id).all()
     return jsonify({'portfolio_cryptos': [portfolio_crypto.to_dict() for portfolio_crypto in portfolio_cryptos]})
 
 
@@ -33,10 +40,11 @@ def create_portfolio_crypto():
     crypto_id = data.get("crypto_id")
     quantity = data.get("quantity")
 
-    # if not name:
-    #     return jsonify({'error': 'Portfolio_Crypto name is required'}), 400
+    portfolio = Portfolio.query.filter_by(id=portfolio_id, user_id=current_user.id).first()
+    if not portfolio:
+        return jsonify({'error': 'Portfolio not found for user'}), 404
 
-    new_portfolio_crypto = Portfolio_Crypto(user_id=current_user.id, portfolio_id=portfolio_id, crypto_id=crypto_id, quantity=quantity)
+    new_portfolio_crypto = Portfolio_Crypto(portfolio_id=portfolio_id, crypto_id=crypto_id, quantity=quantity)
     db.session.add(new_portfolio_crypto)
     db.session.commit()
 
@@ -51,9 +59,9 @@ def update_portfolio_crypto(id):
     """
     Update a portfolio_crypto's quantity.
     """
-    portfolio_crypto = Portfolio_Crypto.query.filter_by(id=id, user_id=current_user.id).first()
+    portfolio_crypto = Portfolio_Crypto.query.get(id)
 
-    if not portfolio_crypto:
+    if not portfolio_crypto or portfolio_crypto.portfolio.user_id != current_user.id:
         return jsonify({'error': 'Portfolio_Crypto not found'}), 404
 
     data = request.get_json()
@@ -74,9 +82,9 @@ def delete_portfolio_crypto(id):
     """
     Delete a user's portfolio_crypto.
     """
-    portfolio_crypto = Portfolio_Crypto.query.filter_by(id=id, user_id=current_user.id).first()
+    portfolio_crypto = Portfolio_Crypto.query.get(id)
 
-    if not portfolio_crypto:
+    if not portfolio_crypto or portfolio_crypto.portfolio.user_id != current_user.id:
         return jsonify({'error': 'Portfolio_Crypto not found'}), 404
 
     db.session.delete(portfolio_crypto)

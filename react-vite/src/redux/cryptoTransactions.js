@@ -76,9 +76,18 @@ export const fetchOneCryptoTransaction = (cryptoTransactionId) => async (dispatc
     }
   };
 
-
-
-
+export const createCryptoTransaction = (payload) => async (dispatch) => {
+  const response = await csrfFetch("/api/crypto_transactions/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(fetchPCryptoTransaction());
+    return data;
+  }
+};
 
 export const deleteCryptoTransaction = (cryptoTransactionId) => async (dispatch) => {
     try {

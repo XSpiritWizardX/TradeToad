@@ -1,4 +1,9 @@
 import os
+from dotenv import load_dotenv
+
+# Load environment variables before importing modules that rely on them
+load_dotenv()
+
 from flask import Flask, render_template, request, redirect
 from flask_cors import CORS
 from flask_migrate import Migrate

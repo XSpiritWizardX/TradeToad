@@ -1,290 +1,184 @@
-// import { useSelector } from 'react-redux';
-import { useSelector } from 'react-redux';
-import './StockShow.css'
-import { NavLink, useParams } from 'react-router-dom';
-import OpenModalButton from '../OpenModalButton/OpenModalButton';
-import BuyStockModal from '../BuyStockModal/BuyStockModal';
-import SellStockModal from '../SellStockModal/SellStockModal'
-import StockChart from '../StockChart/StockChart';
-import { useDispatch } from 'react-redux';
-import * as stockDataActions from '../../redux/stockPrices'
-import { useEffect, useState } from 'react';
-
+import { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
+import StockChart from "../StockChart/StockChart";
+import "./StockShow.css";
 
 function StockShow() {
+  const { stockID } = useParams();
+  const symbol = (stockID || "AAPL").toUpperCase();
+  const [shares, setShares] = useState("");
+  const [livePrice, setLivePrice] = useState(null);
+  const [timeframe, setTimeframe] = useState("1D");
 
-  // const { stockID } = useParams();
-  // const {cryptoId} = useParams();
-  const { symbol } = useParams()
-  const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  const user = useSelector(state => state.session.user)
-  // const stocks = useSelector(state => state.stock?.stock?.stocks || []);
-  const stockData = useSelector(state => state.stockPrices?.currentStock);
-  const [isLoading, setIsLoading] = useState(true);
-
-  console.log("Symbol from URL params:", symbol);
+  const quote = useMemo(
+    () => ({
+      price: livePrice ?? 213.39,
+      change: 2.28,
+      changePct: 1.08,
+      afterHours: -0.75,
+      afterPct: -0.35,
+      marketCap: "950.65B",
+      pe: "17.93",
+      divYield: "1.20",
+      avgVolume: "29.60M",
+      employees: "132,000",
+      hq: "Cupertino, California",
+      founded: "1976",
+    }),
+    [livePrice]
+  );
 
   useEffect(() => {
-    setIsLoading(true);
-
-    dispatch(stockDataActions.fetchOneStockData(symbol))
-      .then(() => setIsLoading(false))
-      .catch(() => setIsLoading(false));
-  }, [dispatch, symbol]);
-
-  // format price to 2 decimal places
-  const formatPrice = (price) => {
-    return price ? `$${parseFloat(price).toFixed(2)}` : 'N/A';
-  };
-
-  // format large numbers (like volume and market cap)
-  const formatLargeNumber = (num) => {
-    if (!num) return 'N/A';
-    
-    if (num >= 1000000000) {
-      return `$${(num / 1000000000).toFixed(2)}B`;
-    } else if (num >= 1000000) {
-      return `$${(num / 1000000).toFixed(2)}M`;
-    } else if (num >= 1000) {
-      return `$${(num / 1000).toFixed(2)}K`;
+    async function loadQuote() {
+      try {
+        const res = await fetch(`/api/stocks/${symbol}?days=5`);
+        if (!res.ok) throw new Error("quote fetch failed");
+        const data = await res.json();
+        const last = data?.closing?.[data.closing.length - 1];
+        if (last) setLivePrice(last);
+      } catch (err) {
+        console.error(err);
+      }
     }
-    return `$${num}`;
-  };
+    loadQuote();
+  }, [symbol]);
 
+  const estimatedCost = shares && quote.price ? (parseFloat(shares) * quote.price).toFixed(2) : "0.00";
+  const daysMap = { LIVE: 7, "1D": 7, "1W": 30, "1M": 90, "3M": 180, "1Y": 365, "5Y": 1825 };
 
   return (
-    <div className="dashboard-container">
-       {/* Top section with StockChart and Trade menu side by side */}
-      <div className='top-section'>
-
-        <div className='chart-container'>
-            <StockChart symbol={symbol} />
+    <div className="stock-page">
+      <div className="stock-topbar">
+        <input className="search-input" placeholder="Search" />
+        <div className="top-actions">
+          <span className="pill dark">• 53%</span>
+          <span className="pill dark">📈 213,327</span>
         </div>
+      </div>
+      <div className="stock-layout">
+        <main className="stock-main">
+          <div className="tag-row">
+            <span className="chip filled">Computer Hardware</span>
+            <span className="chip">Most Popular</span>
+            <span className="chip">Computer Software</span>
+          </div>
 
-            <div className='user-trade-menu'>
-
-
-                {user ? (
-
-                  <>
-
-                  <h1>Trade</h1>
-
-                  <div className='button-cont-stockshow'>
-
-                    <OpenModalButton
-                      className='buy-button'
-                      buttonText="Buy"
-                      // onItemClick={closeMenu}
-                      modalComponent={<BuyStockModal />}
-                    />
-
-                    <OpenModalButton
-                      className='sell-button'
-                      buttonText="Sell"
-                      // onItemClick={closeMenu}
-                      modalComponent={<SellStockModal />}
-                    />
-
-                    <button className='add-watch-button'>
-                      Add to watchlist
-                    </button>
-
-                  </div>
-
-
-                  <p>Technical data</p>
-
-                  <div className='tech-data'>
-                    <p>PRICE</p>
-                    <p>{isLoading ? 'Loading...' : formatPrice(stockData?.closing?.[stockData?.closing?.length - 1])}</p>
-                    <p>VOLUME</p>
-                    <p>{isLoading ? 'Loading...' : formatLargeNumber(stockData?.volume)}</p>
-                    <p>MARKET-CAP</p>
-                    <p>{isLoading ? 'Loading...' : formatLargeNumber(stockData?.market_cap)}</p>
-                  </div>
-
-                  </>
-                  )
-                  :
-                  (
-                    <>
-
-                    <p>Technical data</p>
-
-                    <div className='tech-data'>
-                    <p>PRICE</p>
-                    <p>{isLoading ? 'Loading...' : formatPrice(stockData?.closing?.[stockData?.closing?.length - 1])}</p>
-                    <p>VOLUME</p>
-                    <p>{isLoading ? 'Loading...' : formatLargeNumber(stockData?.volume)}</p>
-                    <p>MARKET-CAP</p>
-                    <p>{isLoading ? 'Loading...' : formatLargeNumber(stockData?.market_cap)}</p>
-                    </div>
-
-                    </>
-                  )
-                }
-
+          <div className="quote-block">
+            <h1 className="stock-name">{symbol}</h1>
+            <div className="stock-price">${quote.price.toFixed(2)}</div>
+            <div className="stock-change">
+              <span className="up">
+                ${quote.change.toFixed(2)} ({quote.changePct.toFixed(2)}%) Today
+              </span>
+              <span className="muted">
+                {quote.afterHours > 0 ? "+" : ""}
+                {quote.afterHours.toFixed(2)} ({quote.afterPct.toFixed(2)}%) After Hours
+              </span>
             </div>
+          </div>
+
+          <div className="chart-section">
+            <div className="timeframe-row">
+              {["LIVE", "1D", "1W", "1M", "3M", "1Y", "5Y"].map((tf) => (
+                <button
+                  key={tf}
+                  className={`tf-btn ${tf === timeframe ? "active" : ""}`}
+                  onClick={() => setTimeframe(tf)}
+                >
+                  {tf}
+                </button>
+              ))}
+              <div className="expand">Expand ⤢</div>
+            </div>
+            <div className="chart-wrapper">
+              <StockChart
+                key={`${symbol}-${timeframe}`}
+                symbol={symbol}
+                days={daysMap[timeframe] || 90}
+              />
+            </div>
+          </div>
+
+          <div className="about-section">
+            <div className="about-header">
+              <h2>About</h2>
+              <button className="link-btn">Show More</button>
+            </div>
+            <p className="about-text">
+              {symbol} designs, manufactures, and markets consumer electronics and software. It operates
+              across Americas, Europe, Greater China, Japan, and Rest of Asia Pacific.
+            </p>
+
+            <div className="stats-grid">
+              <div>
+                <div className="muted">CEO</div>
+                <div className="stat-value">Tim Cook</div>
+              </div>
+              <div>
+                <div className="muted">Employees</div>
+                <div className="stat-value">{quote.employees}</div>
+              </div>
+              <div>
+                <div className="muted">Headquarters</div>
+                <div className="stat-value">{quote.hq}</div>
+              </div>
+              <div>
+                <div className="muted">Founded</div>
+                <div className="stat-value">{quote.founded}</div>
+              </div>
+              <div>
+                <div className="muted">Market Cap</div>
+                <div className="stat-value">{quote.marketCap}</div>
+              </div>
+              <div>
+                <div className="muted">Price-Earnings Ratio</div>
+                <div className="stat-value">{quote.pe}</div>
+              </div>
+              <div>
+                <div className="muted">Dividend Yield</div>
+                <div className="stat-value">{quote.divYield}</div>
+              </div>
+              <div>
+                <div className="muted">Average Volume</div>
+                <div className="stat-value">{quote.avgVolume}</div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <aside className="order-card">
+          <div className="order-header">
+            <div className="order-title">Buy {symbol}</div>
+            <button className="icon-btn">•••</button>
+          </div>
+          <div className="order-row">
+            <div className="muted">Shares</div>
+            <input
+              className="order-input"
+              type="number"
+              min="0"
+              step="1"
+              value={shares}
+              onChange={(e) => setShares(e.target.value)}
+              placeholder="0"
+            />
+          </div>
+          <div className="order-row spaced">
+            <div className="muted green">Market Price</div>
+            <div className="order-value green">${quote.price.toFixed(2)}</div>
+          </div>
+          <div className="order-row spaced">
+            <div className="muted">Estimated Cost</div>
+            <div className="order-value">${estimatedCost}</div>
+          </div>
+          <button className="cta">Review Order</button>
+          <div className="power">Buying Power Available $14.39</div>
+          <div className="side-actions">
+            <button className="outline-btn">Trade {symbol} Options</button>
+            <button className="outline-btn">Add to Watchlist</button>
+          </div>
+        </aside>
       </div>
-
-        <div className='time-frame-container'>
-
-          <button
-          className='time-frame'
-          >
-            Live
-          </button>
-          <button
-          className='time-frame'
-          >
-            1 Day
-          </button>
-          <button
-          className='time-frame'
-          >
-            1 Week
-          </button>
-          <button
-          className='time-frame'
-          >
-            1 Month
-          </button>
-          <button
-          className='time-frame'
-          >
-            3 Months
-          </button>
-          <button
-          className='time-frame'
-          >
-            1 Year
-          </button>
-          <button
-          className='time-frame'
-          >
-            All Time
-          </button>
-
-        </div>
-
-
-      <div className='foot-text'>
-          <p>Tune in for more</p>
-      </div>
-
-      <h1 className='para-stock-choice'>
-          Developers Choices
-      </h1>
-
-      <div
-      className='stock-choices-dashboard'
-      >
-
-          <NavLink
-            className="stock-choices-card"
-            to='/stocks/AAPL'
-          >
-            <button>
-              APPLE
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/META'
-              className="stock-choices-card"
-          >
-            <button>
-              FACEBOOK
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/AMZN'
-              className="stock-choices-card"
-          >
-            <button>
-              AMAZON
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/TSLA'
-              className="stock-choices-card"
-          >
-            <button>
-              TESLA
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/GOOGL'
-              className="stock-choices-card"
-          >
-            <button>
-              GOOGLE
-            </button>
-          </NavLink>
-
-
-          <NavLink
-            to='/stocks/NFLX'
-              className="stock-choices-card"
-          >
-            <button>
-              NETFLIX
-            </button>
-          </NavLink>
-
-
-          <NavLink
-            to='/stocks/X:BTCUSD'
-              className="stock-choices-card"
-          >
-            <button>
-              BITCOIN
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/X:DOGEUSD'
-              className="stock-choices-card"
-          >
-            <button>
-              DOGECOIN
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/X:ETHUSD'
-              className="stock-choices-card"
-          >
-            <button>
-              ETHEREUM
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/X:LINKUSD'
-              className="stock-choices-card"
-          >
-            <button>
-              CHAINLINK
-            </button>
-          </NavLink>
-
-          <NavLink
-            to='/stocks/X:XRPUSD'
-              className="stock-choices-card"
-          >
-            <button>
-              XRP
-            </button>
-          </NavLink>
-
-      </div>
-
     </div>
   );
 }

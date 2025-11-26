@@ -17,6 +17,7 @@ import portfolioCryptoReducer from "./portfolioCryptos";
 import cryptoTransactionReducer from "./cryptoTransactions";
 import stockTransactionReducer from "./stockTransactions";
 import stockDataReducer from "./stockPrices";
+import portfolioSummaryReducer from "./portfolioSummary";
 
 
 const rootReducer = combineReducers({
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   cryptoTransaction: cryptoTransactionReducer,
   stockTransaction: stockTransactionReducer,
   stockData: stockDataReducer,
+  portfolioSummary: portfolioSummaryReducer,
 });
 
 let enhancer;

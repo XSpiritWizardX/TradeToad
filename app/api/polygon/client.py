@@ -1,99 +1,88 @@
-from polygon import RESTClient
-from . import polygon_config
 import time
-# to parse response
-import json
+from datetime import date, timedelta
 
+from polygon import RESTClient
 
-client = RESTClient(polygon_config.API_KEY)
+from . import polygon_config
 
 # simple cache to store API responses
 cache = {}
 cache_expiry = {}
-CACHE_DURATION = 3600  # cache for 1 hour
+CACHE_DURATION = 60 * 15  # cache for 15 minutes
 
 
-def apiCall(symbol):
-    # clear cache if needed for testing fresh API calls:
-    # cache.clear()
-    # cache_expiry.clear()
+def _get_client():
+    api_key = polygon_config.API_KEY
+    if not api_key:
+        raise RuntimeError("POLYGON_API_KEY is not set")
+    return RESTClient(api_key)
 
+
+def apiCall(symbol, days=90):
+    """Fetch recent daily aggregates for a symbol with a short cache."""
     symbol = symbol.upper()
+    crypto_usd = {"BTC", "ETH", "DOGE", "SOL", "XRP", "LTC", "ADA", "DOT", "AVAX", "BNB", "SHIB", "BCH", "USDC", "USDT"}
+    api_symbol = f"X:{symbol}USD" if ":" not in symbol and symbol in crypto_usd else symbol
+    cache_key = f"{api_symbol}:{days}"
     current_time = time.time()
-    print(f"Current time: {current_time}")
-    if symbol in cache:
-        print(f"Cache expiry for {symbol}: {cache_expiry.get(symbol, 0)}")
-        print(f"Time until expiry: {cache_expiry.get(symbol, 0) - current_time} seconds")
 
-    # check if we have a cached response that's still valid
-    if symbol in cache and current_time < cache_expiry.get(symbol, 0):
-        print(f'Using cached data for {symbol}')
-        return cache[symbol]
+    if cache_key in cache and current_time < cache_expiry.get(cache_key, 0):
+        return cache[cache_key]
 
-    # if no cache is found, make an API call
-    print(f'Making new API call for {symbol}')
+    end_date = date.today()
+    start_date = end_date - timedelta(days=days)
 
-    # create local variables
-    aggs = []       # aggregate data
-    open = []
-    closing = []
+    aggs = []
+    opens = []
+    closings = []
     highs = []
     lows = []
 
+    client = _get_client()
+
     try:
         for a in client.list_aggs(
-            symbol,
+            api_symbol,
             1,
             "day",
-            "2025-01-15",
-            "2025-04-01",
+            start_date.isoformat(),
+            end_date.isoformat(),
             adjusted="true",
             sort="asc",
             limit=5000,
         ):
-            aggs.append(a)
-            open.append(a.open)
-            closing.append(a.close)
+            aggs.append({
+                "timestamp": a.timestamp,
+                "open": a.open,
+                "close": a.close,
+                "high": a.high,
+                "low": a.low,
+                "volume": a.volume,
+            })
+            opens.append(a.open)
+            closings.append(a.close)
             highs.append(a.high)
             lows.append(a.low)
 
         result = {
             "symbol": symbol,
             "data_points": len(aggs),
-            "open": open,
-            "closing": closing,
+            "open": opens,
+            "closing": closings,
             "highs": highs,
             "lows": lows,
             "aggs": aggs
         }
 
-        # cache the result
-        cache[symbol] = result
-        cache_expiry[symbol] = current_time + CACHE_DURATION
+        cache[cache_key] = result
+        cache_expiry[cache_key] = current_time + CACHE_DURATION
 
         return result
 
     except Exception as e:
         print(f'Error fetching data for {symbol}: {str(e)}')
 
-        # if we have cached data, return it even if expired
-        if symbol in cache:
-            print(f'Returning expired cached data for {symbol}')
-            return cache[symbol]
+        if cache_key in cache:
+            print(f'Returning cached data for {symbol} despite error')
+            return cache[cache_key]
         raise
-
-
-
-# This printout is for demo purposes,
-# Only execute this code when running the file directly (not when imported)
-if __name__ == "__main__":
-    result = apiCall()
-    # print(result["aggs"])   # use this to see keys in result dict.
-    print("\nAPI Call Result\n")
-    print(f'Symbol: {result["symbol"]}\n')
-    print(f'number of results: {result["data_points"]}')
-    print(f'(showing first 50)\n')
-    print(f'open: {result["open"][:50]}\n')
-    print(f'closing: {result["closing"][:50]}\n')
-    print(f'highs: {result["highs"][:50]}\n')
-    print(f'lows: {result["lows"][:50]}\n')
