@@ -1,12 +1,12 @@
 .foot{
     width: 96vw;
     margin-left: 1%;
-    height: 110px;
     display: flex;
     justify-content: space-evenly;
-    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 12px 0;
 }
-
 
 .foot-links{
     color:rgb(255, 255, 255);
@@ -22,7 +22,7 @@
 h5{
     justify-self: center;
     align-self: center;
-    margin-bottom: 18%;
+    margin-bottom: 12px;
     text-decoration: 2px underline rgb(255, 255, 255);
     width: 120px;
     font-size: large;
@@ -36,13 +36,14 @@ h5:hover{
 .resource-col{
     display: flex;
     flex-direction: column;
+    min-width: 140px;
 }
 
 .copyright-text{
     display: flex;
     justify-self: flex-start;
     margin-left: 1%;
-    margin-top: 3.5%;
+    margin-top: 8px;
     margin-bottom: 1px;
     padding-top: 2%;
 }
@@ -55,5 +56,28 @@ h5:hover{
     align-items: center;
     margin-top: 2%;
     margin-bottom: 1%;
-    height: 210px;
+    height: auto;
+}
+
+@media (max-width: 800px) {
+    .foot{
+        justify-content: flex-start;
+        padding-left: 12px;
+    }
+    .resource-col{
+        min-width: 45%;
+    }
+}
+
+@media (max-width: 500px) {
+    .foot{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .resource-col{
+        min-width: 100%;
+    }
+    .copyright-text{
+        margin-left: 0;
+    }
 }

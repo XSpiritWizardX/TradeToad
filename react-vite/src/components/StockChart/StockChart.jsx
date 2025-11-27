@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './StockChart.css';
 
-function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = "day", assetType = "stock" }) {
+function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = "day", assetType = "stock", chartType = "candle" }) {
   const { stockID } = useParams();
   const symbol = (symbolProp || stockID || 'AAPL').toUpperCase();
   const [stockData, setStockData] = useState(null);
@@ -15,20 +15,74 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
 
   useEffect(() => {
     const base = assetType === "crypto" ? "/api/cryptos" : "/api/stocks";
+
+    const rebuildFromAggs = (aggs) => {
+      const sorted = [...aggs].sort((a, b) => a.timestamp - b.timestamp);
+      return {
+        aggs: sorted,
+        open: sorted.map((a) => a.open),
+        closing: sorted.map((a) => a.close),
+        highs: sorted.map((a) => a.high),
+        lows: sorted.map((a) => a.low),
+      };
+    };
+
     async function fetchStockData() {
       try {
         setLoading(true);
 
+        // For LIVE timeframe we request exactly 60 minutes of 1-minute bars.
+        const liveParams = timespan === "minute" && days <= 1 ? `days=1&multiplier=1&timespan=minute` : `days=${days}&multiplier=${multiplier}&timespan=${timespan}`;
         const response = await fetch(
-          `${base}/${symbol}?days=${days}&multiplier=${multiplier}&timespan=${timespan}`
+          `${base}/${symbol}?${liveParams}`
         );
         if (!response.ok) {
           const errorText = await response.text();
           console.error(`API error: ${response.status} ${errorText}`);
           throw new Error(`Failed to fetch ${assetType} data: ${response.status}`);
         }
-        const data = await response.json();
-        setStockData(data);
+        let data = await response.json();
+        // For crypto, push the latest Coinbase tick into the last bar to keep charts aligned with live price.
+        if (assetType === "crypto" && Array.isArray(data?.aggs) && data.aggs.length > 0) {
+          try {
+            const liveRes = await fetch(`/api/coinbase/price/${symbol}`);
+            if (liveRes.ok) {
+              const live = await liveRes.json();
+              if (typeof live?.price === "number") {
+                const latest = { ...data.aggs[data.aggs.length - 1] };
+                const livePrice = Number(live.price);
+                latest.open = livePrice;
+                latest.close = livePrice;
+                latest.high = livePrice;
+                latest.low = livePrice;
+                data = {
+                  ...data,
+                  aggs: [...data.aggs.slice(0, -1), latest],
+                  open: [...data.open.slice(0, -1), livePrice],
+                  closing: [...data.closing.slice(0, -1), livePrice],
+                  highs: [...data.highs.slice(0, -1), livePrice],
+                  lows: [...data.lows.slice(0, -1), livePrice],
+                  source: `${data.source || "polygon"}+coinbase-last`
+                };
+              }
+            }
+          } catch {
+            // ignore; keep original data
+          }
+        }
+        setStockData((prev) => {
+          // Merge minute data to avoid full refresh on live view
+          if (!prev || timespan !== "minute" || !Array.isArray(prev.aggs)) return data;
+          const map = {};
+          for (const agg of prev.aggs) map[agg.timestamp] = agg;
+          for (const agg of data.aggs || []) map[agg.timestamp] = agg; // overwrite with newest
+          const mergedAggs = Object.values(map).sort((a, b) => a.timestamp - b.timestamp).slice(-60);
+          const rebuilt = rebuildFromAggs(mergedAggs);
+          return {
+            ...data,
+            ...rebuilt,
+          };
+        });
         setError(null);
       } catch (err) {
         console.error('Error fetching stock/crypto data:', err);
@@ -41,7 +95,8 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
 
     fetchStockData();
     if (pollRef.current) clearInterval(pollRef.current);
-    pollRef.current = setInterval(fetchStockData, 30_000); // ~live refresh
+    // faster refresh to keep in sync with live prices
+    pollRef.current = setInterval(fetchStockData, 10_000);
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
     };
@@ -54,14 +109,30 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
       timeZoneName: "short",
     });
 
-  const chartData = stockData?.closing?.map((close, index) => ({
-    date: new Date(stockData.aggs[index].timestamp).toLocaleDateString(),
-    timestamp: stockData.aggs[index].timestamp,
+  const baseData = stockData;
+  let viewData = baseData;
+
+  // Limit LIVE view to the latest 60 points (approx 60 minutes)
+  if (timespan === "minute" && baseData?.aggs?.length > 60) {
+    const start = baseData.aggs.length - 60;
+    viewData = {
+      ...baseData,
+      aggs: baseData.aggs.slice(start),
+      open: baseData.open.slice(start),
+      closing: baseData.closing.slice(start),
+      highs: baseData.highs.slice(start),
+      lows: baseData.lows.slice(start)
+    };
+  }
+
+  let chartData = viewData?.closing?.map((close, index) => ({
+    date: new Date(viewData.aggs[index].timestamp).toLocaleDateString(),
+    timestamp: viewData.aggs[index].timestamp,
     close,
-    open: stockData.open[index],
-    high: stockData.highs[index],
-    low: stockData.lows[index],
-    dateTime: formatDateTime(stockData.aggs[index].timestamp),
+    open: viewData.open[index],
+    high: viewData.highs[index],
+    low: viewData.lows[index],
+    dateTime: formatDateTime(viewData.aggs[index].timestamp),
   })) || [];
 
   useEffect(() => {
@@ -74,7 +145,7 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
 
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">Error: {error}</div>;
-  if (!stockData) return <div className="no-data">No data available</div>;
+  if (!stockData || !chartData.length) return <div className="no-data">No recent data</div>;
 
   const rawLow = Math.min(...chartData.map(d => d.low));
   const rawHigh = Math.max(...chartData.map(d => d.high));
@@ -95,16 +166,20 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
 
   const handleMouseMove = (e) => {
     if (!chartData.length) return;
-    const rect = wrapperRef.current?.getBoundingClientRect();
+    const rect = svgRef.current?.getBoundingClientRect();
     if (!rect) return;
-    const x = e.clientX - rect.left;
+    const frac = (e.clientX - rect.left) / Math.max(rect.width, 1);
+    const xView = frac * width; // map to viewBox space
     const usable = usableWidth;
-    const rel = Math.max(0, Math.min(usable, x - leftMargin));
+    const rel = Math.max(0, Math.min(usable, xView - leftMargin));
     const idx = Math.round((rel / Math.max(usable, 1)) * (chartData.length - 1));
     setHoverIndex(idx);
   };
 
   const hover = hoverIndex != null ? chartData[hoverIndex] : null;
+  const hoverX = hoverIndex != null
+    ? (hoverIndex / Math.max(chartData.length - 1, 1)) * usableWidth + leftMargin
+    : null;
 
   return (
     <div className="stock-chart-container">
@@ -125,7 +200,19 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
               {formatPrice(t)}
             </text>
           ))}
-          {chartData.map((d, idx) => {
+          {hoverX != null && (
+            <line
+              x1={hoverX}
+              y1={0}
+              x2={hoverX}
+              y2={height}
+              stroke="#2fd98f"
+              strokeWidth="1"
+              strokeDasharray="4 4"
+              opacity="0.7"
+            />
+          )}
+          {chartType === "candle" && chartData.map((d, idx) => {
             const x = (idx / Math.max(chartData.length - 1, 1)) * usableWidth + leftMargin;
             const yHigh = yScale(d.high);
             const yLow = yScale(d.low);
@@ -152,6 +239,22 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
               </g>
             );
           })}
+          {chartType === "line" && chartData.length > 1 && (() => {
+            const points = chartData.map((d, idx) => {
+              const x = (idx / Math.max(chartData.length - 1, 1)) * usableWidth + leftMargin;
+              const y = yScale(d.close);
+              return `${x},${y}`;
+            }).join(" ");
+            return (
+              <polyline
+                fill="none"
+                stroke="#23e889"
+                strokeWidth="2"
+                points={points}
+                opacity="0.9"
+              />
+            );
+          })()}
         </svg>
       </div>
       {hover && (

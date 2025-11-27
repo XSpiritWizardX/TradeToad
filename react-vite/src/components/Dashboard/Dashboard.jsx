@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { fetchPortfolios } from "../../redux/portfolio";
@@ -22,20 +22,27 @@ function Dashboard() {
   const portfolioCryptosState = useSelector((state) => state.portfolioCrypto.portfolio_crypto);
   const user = useSelector((state) => state.session.user);
 
-  const [selectedSymbol, setSelectedSymbol] = useState("");
+  const [selectedSymbol, setSelectedSymbol] = useState("BTC");
   const [shares, setShares] = useState("");
   const [cashAmount, setCashAmount] = useState("");
   const [tradeMode, setTradeMode] = useState("shares"); // "shares" | "cash"
   const [side, setSide] = useState("BUY");
   const [latestPrice, setLatestPrice] = useState(null);
   const [status, setStatus] = useState("");
-  const [assetType, setAssetType] = useState("stock");
+  const [assetType, setAssetType] = useState("crypto");
   const [holdingsValue, setHoldingsValue] = useState(0);
   const pricePollRef = useRef(null);
-  const [timeframe, setTimeframe] = useState("1D");
+  const priceCacheRef = useRef({});
+  const [priceUpdatedAt, setPriceUpdatedAt] = useState(null);
+  const [holdingsUpdatedAt, setHoldingsUpdatedAt] = useState(null);
+  const [chartExpanded, setChartExpanded] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [chartType, setChartType] = useState("line"); // "candle" | "line"
+  const [timeframe, setTimeframe] = useState("LIVE");
   const [positionRows, setPositionRows] = useState([]);
   const [busySell, setBusySell] = useState(false);
   const [busyMax, setBusyMax] = useState(false);
+  const [busyDeposit, setBusyDeposit] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -77,32 +84,94 @@ function Dashboard() {
     }
   }, [selectedSymbol, holdings, stocksList, cryptosList, assetType]);
 
-  useEffect(() => {
-    async function loadPrice() {
-      if (!selectedSymbol) return;
-      try {
-        const base = assetType === "crypto" ? "/api/cryptos" : "/api/stocks";
-        const res = await fetch(`${base}/${selectedSymbol}?days=5`);
-        if (!res.ok) throw new Error("price fetch failed");
-        const data = await res.json();
-        const last = data?.closing?.[data.closing.length - 1];
-        setLatestPrice(last ?? null);
-      } catch (err) {
-        console.error(err);
-        setLatestPrice(null);
+  const fetchLatest = useCallback(async (symbol, type) => {
+    const sym = symbol.toUpperCase();
+    const cacheKey = `${type}:${sym}`;
+    const cacheEntry = priceCacheRef.current[cacheKey];
+    const cacheIsFresh = cacheEntry && (Date.now() - cacheEntry.ts < 30_000);
+    try {
+      if (type === "crypto") {
+        try {
+          const liveRes = await fetch(`/api/coinbase/price/${sym}`);
+          if (liveRes.ok) {
+            const live = await liveRes.json();
+            console.log("Coinbase live price", sym, live);
+            if (typeof live?.price === "number") {
+              const val = Number(live.price);
+              priceCacheRef.current[cacheKey] = { price: val, ts: Date.now() };
+              return val;
+            }
+            // if live returns fallback price but marked ready false, still keep it
+            if (live?.price != null) {
+              const val = Number(live.price);
+              priceCacheRef.current[cacheKey] = { price: val, ts: Date.now() };
+              return val;
+            }
+          }
+        } catch {
+          // ignore
+        }
+        // If no live tick, try cached value first (only if fresh)
+        if (cacheIsFresh) {
+          return cacheEntry.price;
+        }
+        // As a last resort, seed from polygon intraday so UI is not empty
+        try {
+          const fallback = await fetch(`/api/cryptos/${sym}?days=1&multiplier=5&timespan=minute`);
+          if (fallback.ok) {
+            const data = await fallback.json();
+            const last = data?.closing?.[data.closing.length - 1];
+            if (typeof last === "number") {
+              priceCacheRef.current[cacheKey] = { price: last, ts: Date.now() };
+              return last;
+            }
+          }
+        } catch {
+          // ignore
+        }
+        return cacheEntry ? cacheEntry.price : null;
       }
+      const res = await fetch(`/api/stocks/${sym}?days=1&multiplier=5&timespan=minute`);
+      if (!res.ok) {
+        return cacheIsFresh ? cacheEntry.price : null;
+      }
+      const data = await res.json();
+      const last = data?.closing?.[data.closing.length - 1];
+      if (typeof last === "number") {
+        priceCacheRef.current[cacheKey] = { price: last, ts: Date.now() };
+      }
+      return typeof last === "number" ? last : cacheEntry ? cacheEntry.price : null;
+    } catch (err) {
+      console.error("fetchLatest error", err);
+      return cacheEntry ? cacheEntry.price : null;
     }
+  }, []);
+
+  const loadPrice = useCallback(async () => {
+    if (!selectedSymbol) return;
+    try {
+      const price = await fetchLatest(selectedSymbol, assetType);
+      setLatestPrice(price ?? null);
+      setPriceUpdatedAt(Date.now());
+    } catch (err) {
+      console.error(err);
+      setLatestPrice(null);
+    }
+  }, [selectedSymbol, assetType, fetchLatest]);
+
+  useEffect(() => {
     loadPrice();
     if (pricePollRef.current) clearInterval(pricePollRef.current);
-    pricePollRef.current = setInterval(loadPrice, 20_000);
+    pricePollRef.current = setInterval(loadPrice, 15_000);
     return () => {
       if (pricePollRef.current) clearInterval(pricePollRef.current);
     };
-  }, [selectedSymbol, assetType]);
+  }, [loadPrice]);
 
   const availableCash = Number((portfolioState?.portfolios?.[0]?.available_cash ?? 0).toFixed(2));
   const totalValue = Number((availableCash + holdingsValue).toFixed(2));
   const accountValue = totalValue;
+  const formatTime = (ts) => ts ? new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "—";
 
   const orders = (transactionsState?.stock_transactions || []).map((t) => {
     const fallback = stocksList.find((s) => s.id === t.stock_id);
@@ -132,65 +201,86 @@ function Dashboard() {
     };
   });
 
-  useEffect(() => {
-    async function loadHoldingsValue() {
-      if (!holdings.length && !cryptoHoldings.length) {
-        setPositionRows([]);
-        setHoldingsValue(0);
-        return;
-      }
-
-      const positions = [];
-      let total = 0;
-
-      const loadStock = async (h) => {
-        const qty = Number(h.quantity || 0);
-        try {
-          const res = await fetch(`/api/stocks/${h.stock.symbol}?days=2`);
-          if (!res.ok) throw new Error();
-          const data = await res.json();
-          const last = data?.closing?.[data.closing.length - 1] || 0;
-          const value = qty * last;
-          positions.push({ symbol: h.stock.symbol, qty, price: last, value, type: "stock" });
-          total += value;
-        } catch {
-          positions.push({ symbol: h.stock.symbol, qty, price: 0, value: 0, type: "stock" });
-        }
-      };
-
-      const loadCrypto = async (c) => {
-        const qty = Number(c.quantity || 0);
-        try {
-          const res = await fetch(`/api/cryptos/${c.crypto.symbol}?days=2`);
-          if (!res.ok) throw new Error();
-          const data = await res.json();
-          const last = data?.closing?.[data.closing.length - 1] || 0;
-          const value = qty * last;
-          positions.push({ symbol: c.crypto.symbol, qty, price: last, value, type: "crypto" });
-          total += value;
-        } catch {
-          positions.push({ symbol: c.crypto.symbol, qty, price: 0, value: 0, type: "crypto" });
-        }
-      };
-
-      try {
-        await Promise.all([
-          ...holdings.map(loadStock),
-          ...cryptoHoldings.map(loadCrypto)
-        ]);
-        const sorted = positions.sort((a, b) => {
-          if (a.type === b.type) return a.symbol.localeCompare(b.symbol);
-          return a.type === "crypto" ? -1 : 1; // crypto first
-        });
-        setPositionRows(sorted);
-        setHoldingsValue(total);
-      } catch {
-        setPositionRows([]);
-        setHoldingsValue(0);
-      }
+  const loadHoldingsValue = useCallback(async () => {
+    if (!holdings.length && !cryptoHoldings.length) {
+      setPositionRows([]);
+      setHoldingsValue(0);
+      setHoldingsUpdatedAt(Date.now());
+      return;
     }
+
+    const positions = [];
+    let total = 0;
+
+    const loadStock = async (h) => {
+      const qty = Number(h.quantity || 0);
+      try {
+        const last = await fetchLatest(h.stock.symbol, "stock") || 0;
+        const value = qty * last;
+        positions.push({ symbol: h.stock.symbol, qty, price: last, value, type: "stock" });
+        total += value;
+      } catch {
+        positions.push({ symbol: h.stock.symbol, qty, price: 0, value: 0, type: "stock" });
+      }
+    };
+
+    const loadCrypto = async (c) => {
+      const qty = Number(c.quantity || 0);
+      try {
+        const last = await fetchLatest(c.crypto.symbol, "crypto") || 0;
+        const value = qty * last;
+        positions.push({ symbol: c.crypto.symbol, qty, price: last, value, type: "crypto" });
+        total += value;
+      } catch {
+        positions.push({ symbol: c.crypto.symbol, qty, price: 0, value: 0, type: "crypto" });
+      }
+    };
+
+    try {
+      await Promise.all([
+        ...holdings.map(loadStock),
+        ...cryptoHoldings.map(loadCrypto)
+      ]);
+      const sorted = positions.sort((a, b) => {
+        if (a.type === b.type) return a.symbol.localeCompare(b.symbol);
+        return a.type === "crypto" ? -1 : 1; // crypto first
+      });
+      setPositionRows(sorted);
+      setHoldingsValue(total);
+      setHoldingsUpdatedAt(Date.now());
+    } catch {
+      setPositionRows([]);
+      setHoldingsValue(0);
+      setHoldingsUpdatedAt(Date.now());
+    }
+  }, [holdings, cryptoHoldings, fetchLatest]);
+
+  useEffect(() => {
     loadHoldingsValue();
-  }, [holdings, cryptoHoldings]);
+    const id = setInterval(loadHoldingsValue, 15000);
+    return () => clearInterval(id);
+  }, [loadHoldingsValue]);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await Promise.all([
+        dispatch(fetchPortfolios()),
+        dispatch(fetchPortfolioStocks()),
+        dispatch(fetchPortfolioCryptos()),
+        loadHoldingsValue(),
+        loadPrice()
+      ]);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  const handleDeposit = () => {
+    setBusyDeposit(true);
+    setStatus("Deposit coming soon.");
+    setTimeout(() => setBusyDeposit(false), 1200);
+  };
 
   const handleSellAll = async (pos) => {
     try {
@@ -320,13 +410,19 @@ function Dashboard() {
           <div className="panel-section account-card">
             <div className="account-top">
               <div>
-                <div className="muted">Individual</div>
+                <div className="muted-topper">Individual
+
+              <button className="pill ghost-deposit" onClick={handleDeposit} disabled={busyDeposit}>Deposit</button>
+
+                </div>
                 <div className="account-value">
                   ${accountValue.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                 </div>
-                <div className="account-change positive">Live balance</div>
+                <div className="account-change positive">
+                  Live balance
+                  <span className="muted tiny"> • Updated {formatTime(holdingsUpdatedAt)}</span>
+                </div>
               </div>
-              <button className="pill ghost">Deposit</button>
             </div>
             <div className="mini-chart">
               <ResponsiveContainer width="100%" height={90}>
@@ -418,45 +514,65 @@ function Dashboard() {
               <div className="ticker">{selectedSymbol}</div>
               <div className="muted">{latestPrice ? `$${latestPrice.toFixed(2)}` : "—"}</div>
               <span className="badge live">Real-time</span>
+              <div className="muted tiny">Updated {formatTime(priceUpdatedAt)}</div>
+              <button className="pill tiny" onClick={handleRefresh} disabled={refreshing}>
+                {refreshing ? "Refreshing..." : "Refresh"}
+              </button>
             </div>
           </div>
 
-            <div className="chart-card">
-              <div className="timeframe-strip">
-                {["LIVE", "1D", "1W", "1M", "3M", "1Y", "5Y"].map((tf) => (
-                  <button
-                    key={tf}
-                    className={`tf-btn ${tf === timeframe ? "active" : ""}`}
-                    onClick={() => setTimeframe(tf)}
-                  >
-                    {tf}
-                  </button>
-                ))}
+          <div
+            className={`chart-card ${chartExpanded ? "expanded" : ""}`}
+            style={chartExpanded ? { position: "fixed", inset: "60px 20px 20px 20px", zIndex: 50, width: "calc(100% - 40px)", height: "calc(100% - 80px)", overflow: "auto" } : {}}
+          >
+            <div className="timeframe-strip">
+              {["LIVE", "1D", "1W", "1M", "3M", "1Y", "5Y"].map((tf) => (
+                <button
+                  key={tf}
+                  className={`tf-btn ${tf === timeframe ? "active" : ""}`}
+                  onClick={() => setTimeframe(tf)}
+                >
+                  {tf}
+                </button>
+              ))}
+              <div className="expand-controls">
+                {!chartExpanded && (
+                  <button className="pill tiny" onClick={() => setChartExpanded(true)}>Expand</button>
+                )}
+                {chartExpanded && (
+                  <button className="pill tiny" onClick={() => setChartExpanded(false)}>Reset</button>
+                )}
+                <div className="chart-type-toggle">
+                  <button className={`pill tiny ${chartType === "candle" ? "active" : ""}`} onClick={() => setChartType("candle")}>Candles</button>
+                  <button className={`pill tiny ${chartType === "line" ? "active" : ""}`} onClick={() => setChartType("line")}>Line</button>
+                </div>
               </div>
-            <StockChart
-              key={`${selectedSymbol}-${assetType}-${timeframe}`}
-              symbol={selectedSymbol}
-              days={{ LIVE: 1, "1D": 2, "1W": 7, "1M": 35, "3M": 120, "1Y": 370, "5Y": 1825 }[timeframe] || 60}
-              multiplier={{
-                LIVE: 1,  // 1 minute bars
-                "1D": 30, // 30 minute bars (approx)
-                "1W": 4,  // 4 hour bars
-                "1M": 1,  // 1 day bars
-                "3M": 1,  // 1 day bars
-                "1Y": 7,  // 1 week bars
-                "5Y": 30  // ~monthly
-              }[timeframe] || 1}
-              timespan={{
-                LIVE: "minute",
-                "1D": "minute",
-                "1W": "hour",
-                "1M": "day",
-                "3M": "day",
-                "1Y": "day",
-                "5Y": "day"
-              }[timeframe] || "day"}
-              assetType={assetType}
-            />
+            </div>
+          <StockChart
+            key={`${selectedSymbol}-${assetType}-${timeframe}-${chartExpanded}`}
+            symbol={selectedSymbol}
+            days={{ LIVE: 1/24, "1D": 2, "1W": 7, "1M": 35, "3M": 120, "1Y": 370, "5Y": 1825 }[timeframe] || 60}
+            multiplier={{
+              LIVE: 1,  // 1 minute bars
+              "1D": 30, // 30 minute bars (approx)
+              "1W": 4,  // 4 hour bars
+              "1M": 1,  // 1 day bars
+              "3M": 1,  // 1 day bars
+              "1Y": 7,  // 1 week bars
+              "5Y": 30  // ~monthly
+            }[timeframe] || 1}
+            timespan={{
+              LIVE: "minute",
+              "1D": "minute",
+              "1W": "hour",
+              "1M": "day",
+              "3M": "day",
+              "1Y": "day",
+              "5Y": "day"
+            }[timeframe] || "day"}
+            assetType={assetType}
+            chartType={chartType}
+          />
           </div>
 
           <div className="chart-card">
@@ -578,7 +694,10 @@ function Dashboard() {
             )}
             <div className="order-row spaced">
               <div className="muted">Market Price</div>
-              <div className="order-value">{latestPrice ? `$${latestPrice.toFixed(2)}` : "—"}</div>
+              <div className="order-value">
+                {latestPrice ? `$${latestPrice.toFixed(2)}` : "—"}
+                <div className="muted tiny">Updated {formatTime(priceUpdatedAt)}</div>
+              </div>
             </div>
             <div className="order-row spaced">
               <div className="muted">Estimated Total</div>

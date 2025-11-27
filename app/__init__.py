@@ -24,6 +24,7 @@ from .api.stock_routes import stock_routes
 from .api.stock_transaction_routes import stock_transaction_routes
 from .api.portfolio_stock_routes import portfolio_stock_routes
 from .api.watchlist_stock_routes import watchlist_stock_routes
+from .api.coinbase_routes import coinbase_routes
 
 from .api.portfolio_routes import portfolio_routes
 from .api.watchlist_routes import watchlist_routes
@@ -65,6 +66,7 @@ app.register_blueprint(stock_routes, url_prefix='/api/stocks')
 app.register_blueprint(stock_transaction_routes, url_prefix='/api/stock_transactions')
 app.register_blueprint(portfolio_stock_routes, url_prefix='/api/portfolio_stocks')
 app.register_blueprint(watchlist_stock_routes, url_prefix='/api/watchlist_stocks')
+app.register_blueprint(coinbase_routes)
 
 app.register_blueprint(portfolio_routes, url_prefix='/api/portfolios')
 app.register_blueprint(watchlist_routes, url_prefix='/api/watchlists')

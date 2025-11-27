@@ -1,39 +1,77 @@
 .header {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
   box-shadow: 0px 1px 0px 0px gray;
   z-index: 2;
-  /* position: fixed; */
   background-color: black;
   border-bottom: 1px solid gray;
 }
 
 .home-image {
   z-index: 1;
-  width: 100px;
+  width: 64px;
   height: auto;
   border:2.5px solid #FFC857;
   border-radius: 50%;
-  margin-right: 26px;
-  margin-left: 16px;
-  /* animation: spin 3s linear infinite; */
+  margin-right: 6px;
+  margin-left: 0;
 }
 
 .trade-toad-banner{
-  width: 500px;
-  height: 70px;
+  width: 320px;
+  height: auto;
   justify-self: center;
   align-self: center;
-  margin-top: 10px;
-  margin-right: 10%;
+  margin-top: 4px;
 }
-
 
 .instructions-for-search{
   color: #B4EC51;
-  margin-bottom: 0px;
-  height: 40px;
-  margin-top: 65px;
+  margin: 0;
+  height: auto;
+  font-size: 13px;
+}
+
+.header .search-bar{
+  flex: 1;
+  min-width: 220px;
+}
+
+.header .profile-button{
+  margin-left: auto;
+}
+
+@media (max-width: 900px) {
+  .trade-toad-banner{
+    width: 240px;
+  }
+}
+
+@media (max-width: 700px) {
+  .header{
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .header .profile-button{
+    margin-left: 0;
+    align-self: center;
+  }
+  .instructions-for-search{
+    font-size: 12px;
+    margin-top: 4px;
+    text-align: center;
+  }
+  .trade-toad-banner{
+    width: 200px;
+  }
+  .header .search-bar{
+    width: 100%;
+  }
 }
 
 

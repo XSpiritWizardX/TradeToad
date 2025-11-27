@@ -19,6 +19,16 @@ def _get_client():
     return RESTClient(api_key)
 
 
+def _cache_ttl(span_days, multiplier, timespan):
+    """Shorter cache for intraday so UI can feel live."""
+    ts = timespan.lower()
+    if ts in {"minute", "hour"} or span_days <= 2:
+        return 10  # 10 seconds for near-live charts
+    if span_days <= 7:
+        return 120  # 2 minutes
+    return CACHE_DEFAULT
+
+
 def apiCall(symbol, span_days=90, multiplier=1, timespan="day"):
     """Fetch recent aggregates with configurable resolution."""
     symbol = symbol.upper()
@@ -27,6 +37,8 @@ def apiCall(symbol, span_days=90, multiplier=1, timespan="day"):
     api_symbol = f"X:{symbol}USD" if ":" not in symbol and symbol in crypto_usd else symbol
     cache_key = f"{api_symbol}:{span_days}:{multiplier}:{timespan}"
     current_time = time.time()
+
+    ttl = _cache_ttl(span_days, multiplier, timespan)
 
     if cache_key in cache and current_time < cache_expiry.get(cache_key, 0):
         return cache[cache_key]
@@ -77,7 +89,7 @@ def apiCall(symbol, span_days=90, multiplier=1, timespan="day"):
         }
 
         cache[cache_key] = result
-        cache_expiry[cache_key] = current_time + CACHE_DEFAULT
+        cache_expiry[cache_key] = current_time + ttl
 
         return result
 
