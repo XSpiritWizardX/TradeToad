@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.models import Stock, db
 from app.api.polygon.client import apiCall
+from app.api.polygon import polygon_config
 
 
 stock_routes = Blueprint('stocks', __name__, "")
@@ -25,8 +26,23 @@ def get_stock(symbol):
     days = request.args.get('days', default=90, type=int)
     multiplier = request.args.get('multiplier', default=1, type=int)
     timespan = request.args.get('timespan', default="day", type=str)
-    result = apiCall(symbol, span_days=days, multiplier=multiplier, timespan=timespan)
-    return jsonify(result)
+
+    if not polygon_config.API_KEY:
+        return jsonify({"error": "Polygon API key missing"}), 503
+
+    try:
+        result = apiCall(symbol, span_days=days, multiplier=multiplier, timespan=timespan)
+        return jsonify(result)
+    except Exception as exc:
+        print(f"get_stock error for {symbol}: {exc}")
+        # Try a daily fallback if intraday fails
+        if timespan != "day" or multiplier != 1:
+            try:
+                fallback = apiCall(symbol, span_days=days, multiplier=1, timespan="day")
+                return jsonify({**fallback, "fallback": True})
+            except Exception as exc2:
+                print(f"get_stock fallback error for {symbol}: {exc2}")
+        return jsonify({"error": "Upstream data unavailable"}), 503
     # return jsonify({'stocks': [stock.to_dict() for stock in stocks]})
 
 

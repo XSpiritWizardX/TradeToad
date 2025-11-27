@@ -27,6 +27,7 @@ from .api.watchlist_stock_routes import watchlist_stock_routes
 
 from .api.portfolio_routes import portfolio_routes
 from .api.watchlist_routes import watchlist_routes
+from .api.predict_routes import predict_routes
 
 from .seeds import seed_commands
 from .config import Config
@@ -67,6 +68,7 @@ app.register_blueprint(watchlist_stock_routes, url_prefix='/api/watchlist_stocks
 
 app.register_blueprint(portfolio_routes, url_prefix='/api/portfolios')
 app.register_blueprint(watchlist_routes, url_prefix='/api/watchlists')
+app.register_blueprint(predict_routes, url_prefix='/api/predict')
 
 
 db.init_app(app)
