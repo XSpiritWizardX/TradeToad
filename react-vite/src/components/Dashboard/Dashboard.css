@@ -159,15 +159,20 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    max-height: 620px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
 }
 
 .mover-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     padding: 8px 6px;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.02);
+    flex-wrap: wrap;
 }
 
 .mover-symbol {
@@ -182,6 +187,95 @@
     text-align: right;
 }
 
+.section-subtitle{
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #9fb3c8;
+    letter-spacing: 0.5px;
+    margin: 4px 0;
+}
+
+.separator{
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 6px 0;
+}
+
+.scrollable{
+    padding-right: 4px;
+}
+
+.mover-list::-webkit-scrollbar{
+    width: 6px;
+}
+.mover-list::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+}
+.mover-list::-webkit-scrollbar-track{
+    background: transparent;
+}
+
+.positions-actions{
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.pill.tiny{
+    padding: 4px 8px;
+    font-size: 11px;
+}
+
+.row-values{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.row-top{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.row-left{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.row-right{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+}
+
+.row-value{
+    font-weight: 700;
+    word-break: break-all;
+}
+
+.stocks-scroll{
+    max-height: 200px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+
+.stocks-scroll::-webkit-scrollbar{
+    width: 6px;
+}
+.stocks-scroll::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+}
+.stocks-scroll::-webkit-scrollbar-track{
+    background: transparent;
+}
 .main {
     padding: 10px;
 }
@@ -245,6 +339,8 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 10px;
     padding: 10px;
+    max-height: 260px;
+    overflow-y: auto;
 }
 
 .table-scroll {

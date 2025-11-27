@@ -25,5 +25,10 @@ class Portfolio_Crypto(db.Model):
             'portfolio_id': self.portfolio_id,
             'crypto_id': self.crypto_id,
             'quantity': float(self.quantity),
-            # 'stock': self.stock.to_dict()  # Include stock details
+            'crypto': {
+                'id': self.crypto.id,
+                'symbol': self.crypto.symbol,
+                'company': self.crypto.company,
+                'market_cap': float(self.crypto.market_cap) if self.crypto.market_cap is not None else None
+            }
         }

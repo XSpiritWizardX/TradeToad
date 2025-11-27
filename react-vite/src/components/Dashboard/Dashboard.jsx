@@ -34,6 +34,8 @@ function Dashboard() {
   const pricePollRef = useRef(null);
   const [timeframe, setTimeframe] = useState("1D");
   const [positionRows, setPositionRows] = useState([]);
+  const [busySell, setBusySell] = useState(false);
+  const [busyMax, setBusyMax] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -98,8 +100,8 @@ function Dashboard() {
     };
   }, [selectedSymbol, assetType]);
 
-  const availableCash = portfolioState?.portfolios?.[0]?.available_cash ?? 0;
-  const totalValue = availableCash + holdingsValue;
+  const availableCash = Number((portfolioState?.portfolios?.[0]?.available_cash ?? 0).toFixed(2));
+  const totalValue = Number((availableCash + holdingsValue).toFixed(2));
   const accountValue = totalValue;
 
   const orders = (transactionsState?.stock_transactions || []).map((t) => {
@@ -132,38 +134,42 @@ function Dashboard() {
 
   useEffect(() => {
     async function loadHoldingsValue() {
+      if (!holdings.length && !cryptoHoldings.length) {
+        setPositionRows([]);
+        setHoldingsValue(0);
+        return;
+      }
+
       const positions = [];
       let total = 0;
 
       const loadStock = async (h) => {
+        const qty = Number(h.quantity || 0);
         try {
           const res = await fetch(`/api/stocks/${h.stock.symbol}?days=2`);
           if (!res.ok) throw new Error();
           const data = await res.json();
           const last = data?.closing?.[data.closing.length - 1] || 0;
-          const qty = Number(h.quantity || 0);
           const value = qty * last;
-          positions.push({ symbol: h.stock.symbol, qty, price: last, value });
+          positions.push({ symbol: h.stock.symbol, qty, price: last, value, type: "stock" });
           total += value;
         } catch {
-          const qty = Number(h.quantity || 0);
-          positions.push({ symbol: h.stock.symbol, qty, price: 0, value: 0 });
+          positions.push({ symbol: h.stock.symbol, qty, price: 0, value: 0, type: "stock" });
         }
       };
 
       const loadCrypto = async (c) => {
+        const qty = Number(c.quantity || 0);
         try {
           const res = await fetch(`/api/cryptos/${c.crypto.symbol}?days=2`);
           if (!res.ok) throw new Error();
           const data = await res.json();
           const last = data?.closing?.[data.closing.length - 1] || 0;
-          const qty = Number(c.quantity || 0);
           const value = qty * last;
-          positions.push({ symbol: c.crypto.symbol, qty, price: last, value });
+          positions.push({ symbol: c.crypto.symbol, qty, price: last, value, type: "crypto" });
           total += value;
         } catch {
-          const qty = Number(c.quantity || 0);
-          positions.push({ symbol: c.crypto.symbol, qty, price: 0, value: 0 });
+          positions.push({ symbol: c.crypto.symbol, qty, price: 0, value: 0, type: "crypto" });
         }
       };
 
@@ -172,7 +178,11 @@ function Dashboard() {
           ...holdings.map(loadStock),
           ...cryptoHoldings.map(loadCrypto)
         ]);
-        setPositionRows(positions);
+        const sorted = positions.sort((a, b) => {
+          if (a.type === b.type) return a.symbol.localeCompare(b.symbol);
+          return a.type === "crypto" ? -1 : 1; // crypto first
+        });
+        setPositionRows(sorted);
         setHoldingsValue(total);
       } catch {
         setPositionRows([]);
@@ -181,6 +191,43 @@ function Dashboard() {
     }
     loadHoldingsValue();
   }, [holdings, cryptoHoldings]);
+
+  const handleSellAll = async (pos) => {
+    try {
+      setBusySell(true);
+      if (pos.type === "crypto") {
+        const meta = cryptosList.find((c) => c.symbol === pos.symbol);
+        if (!meta) throw new Error("Symbol not found");
+        await dispatch(createCryptoTransaction({
+          crypto_id: meta.id,
+          shares: pos.qty,
+          price: pos.price,
+          action: "SELL"
+        }));
+      } else {
+        const meta = stocksList.find((s) => s.symbol === pos.symbol);
+        if (!meta) throw new Error("Symbol not found");
+        await dispatch(createStockTransaction({
+          stock_id: meta.id,
+          shares: pos.qty,
+          price: pos.price,
+          action: "SELL"
+        }));
+      }
+      await Promise.all([
+        dispatch(fetchPortfolios()),
+        dispatch(fetchPortfolioStocks()),
+        dispatch(fetchPortfolioCryptos()),
+        dispatch(fetchPStockTransaction()),
+        dispatch(fetchPCryptoTransaction())
+      ]);
+      setStatus(`Sold all ${pos.symbol}`);
+    } catch (err) {
+      setStatus(err.message);
+    } finally {
+      setBusySell(false);
+    }
+  };
 
   const portfolioSeries = useMemo(() => {
     const base = totalValue || 1;
@@ -200,8 +247,21 @@ function Dashboard() {
     return Number(shares || 0);
   }, [tradeMode, cashAmount, shares, latestPrice]);
 
+  const holdingQty = useMemo(() => {
+    if (assetType === "crypto") {
+      const target = positionRows.find((p) => p.type === "crypto" && p.symbol === selectedSymbol);
+      return target ? target.qty : 0;
+    }
+    const target = positionRows.find((p) => p.type === "stock" && p.symbol === selectedSymbol);
+    return target ? target.qty : 0;
+  }, [assetType, positionRows, selectedSymbol]);
+
   const onTrade = async () => {
     setStatus("");
+    if (side === "SELL" && computedShares > holdingQty) {
+      setStatus("Cannot sell more than you own.");
+      return;
+    }
     const payload = {
       shares: computedShares,
       price: latestPrice,
@@ -301,16 +361,48 @@ function Dashboard() {
             </div>
           </div>
 
-          <div className="panel-section movers">
+          <div className="panel-section movers scrollable">
             <div className="section-title">Positions</div>
             <div className="mover-list">
-              {positionRows.map((pos) => (
-                <div key={pos.symbol} className="mover-row">
-                  <div className="mover-symbol">{pos.symbol}</div>
-                  <div className="mover-price">Qty {pos.qty}</div>
-                  <div className="mover-price">${pos.value.toFixed(2)}</div>
+              {positionRows.some((p) => p.type === "crypto") && (
+              <div className="section-subtitle">Crypto</div>
+              )}
+              {positionRows.filter((p) => p.type === "crypto").map((pos) => (
+                <div key={`c-${pos.symbol}`} className="mover-row">
+                  <div className="row-top">
+                    <div className="row-left">
+                      <div className="mover-symbol">{pos.symbol}</div>
+                      <div className={`row-value ${pos.value >= 0 ? "up" : "down"}`}>${pos.value.toFixed(2)}</div>
+                    </div>
+                    <div className="row-right">
+                      <span className="mover-price">Qty {pos.qty}</span>
+                      <button className="pill tiny" disabled={busySell} onClick={() => handleSellAll(pos)}>Sell all</button>
+                    </div>
+                  </div>
                 </div>
               ))}
+              {positionRows.some((p) => p.type === "crypto") && positionRows.some((p) => p.type === "stock") && (
+                <div className="separator"></div>
+              )}
+              {positionRows.some((p) => p.type === "stock") && (
+                <>
+                  <div className="section-subtitle">Stocks</div>
+                  {positionRows.filter((p) => p.type === "stock").map((pos) => (
+                    <div key={`s-${pos.symbol}`} className="mover-row">
+                      <div className="row-top">
+                        <div className="row-left">
+                          <div className="mover-symbol">{pos.symbol}</div>
+                          <div className={`row-value ${pos.value >= 0 ? "up" : "down"}`}>${pos.value.toFixed(2)}</div>
+                        </div>
+                        <div className="row-right">
+                          <span className="mover-price">Qty {pos.qty}</span>
+                          <button className="pill tiny" disabled={busySell} onClick={() => handleSellAll(pos)}>Sell all</button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
               {!positionRows.length && <div className="muted">No holdings yet.</div>}
             </div>
           </div>
@@ -344,7 +436,25 @@ function Dashboard() {
             <StockChart
               key={`${selectedSymbol}-${assetType}-${timeframe}`}
               symbol={selectedSymbol}
-              days={{ LIVE: 3, "1D": 7, "1W": 30, "1M": 90, "3M": 180, "1Y": 365, "5Y": 1825 }[timeframe] || 60}
+              days={{ LIVE: 1, "1D": 2, "1W": 7, "1M": 35, "3M": 120, "1Y": 370, "5Y": 1825 }[timeframe] || 60}
+              multiplier={{
+                LIVE: 1,  // 1 minute bars
+                "1D": 30, // 30 minute bars (approx)
+                "1W": 4,  // 4 hour bars
+                "1M": 1,  // 1 day bars
+                "3M": 1,  // 1 day bars
+                "1Y": 7,  // 1 week bars
+                "5Y": 30  // ~monthly
+              }[timeframe] || 1}
+              timespan={{
+                LIVE: "minute",
+                "1D": "minute",
+                "1W": "hour",
+                "1M": "day",
+                "3M": "day",
+                "1Y": "day",
+                "5Y": "day"
+              }[timeframe] || "day"}
               assetType={assetType}
             />
           </div>
@@ -382,7 +492,7 @@ function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {[...orders, ...cryptoOrders].map((o, idx) => (
+                  {[...orders, ...cryptoOrders].reverse().map((o, idx) => (
                     <tr key={idx}>
                       <td>{o.symbol}</td>
                       <td>{o.side}</td>
@@ -476,9 +586,28 @@ function Dashboard() {
                 {latestPrice && computedShares ? `$${(computedShares * latestPrice).toFixed(2)}` : "$0.00"}
               </div>
             </div>
-            <button className="cta" onClick={onTrade} disabled={!computedShares || !selectedSymbol}>
-              Review Order
-            </button>
+            <div className="order-row spaced">
+              <button
+                className="pill ghost"
+                disabled={busyMax || !latestPrice || side !== "BUY"}
+                onClick={() => {
+                  if (!latestPrice) return;
+                  setBusyMax(true);
+                  const maxShares = availableCash > 0 ? availableCash / latestPrice : 0;
+                  if (tradeMode === "cash") {
+                    setCashAmount(availableCash.toFixed(2));
+                  } else {
+                    setShares(maxShares.toFixed(4));
+                  }
+                  setBusyMax(false);
+                }}
+              >
+                Buy max
+              </button>
+              <button className="cta" onClick={onTrade} disabled={!computedShares || !selectedSymbol}>
+                Review Order
+              </button>
+            </div>
             {status && <div className="muted">{status}</div>}
           </div>
         </section>

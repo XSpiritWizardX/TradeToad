@@ -24,7 +24,12 @@ class Portfolio_Stock(db.Model):
             'portfolio_id': self.portfolio_id,
             'stock_id': self.stock_id,
             'quantity': float(self.quantity),
-            # 'stock': self.stock.to_dict()  # Include stock details
+            'stock': {
+                'id': self.stock.id,
+                'symbol': self.stock.symbol,
+                'company': self.stock.company,
+                'market_cap': float(self.stock.market_cap) if self.stock.market_cap is not None else None
+            }
         }
     # NOTE line 24: "Include stock details" is not in schema diagram
     # Is this stock details going to add redundant data to table?

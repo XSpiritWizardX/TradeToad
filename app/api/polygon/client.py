@@ -6,6 +6,7 @@ from polygon import RESTClient
 from . import polygon_config
 
 # simple cache to store API responses
+CACHE_DEFAULT = 60 * 15  # seconds
 cache = {}
 cache_expiry = {}
 CACHE_DURATION = 60 * 15  # cache for 15 minutes
@@ -18,19 +19,20 @@ def _get_client():
     return RESTClient(api_key)
 
 
-def apiCall(symbol, days=90):
-    """Fetch recent daily aggregates for a symbol with a short cache."""
+def apiCall(symbol, span_days=90, multiplier=1, timespan="day"):
+    """Fetch recent aggregates with configurable resolution."""
     symbol = symbol.upper()
+    timespan = timespan.lower()
     crypto_usd = {"BTC", "ETH", "DOGE", "SOL", "XRP", "LTC", "ADA", "DOT", "AVAX", "BNB", "SHIB", "BCH", "USDC", "USDT"}
     api_symbol = f"X:{symbol}USD" if ":" not in symbol and symbol in crypto_usd else symbol
-    cache_key = f"{api_symbol}:{days}"
+    cache_key = f"{api_symbol}:{span_days}:{multiplier}:{timespan}"
     current_time = time.time()
 
     if cache_key in cache and current_time < cache_expiry.get(cache_key, 0):
         return cache[cache_key]
 
     end_date = date.today()
-    start_date = end_date - timedelta(days=days)
+    start_date = end_date - timedelta(days=span_days)
 
     aggs = []
     opens = []
@@ -43,13 +45,13 @@ def apiCall(symbol, days=90):
     try:
         for a in client.list_aggs(
             api_symbol,
-            1,
-            "day",
+            multiplier,
+            timespan,
             start_date.isoformat(),
             end_date.isoformat(),
             adjusted="true",
             sort="asc",
-            limit=5000,
+            limit=50000,
         ):
             aggs.append({
                 "timestamp": a.timestamp,
@@ -75,7 +77,7 @@ def apiCall(symbol, days=90):
         }
 
         cache[cache_key] = result
-        cache_expiry[cache_key] = current_time + CACHE_DURATION
+        cache_expiry[cache_key] = current_time + CACHE_DEFAULT
 
         return result
 

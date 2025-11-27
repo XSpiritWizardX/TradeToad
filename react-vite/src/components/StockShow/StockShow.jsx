@@ -44,8 +44,6 @@ function StockShow() {
   }, [symbol]);
 
   const estimatedCost = shares && quote.price ? (parseFloat(shares) * quote.price).toFixed(2) : "0.00";
-  const daysMap = { LIVE: 7, "1D": 7, "1W": 30, "1M": 90, "3M": 180, "1Y": 365, "5Y": 1825 };
-
   return (
     <div className="stock-page">
       <div className="stock-topbar">
@@ -94,7 +92,25 @@ function StockShow() {
               <StockChart
                 key={`${symbol}-${timeframe}`}
                 symbol={symbol}
-                days={daysMap[timeframe] || 90}
+                days={{ LIVE: 1, "1D": 2, "1W": 7, "1M": 35, "3M": 120, "1Y": 370, "5Y": 1825 }[timeframe] || 90}
+                multiplier={{
+                  LIVE: 1,
+                  "1D": 30,
+                  "1W": 4,
+                  "1M": 1,
+                  "3M": 1,
+                  "1Y": 7,
+                  "5Y": 30
+                }[timeframe] || 1}
+                timespan={{
+                  LIVE: "minute",
+                  "1D": "minute",
+                  "1W": "hour",
+                  "1M": "day",
+                  "3M": "day",
+                  "1Y": "day",
+                  "5Y": "day"
+                }[timeframe] || "day"}
               />
             </div>
           </div>

@@ -23,7 +23,9 @@ def get_stock(symbol):
     Get stock prices by stock symbol.
     """
     days = request.args.get('days', default=90, type=int)
-    result = apiCall(symbol, days=days)
+    multiplier = request.args.get('multiplier', default=1, type=int)
+    timespan = request.args.get('timespan', default="day", type=str)
+    result = apiCall(symbol, span_days=days, multiplier=multiplier, timespan=timespan)
     return jsonify(result)
     # return jsonify({'stocks': [stock.to_dict() for stock in stocks]})
 
