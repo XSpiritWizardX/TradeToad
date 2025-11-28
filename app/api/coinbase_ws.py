@@ -77,8 +77,9 @@ async def _run_socket():
                                     price_cache[pid] = float(price)
                                 except Exception:
                                     continue
-                                ts_cache[pid] = tick.get("time")
-                                _update_bar(pid, price, tick.get("time"))
+                                parsed_ts = _parse_ts(tick.get("time"))
+                                ts_cache[pid] = parsed_ts
+                                _update_bar(pid, price, parsed_ts)
                                 last_log["event"] = f"tick:{pid}"
                                 last_log["time"] = time.time()
                 await asyncio.sleep(0.1)

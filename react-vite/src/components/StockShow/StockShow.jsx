@@ -9,6 +9,9 @@ function StockShow() {
   const [shares, setShares] = useState("");
   const [livePrice, setLivePrice] = useState(null);
   const [timeframe, setTimeframe] = useState("1D");
+  const [prediction, setPrediction] = useState(null);
+  const [predicting, setPredicting] = useState(false);
+  const [predictError, setPredictError] = useState(null);
 
   const quote = useMemo(
     () => ({
@@ -42,6 +45,30 @@ function StockShow() {
     }
     loadQuote();
   }, [symbol]);
+
+  const handlePredict = async () => {
+    try {
+      setPredicting(true);
+      setPredictError(null);
+      const isLive = timeframe === "LIVE";
+      const endpoint = isLive
+        ? `/api/predict/${symbol}/live?span_days=2&multiplier=5&timespan=minute`
+        : `/api/predict/${symbol}`;
+      const res = await fetch(endpoint, { credentials: "include" });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "Prediction failed");
+      }
+      const data = await res.json();
+      setPrediction(data);
+    } catch (err) {
+      console.error("predict failed", err);
+      setPredictError("Prediction unavailable right now.");
+      setPrediction(null);
+    } finally {
+      setPredicting(false);
+    }
+  };
 
   const estimatedCost = shares && quote.price ? (parseFloat(shares) * quote.price).toFixed(2) : "0.00";
   return (
@@ -87,6 +114,28 @@ function StockShow() {
                 </button>
               ))}
               <div className="expand">Expand ⤢</div>
+            </div>
+            <div className="predict-row">
+              <button className="predict-btn" onClick={handlePredict} disabled={predicting}>
+                {predicting ? "Predicting..." : "Predict Price"}
+              </button>
+              {predictError && <span className="predict-error">{predictError}</span>}
+              {prediction && (
+                <div className="predict-pill">
+                  <div className="pill-label">Predicted</div>
+                  <div className="pill-value">
+                    {prediction.predicted_close ?? prediction.predicted_price
+                      ? `$${Number(
+                          prediction.predicted_close ?? prediction.predicted_price
+                        ).toFixed(2)}`
+                      : "—"}
+                  </div>
+                  <div className="pill-meta">
+                    {(prediction.suggested_action || (prediction.predicted_price ? "LIVE" : "FORECAST"))} ·{" "}
+                    {Math.round((prediction.confidence || 0.5) * 100)}% conf
+                  </div>
+                </div>
+              )}
             </div>
             <div className="chart-wrapper">
               <StockChart

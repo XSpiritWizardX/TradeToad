@@ -1,68 +1,59 @@
-import math
 from datetime import datetime, timezone
-from statistics import mean
 
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 
 from app.api.polygon.client import apiCall
-from app.models import Portfolio, Portfolio_Crypto, Portfolio_Stock, Stock, Crypto
+from app.models import Portfolio, Portfolio_Crypto, Portfolio_Stock, Stock, Crypto, PredictionSignal, db
+from app.services.ml_predictor import (
+    predict_symbol_close,
+    predict_symbol_live,
+    train_symbol_model,
+)
 
 predict_routes = Blueprint("predict", __name__)
-
-
-def _ema(series, span):
-    if not series or span <= 1:
-        return series[-1] if series else None
-    k = 2 / (span + 1)
-    ema_val = series[0]
-    for price in series[1:]:
-        ema_val = price * k + ema_val * (1 - k)
-    return ema_val
 
 
 @predict_routes.route("/<symbol>")
 @login_required
 def predict_symbol(symbol):
     """
-    Lightweight heuristic predictor for a symbol.
-    Returns next-price guess + action/sizing suggestion.
+    ML-backed predictor for a symbol with sizing suggestions.
     """
     symbol = symbol.upper()
-    days = request.args.get("days", default=120, type=int)
+    days = request.args.get("days", default=180, type=int)
 
     try:
-        data = apiCall(symbol, span_days=days, multiplier=1, timespan="day")
+        # Train/inference model-based prediction (daily bars)
+        prediction = predict_symbol_close(symbol, span_days=days)
+        if prediction.get("error"):
+            return jsonify({"symbol": symbol, "error": prediction["error"]}), 400
+
+        # Pull recent range for sizing/volatility context
+        data = apiCall(symbol, span_days=30, multiplier=1, timespan="day")
         closes = data.get("closing") or []
         highs = data.get("highs") or []
         lows = data.get("lows") or []
-        if len(closes) < 5:
-            return jsonify({"symbol": symbol, "error": "Not enough data"}), 400
-
-        last_close = closes[-1]
-        short_ema = _ema(closes[-20:], 12)
-        long_ema = _ema(closes[-60:], 26)
-        recent_range = max(highs[-20:]) - min(lows[-20:])
+        recent_range = max(highs[-20:], default=0) - min(lows[-20:], default=0)
         avg_volatility = recent_range / 20 if recent_range else 0
 
-        slope_window = closes[-20:]
-        diffs = [slope_window[i + 1] - slope_window[i] for i in range(len(slope_window) - 1)]
-        avg_slope = mean(diffs) if diffs else 0
-        predicted = last_close + avg_slope
+        last_close = prediction.get("last_close") or (closes[-1] if closes else None)
+        predicted = prediction.get("predicted_close")
+        if last_close is None or predicted is None:
+            return jsonify({"symbol": symbol, "error": "Prediction unavailable"}), 400
 
         signal = predicted - last_close
         action = "HOLD"
-        if signal > max(0.001 * last_close, avg_volatility * 0.2):
+        if signal > max(0.003 * last_close, avg_volatility * 0.2):
             action = "BUY"
-        elif signal < -max(0.001 * last_close, avg_volatility * 0.2):
+        elif signal < -max(0.003 * last_close, avg_volatility * 0.2):
             action = "SELL"
 
-        confidence = min(0.99, max(0.05, abs(signal) / (abs(last_close) + 1e-6)))
+        confidence = prediction.get("confidence") or min(0.99, max(0.05, abs(signal) / (abs(last_close) + 1e-6)))
 
         portfolio = Portfolio.query.filter_by(user_id=current_user.id).first()
         available_cash = float(portfolio.available_cash) if portfolio else 0.0
 
-        # Determine current holdings for sizing
         stock = Stock.query.filter_by(symbol=symbol).first()
         crypto = Crypto.query.filter_by(symbol=symbol).first()
         qty_owned = 0.0
@@ -80,20 +71,102 @@ def predict_symbol(symbol):
         elif action == "SELL":
             suggested_shares = round(qty_owned * 0.5, 4)
 
-        return jsonify({
+        response_payload = {
             "symbol": symbol,
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "last_close": last_close,
             "predicted_close": predicted,
-            "short_ema": short_ema,
-            "long_ema": long_ema,
             "avg_volatility": avg_volatility,
             "suggested_action": action,
             "confidence": confidence,
             "suggested_shares": suggested_shares,
             "available_cash": available_cash,
             "quantity_owned": qty_owned,
-        })
+            "model_used": prediction.get("model_used"),
+            "mae": prediction.get("mae"),
+        }
+        _persist_signal(symbol, response_payload, timespan="day", multiplier=1, span_days=days)
+        return jsonify(response_payload)
     except Exception as exc:
         print(f"prediction error for {symbol}: {exc}")
         return jsonify({"symbol": symbol, "error": "Prediction failed"}), 503
+
+
+@predict_routes.route("/<symbol>/train", methods=["POST"])
+@login_required
+def train_symbol(symbol):
+    """Train a per-symbol ML model on recent daily bars."""
+    days = request.args.get("days", default=365, type=int)
+    try:
+        result = train_symbol_model(symbol, span_days=days)
+        return jsonify(result)
+    except Exception as exc:
+        print(f"train error for {symbol}: {exc}")
+        return jsonify({"symbol": symbol.upper(), "error": str(exc)}), 400
+
+
+@predict_routes.route("/<symbol>/forecast")
+@login_required
+def forecast_symbol(symbol):
+    """Get the next-day forecast without portfolio sizing."""
+    days = request.args.get("days", default=180, type=int)
+    try:
+        result = predict_symbol_close(symbol, span_days=days)
+        status = 200 if not result.get("error") else 400
+        if status == 200:
+            _persist_signal(symbol, result, timespan="day", multiplier=1, span_days=days)
+        return jsonify(result), status
+    except Exception as exc:
+        print(f"forecast error for {symbol}: {exc}")
+        return jsonify({"symbol": symbol.upper(), "error": "Forecast failed"}), 503
+
+
+@predict_routes.route("/<symbol>/live")
+@login_required
+def live_symbol(symbol):
+    """
+    Live-ish intraday prediction (uses trained daily model on intraday bars).
+    """
+    span_days = request.args.get("span_days", default=2, type=int)
+    multiplier = request.args.get("multiplier", default=5, type=int)
+    timespan = request.args.get("timespan", default="minute", type=str)
+    try:
+        result = predict_symbol_live(symbol, span_days=span_days, multiplier=multiplier, timespan=timespan)
+        status = 200 if not result.get("error") else 400
+        if status == 200:
+            _persist_signal(symbol, result, timespan=timespan, multiplier=multiplier, span_days=span_days)
+        return jsonify(result), status
+    except Exception as exc:
+        print(f"live prediction error for {symbol}: {exc}")
+        return jsonify({"symbol": symbol.upper(), "error": "Live prediction failed"}), 503
+
+
+def _persist_signal(symbol, payload, timespan="day", multiplier=1, span_days=None):
+    """Persist the latest prediction signal for later model training/analytics."""
+    try:
+        ts_raw = payload.get("timestamp")
+        predicted_for = None
+        if ts_raw:
+            try:
+                predicted_for = datetime.fromisoformat(ts_raw.replace("Z", "+00:00"))
+            except Exception:
+                predicted_for = None
+
+        sig = PredictionSignal(
+            symbol=symbol.upper(),
+            predicted_for=predicted_for,
+            timespan=timespan,
+            multiplier=multiplier,
+            span_days=span_days,
+            action=payload.get("suggested_action") or payload.get("action"),
+            confidence=payload.get("confidence"),
+            predicted_price=payload.get("predicted_close") or payload.get("predicted_price"),
+            last_price=payload.get("last_close") or payload.get("last_price"),
+            mae=payload.get("mae"),
+            model_used=payload.get("model_used"),
+        )
+        db.session.add(sig)
+        db.session.commit()
+    except Exception as exc:
+        db.session.rollback()
+        print(f"signal persist failed for {symbol}: {exc}")

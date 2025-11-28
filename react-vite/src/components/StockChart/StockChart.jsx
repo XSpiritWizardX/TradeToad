@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './StockChart.css';
 
@@ -12,6 +12,7 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
   const [hoverIndex, setHoverIndex] = useState(null);
   const svgRef = useRef(null);
   const wrapperRef = useRef(null);
+  const [signal, setSignal] = useState(null);
 
   useEffect(() => {
     const base = assetType === "crypto" ? "/api/cryptos" : "/api/stocks";
@@ -95,45 +96,64 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
 
     fetchStockData();
     if (pollRef.current) clearInterval(pollRef.current);
-    // faster refresh to keep in sync with live prices
-    pollRef.current = setInterval(fetchStockData, 10_000);
+    // refresh at most once per minute to reduce jitter
+    pollRef.current = setInterval(fetchStockData, 60_000);
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
     };
   }, [symbol, days, multiplier, timespan, assetType]);
 
-  const formatDateTime = (ts) =>
-    new Date(ts).toLocaleString([], {
-      hour12: false,
-      timeZone: "America/New_York",
-      timeZoneName: "short",
-    });
+  useEffect(() => {
+    async function fetchSignal() {
+      try {
+        const isLive = timespan === "minute";
+        const endpoint = isLive
+          ? `/api/predict/${symbol}/live?span_days=2&multiplier=${multiplier}&timespan=${timespan}`
+          : `/api/predict/${symbol}`;
+        const res = await fetch(endpoint, { credentials: "include" });
+        if (!res.ok) throw new Error("signal fetch failed");
+        const data = await res.json();
+        setSignal(data);
+      } catch (err) {
+        console.error("signal fetch failed", err);
+        setSignal(null);
+      }
+    }
+    fetchSignal();
+  }, [symbol, timespan, multiplier, days, assetType]);
 
   const baseData = stockData;
-  let viewData = baseData;
+  const viewData = useMemo(() => {
+    if (timespan === "minute" && baseData?.aggs?.length > 60) {
+      const start = baseData.aggs.length - 60;
+      return {
+        ...baseData,
+        aggs: baseData.aggs.slice(start),
+        open: baseData.open.slice(start),
+        closing: baseData.closing.slice(start),
+        highs: baseData.highs.slice(start),
+        lows: baseData.lows.slice(start)
+      };
+    }
+    return baseData;
+  }, [baseData, timespan]);
 
-  // Limit LIVE view to the latest 60 points (approx 60 minutes)
-  if (timespan === "minute" && baseData?.aggs?.length > 60) {
-    const start = baseData.aggs.length - 60;
-    viewData = {
-      ...baseData,
-      aggs: baseData.aggs.slice(start),
-      open: baseData.open.slice(start),
-      closing: baseData.closing.slice(start),
-      highs: baseData.highs.slice(start),
-      lows: baseData.lows.slice(start)
-    };
-  }
-
-  let chartData = viewData?.closing?.map((close, index) => ({
-    date: new Date(viewData.aggs[index].timestamp).toLocaleDateString(),
-    timestamp: viewData.aggs[index].timestamp,
-    close,
-    open: viewData.open[index],
-    high: viewData.highs[index],
-    low: viewData.lows[index],
-    dateTime: formatDateTime(viewData.aggs[index].timestamp),
-  })) || [];
+  const chartData = useMemo(() => {
+    if (!viewData?.closing?.length) return [];
+    return viewData.closing.map((close, index) => ({
+      date: new Date(viewData.aggs[index].timestamp).toLocaleDateString(),
+      timestamp: viewData.aggs[index].timestamp,
+      close,
+      open: viewData.open[index],
+      high: viewData.highs[index],
+      low: viewData.lows[index],
+      dateTime: new Date(viewData.aggs[index].timestamp).toLocaleString([], {
+        hour12: false,
+        timeZone: "America/New_York",
+        timeZoneName: "short",
+      }),
+    }));
+  }, [viewData]);
 
   useEffect(() => {
     if (chartData.length) {
@@ -142,6 +162,43 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
       setHoverIndex(null);
     }
   }, [stockData?.symbol, chartData.length]);
+
+  const historicalSignals = useMemo(() => {
+    if (!chartData.length) return [];
+    const closes = chartData.map((c) => c.close);
+    const ema = (period) => {
+      const k = 2 / (period + 1);
+      let emaVal = closes[0];
+      const out = [emaVal];
+      for (let i = 1; i < closes.length; i++) {
+        emaVal = closes[i] * k + emaVal * (1 - k);
+        out.push(emaVal);
+      }
+      return out;
+    };
+    const short = ema(8);
+    const long = ema(21);
+    const markers = [];
+    for (let i = 1; i < closes.length; i++) {
+      const prevDiff = short[i - 1] - long[i - 1];
+      const diff = short[i] - long[i];
+      if (prevDiff <= 0 && diff > 0) {
+        markers.push({ idx: i, action: "BUY", price: closes[i] });
+      } else if (prevDiff >= 0 && diff < 0) {
+        markers.push({ idx: i, action: "SELL", price: closes[i] });
+      }
+    }
+    return markers;
+  }, [chartData]);
+
+  const predictedValue = signal?.predicted_close ?? signal?.predicted_price;
+  const lastPrice = chartData.length ? chartData[chartData.length - 1]?.close : null;
+  const action = signal?.suggested_action || (predictedValue && lastPrice
+    ? (predictedValue > lastPrice ? "BUY" : predictedValue < lastPrice ? "SELL" : "HOLD")
+    : null);
+  const confidencePct = Math.round((signal?.confidence || 0.5) * 100);
+  const mae = signal?.mae;
+  const labelForAction = action === "BUY" ? "Buy Signal" : action === "SELL" ? "Sell Signal" : "Hold Signal";
 
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">Error: {error}</div>;
@@ -152,8 +209,9 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
   const pad = Math.max((rawHigh - rawLow) * 0.1, 0.5);
   const minLow = rawLow - pad;
   const maxHigh = rawHigh + pad;
-  const width = Math.max(500, chartData.length * 16 + 60);
-  const height = 320;
+  const totalPoints = chartData.length;
+  const width = Math.max(500, totalPoints * 16 + 60);
+  const height = 460;
   const leftMargin = 60;
   const rightMargin = 20;
   const usableWidth = width - leftMargin - rightMargin;
@@ -181,8 +239,31 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
     ? (hoverIndex / Math.max(chartData.length - 1, 1)) * usableWidth + leftMargin
     : null;
 
+  const signalX = leftMargin + usableWidth;
+  const signalY = typeof predictedValue === "number" ? yScale(predictedValue) : null;
+  const signalColor = action === "SELL" ? "#ff6b6b" : action === "BUY" ? "#23e889" : "#9fb3c8";
+
   return (
     <div className="stock-chart-container">
+      {signal && (
+        <div className="signal-card above-chart">
+          <div className="signal-row">
+            <span className={`signal-chip ${action === "BUY" ? "buy" : action === "SELL" ? "sell" : "hold"}`}>
+              {labelForAction}
+            </span>
+            <span className="signal-conf">{confidencePct}% confidence</span>
+          </div>
+          <div className="signal-price">
+            {typeof predictedValue === "number" ? `$${predictedValue.toFixed(2)}` : "—"}
+            <span className="muted">predicted</span>
+          </div>
+          <div className="signal-meta">
+            <span>Last: {lastPrice ? `$${lastPrice.toFixed(2)}` : "—"}</span>
+            <span>Model: {signal.model_used ? "ML" : "Heuristic"}</span>
+            {mae != null && <span>MAE: {mae.toFixed(2)}</span>}
+          </div>
+        </div>
+      )}
       <div className="chart-wrapper" ref={wrapperRef}>
         <svg
           ref={svgRef}
@@ -239,7 +320,26 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
               </g>
             );
           })}
-          {chartType === "line" && chartData.length > 1 && (() => {
+        {historicalSignals.map((sig, index) => {
+          const x = (sig.idx / Math.max(chartData.length - 1, 1)) * usableWidth + leftMargin;
+          const y = yScale(sig.price) - 40;
+          const color = sig.action === "SELL" ? "#ff6b6b" : "#23e889";
+          return (
+            <g key={`sig-${index}`} className="hist-signal">
+              <polygon
+                points={`${x - 12},${y - 26} ${x + 12},${y - 26} ${x},${y - 6}`}
+                fill={color}
+                opacity="0.9"
+              />
+              <circle cx={x} cy={y} r="8" fill={color} />
+              <text x={x} y={y - 30} fill={color} fontSize="13" fontWeight="800" textAnchor="middle">
+                {sig.action}
+              </text>
+            </g>
+            );
+          })}
+          {chartType === "line" && (() => {
+            if (chartData.length < 2) return null;
             const points = chartData.map((d, idx) => {
               const x = (idx / Math.max(chartData.length - 1, 1)) * usableWidth + leftMargin;
               const y = yScale(d.close);
@@ -255,7 +355,40 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
               />
             );
           })()}
+          {signalY != null && (
+            <g className="signal-marker">
+              <line
+                x1={signalX}
+                y1={signalY}
+                x2={signalX + 16}
+                y2={signalY}
+                stroke={signalColor}
+                strokeWidth="2"
+              />
+              <circle cx={signalX} cy={signalY} r="5" fill={signalColor} />
+              <rect
+                x={signalX + 18}
+                y={signalY - 12}
+                rx="6"
+                ry="6"
+                width="72"
+                height="24"
+                fill="#0f151d"
+                stroke={signalColor}
+                strokeWidth="1"
+              />
+              <text x={signalX + 24} y={signalY + 5} fill={signalColor} fontSize="12" fontWeight="700">
+                {action || "HOLD"}
+              </text>
+              {typeof predictedValue === "number" && (
+                <text x={signalX + 56} y={signalY + 5} fill="#e6f3ff" fontSize="11" textAnchor="end">
+                  ${predictedValue.toFixed(2)}
+                </text>
+              )}
+            </g>
+          )}
         </svg>
+     
       </div>
       {hover && (
         <div className="candle-tooltip bottom">

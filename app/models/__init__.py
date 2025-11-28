@@ -10,4 +10,5 @@ from .crypto import Crypto
 from .portfolio_crypto import Portfolio_Crypto
 from .watchlist_crypto import Watchlist_Crypto
 from .crypto_transaction import Crypto_Transaction
+from .prediction_signal import PredictionSignal
 from .db import environment, SCHEMA

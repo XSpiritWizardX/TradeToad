@@ -44,6 +44,29 @@ function Dashboard() {
   const [busyMax, setBusyMax] = useState(false);
   const [busyDeposit, setBusyDeposit] = useState(false);
 
+  const flagFor = useCallback((symbol, type) => {
+    const sym = (symbol || "").toUpperCase();
+    const cryptoMap = {
+      BTC: "CR",
+      ETH: "CR",
+      DOGE: "CR",
+      SOL: "CR",
+      ADA: "CR",
+      LTC: "CR",
+      XRP: "CR",
+      AVAX: "CR",
+      DOT: "CR",
+      BNB: "CR",
+      SHIB: "CR",
+      BCH: "CR",
+      USDC: "USD",
+      USDT: "USD",
+    };
+    if (type === "crypto") return cryptoMap[sym] || "CR";
+    // Default stocks to US until richer metadata exists.
+    return "US";
+  }, []);
+
   useEffect(() => {
     if (user) {
       dispatch(fetchPortfolios());
@@ -162,7 +185,8 @@ function Dashboard() {
   useEffect(() => {
     loadPrice();
     if (pricePollRef.current) clearInterval(pricePollRef.current);
-    pricePollRef.current = setInterval(loadPrice, 15_000);
+    // refresh price roughly once per minute
+    pricePollRef.current = setInterval(loadPrice, 60_000);
     return () => {
       if (pricePollRef.current) clearInterval(pricePollRef.current);
     };
@@ -467,7 +491,10 @@ function Dashboard() {
                 <div key={`c-${pos.symbol}`} className="mover-row">
                   <div className="row-top">
                     <div className="row-left">
-                      <div className="mover-symbol">{pos.symbol}</div>
+                      <div className="mover-symbol">
+                        <span className="flag-badge">{flagFor(pos.symbol, "crypto")}</span>
+                        {pos.symbol}
+                      </div>
                       <div className={`row-value ${pos.value >= 0 ? "up" : "down"}`}>${pos.value.toFixed(2)}</div>
                     </div>
                     <div className="row-right">
@@ -487,7 +514,10 @@ function Dashboard() {
                     <div key={`s-${pos.symbol}`} className="mover-row">
                       <div className="row-top">
                         <div className="row-left">
-                          <div className="mover-symbol">{pos.symbol}</div>
+                          <div className="mover-symbol">
+                            <span className="flag-badge">{flagFor(pos.symbol, "stock")}</span>
+                            {pos.symbol}
+                          </div>
                           <div className={`row-value ${pos.value >= 0 ? "up" : "down"}`}>${pos.value.toFixed(2)}</div>
                         </div>
                         <div className="row-right">
@@ -551,25 +581,24 @@ function Dashboard() {
           <StockChart
             key={`${selectedSymbol}-${assetType}-${timeframe}-${chartExpanded}`}
             symbol={selectedSymbol}
-            days={{ LIVE: 1/24, "1D": 2, "1W": 7, "1M": 35, "3M": 120, "1Y": 370, "5Y": 1825 }[timeframe] || 60}
-            multiplier={{
-              LIVE: 1,  // 1 minute bars
-              "1D": 30, // 30 minute bars (approx)
-              "1W": 4,  // 4 hour bars
-              "1M": 1,  // 1 day bars
-              "3M": 1,  // 1 day bars
-              "1Y": 7,  // 1 week bars
-              "5Y": 30  // ~monthly
-            }[timeframe] || 1}
-            timespan={{
-              LIVE: "minute",
-              "1D": "minute",
-              "1W": "hour",
-              "1M": "day",
-              "3M": "day",
-              "1Y": "day",
-              "5Y": "day"
-            }[timeframe] || "day"}
+            days={
+              (assetType === "crypto"
+                ? { LIVE: 1/24, "1D": 1, "1W": 7, "1M": 35, "3M": 120, "1Y": 370, "5Y": 1825 }
+                : { LIVE: 1/24, "1D": 2, "1W": 7, "1M": 35, "3M": 120, "1Y": 370, "5Y": 1825 }
+              )[timeframe] || 60
+            }
+            multiplier={
+              (assetType === "crypto"
+                ? { LIVE: 1, "1D": 5, "1W": 1, "1M": 1, "3M": 1, "1Y": 1, "5Y": 1 }
+                : { LIVE: 1, "1D": 30, "1W": 4, "1M": 1, "3M": 1, "1Y": 7, "5Y": 30 }
+              )[timeframe] || 1
+            }
+            timespan={
+              (assetType === "crypto"
+                ? { LIVE: "minute", "1D": "minute", "1W": "hour", "1M": "day", "3M": "day", "1Y": "day", "5Y": "day" }
+                : { LIVE: "minute", "1D": "minute", "1W": "hour", "1M": "day", "3M": "day", "1Y": "day", "5Y": "day" }
+              )[timeframe] || "day"
+            }
             assetType={assetType}
             chartType={chartType}
           />
@@ -646,7 +675,9 @@ function Dashboard() {
                 onChange={(e) => setSelectedSymbol(e.target.value)}
               >
                 {(assetType === "stock" ? stocksList : cryptosList).map((s) => (
-                  <option key={`${s.id}-${s.symbol}`} value={s.symbol}>{s.symbol}</option>
+                  <option key={`${s.id}-${s.symbol}`} value={s.symbol}>
+                    {flagFor(s.symbol, assetType === "stock" ? "stock" : "crypto")} — {s.symbol}
+                  </option>
                 ))}
               </select>
             </div>

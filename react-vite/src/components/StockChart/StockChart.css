@@ -4,12 +4,13 @@
 
 .chart-wrapper{
     width: 100%;
-    height: 320px;
+    height: 460px;
     background: #0b1016;
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
+    border-radius: 14px;
     overflow: hidden;
     position: relative;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
 .loading, .error, .no-data{
@@ -48,4 +49,109 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     row-gap: 4px;
+}
+
+.signal-marker text{
+    font-family: "Inter", "Helvetica", "Arial", sans-serif;
+}
+
+.hist-signal polygon, .hist-signal circle{
+    filter: drop-shadow(0 0 6px rgba(0,0,0,0.35));
+}
+.hist-signal text{
+    font-family: "Inter","Helvetica","Arial",sans-serif;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    paint-order: stroke;
+    stroke: rgba(11, 16, 22, 0.65);
+    stroke-width: 1px;
+}
+
+.projection line,
+.projection rect,
+.projection polyline{
+    pointer-events: none;
+}
+
+.signal-card{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 12px 14px;
+    background: linear-gradient(140deg, rgba(20, 33, 46, 0.95), rgba(10, 18, 28, 0.9));
+    border: 1px solid rgba(35, 228, 137, 0.15);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.signal-card.above-chart{
+    position: static;
+    margin-bottom: 10px;
+}
+
+.signal-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.signal-chip{
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.signal-chip.buy{
+    background: rgba(35, 232, 137, 0.15);
+    color: #23e889;
+    border: 1px solid rgba(35, 232, 137, 0.35);
+}
+
+.signal-chip.sell{
+    background: rgba(255, 107, 107, 0.15);
+    color: #ff7b7b;
+    border: 1px solid rgba(255, 107, 107, 0.35);
+}
+
+.signal-chip.hold{
+    background: rgba(159, 179, 200, 0.15);
+    color: #d1e4ff;
+    border: 1px solid rgba(159, 179, 200, 0.35);
+}
+
+.signal-conf{
+    color: #9fb3c8;
+    font-size: 12px;
+}
+
+.signal-price{
+    font-size: 22px;
+    font-weight: 800;
+    color: #e6f3ff;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.signal-price .muted{
+    font-size: 12px;
+    color: #9fb3c8;
+    font-weight: 600;
+}
+
+.signal-meta{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: #9fb3c8;
+    font-size: 12px;
 }
