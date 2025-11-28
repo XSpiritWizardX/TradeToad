@@ -1,8 +1,15 @@
 FROM python:3.9.18-alpine3.18
 
-RUN apk add build-base
-
-RUN apk add postgresql-dev gcc python3-dev musl-dev
+# Build deps for numpy/pandas/sklearn on Alpine
+RUN apk add --no-cache \
+    build-base \
+    python3-dev \
+    musl-dev \
+    postgresql-dev \
+    libffi-dev \
+    openblas-dev \
+    lapack-dev \
+    gfortran
 
 ARG FLASK_APP
 ARG FLASK_ENV
@@ -16,8 +23,9 @@ WORKDIR /var/www
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
-RUN pip install psycopg2
+RUN pip install --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir psycopg2
 
 COPY . .
 
