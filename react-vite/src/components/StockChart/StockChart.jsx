@@ -196,7 +196,8 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
   const action = signal?.suggested_action || (predictedValue && lastPrice
     ? (predictedValue > lastPrice ? "BUY" : predictedValue < lastPrice ? "SELL" : "HOLD")
     : null);
-  const confidencePct = Math.round((signal?.confidence || 0.5) * 100);
+  const confidencePct = Math.round(Math.min(0.99, Math.max(0, signal?.confidence ?? 0.5)) * 100);
+  const predictedDelta = predictedValue != null && lastPrice != null ? predictedValue - lastPrice : null;
   const mae = signal?.mae;
   const labelForAction = action === "BUY" ? "Buy Signal" : action === "SELL" ? "Sell Signal" : "Hold Signal";
 
@@ -253,12 +254,19 @@ function StockChart({ symbol: symbolProp, days = 90, multiplier = 1, timespan = 
             </span>
             <span className="signal-conf">{confidencePct}% confidence</span>
           </div>
-          <div className="signal-price">
-            {typeof predictedValue === "number" ? `$${predictedValue.toFixed(2)}` : "—"}
-            <span className="muted">predicted</span>
+          <div className="signal-price stacked">
+            <div className="price-block">
+              <div className="muted tiny">Market Price</div>
+              <div className="pill-value">{lastPrice ? `$${lastPrice.toFixed(2)}` : "—"}</div>
+            </div>
+            <div className="price-block">
+              <div className="muted tiny">Predicted</div>
+              <div className={`pill-value ${predictedDelta != null ? (predictedDelta >= 0 ? "up" : "down") : ""}`}>
+                {typeof predictedValue === "number" ? `$${predictedValue.toFixed(2)}` : "—"}
+              </div>
+            </div>
           </div>
           <div className="signal-meta">
-            <span>Last: {lastPrice ? `$${lastPrice.toFixed(2)}` : "—"}</span>
             <span>Model: {signal.model_used ? "ML" : "Heuristic"}</span>
             {mae != null && <span>MAE: {mae.toFixed(2)}</span>}
           </div>

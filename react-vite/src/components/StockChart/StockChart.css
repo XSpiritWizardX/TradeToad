@@ -148,6 +148,32 @@
     font-weight: 600;
 }
 
+.signal-price.stacked{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.price-block{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pill-value{
+    font-size: 18px;
+    font-weight: 700;
+    color: #e6f3ff;
+}
+
+.pill-value.up{
+    color: #23e889;
+}
+
+.pill-value.down{
+    color: #ff7b7b;
+}
+
 .signal-meta{
     display: flex;
     flex-wrap: wrap;
