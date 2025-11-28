@@ -1,23 +1,14 @@
-FROM python:3.9.18-alpine3.18
+FROM python:3.9-slim
 
-# Build deps for numpy/pandas/sklearn on Alpine
-RUN apk add --no-cache \
-    build-base \
-    python3-dev \
-    musl-dev \
-    postgresql-dev \
-    libffi-dev \
-    openblas-dev \
-    lapack-dev \
-    gfortran
+# Install build deps and postgres dev headers
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 ARG FLASK_APP
 ARG FLASK_ENV
 ARG DATABASE_URL
 ARG SCHEMA
 ARG SECRET_KEY
-
-
 
 WORKDIR /var/www
 
