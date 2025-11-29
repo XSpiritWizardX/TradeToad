@@ -13,6 +13,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
 .search-input{
@@ -247,6 +248,7 @@
     gap: 12px;
     margin: 8px 0 12px;
     flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 .predict-btn {
@@ -341,5 +343,78 @@
     }
     .order-card {
         position: static;
+    }
+    .stock-layout,
+    .stock-topbar{
+        padding: 0 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .stock-page{
+        padding: 20px 0 32px;
+    }
+    .stock-topbar{
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .top-actions{
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .stock-main,
+    .order-card{
+        padding: 14px;
+    }
+    .tag-row{
+        flex-wrap: wrap;
+    }
+    .timeframe-row{
+        flex-wrap: wrap;
+    }
+    .chart-wrapper{
+        padding: 8px;
+    }
+    .about-header{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    .side-actions{
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 520px) {
+    .stock-layout,
+    .stock-topbar{
+        padding: 0 10px;
+    }
+    .stock-price{
+        font-size: 32px;
+    }
+    .stock-name{
+        font-size: 24px;
+    }
+    .chart-wrapper{
+        min-height: 260px;
+    }
+    .predict-row{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .predict-pill{
+        width: 100%;
+    }
+    .order-card{
+        padding: 12px;
+    }
+    .order-row.spaced{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    .side-actions button{
+        width: 100%;
     }
 }

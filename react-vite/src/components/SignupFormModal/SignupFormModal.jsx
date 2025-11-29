@@ -54,11 +54,9 @@ function SignupFormModal() {
 
   return (
     <>
-      <h1>Sign Up</h1>
+      <h1 className="signup-form-title">Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit}
-      className="signup-form"
-      >
+      <form onSubmit={handleSubmit} className="signup-form">
         <label>
           First Name
           <input

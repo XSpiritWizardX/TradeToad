@@ -73,7 +73,7 @@ function HomePage() {
 
 
         <img
-        src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1742869030/z1WTK1Mj22ptr4EX1tQc--0--wxhad-removebg-preview_qcwbkn.png'
+        src='https://res.cloudinary.com/dl6ls3rgu/image/upload/v1764362537/user-uploads/bcca39e922f64e90b8f63bd0971a4ce1.gif.gif'
         className='game-toad'
         onClick={handleToadClick}
 

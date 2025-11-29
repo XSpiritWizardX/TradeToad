@@ -3,40 +3,86 @@
     border-radius: 10px;
 }
 
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 8px 2px 4px;
+  color: white;
+}
+
+.login-form h1,
+.login-form-title {
+  text-align: center;
+  margin: 0 0 4px;
+  color: #ffc857;
+}
+
+.login-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #dbe9ff;
+}
+
+.login-form input {
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #0d141d;
+  color: #e6f1ff;
+  padding: 0 10px;
+}
+
+.login-form input:focus {
+  outline: 1px solid #23e889;
+  box-shadow: 0 0 0 2px rgba(35, 232, 137, 0.2);
+}
+
 .submit-button-login {
-background-color: green;
-color: white;
-width: 96%;
-}
-
-.demo-log-in{
-  background-color: black;
-  text-decoration: none;
-  color: #2A9D8F;
-  font-size: larger;
+  background: linear-gradient(130deg, #23e889, #18b86a);
+  color: #04151f;
+  width: 100%;
   border: none;
-  margin: -7px;
+  padding: 10px;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(35, 232, 137, 0.2);
 }
 
-.login-modal-words{
+.submit-button-login:hover {
+  filter: brightness(1.05);
+}
+
+.login-modal-words {
   display: flex;
   justify-content: center;
-  color: #2A9D8F;
+  color: #b4ec51;
+  margin: 2px 0;
 }
 
-.separate-line{
-  border: 1px solid #2A9D8F;
-  margin-top: 4%;
+.separate-line {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 4px 0 2px;
 }
 
-.login-form {
+.demo-log-in {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  text-decoration: none;
+  color: #23e889;
+  font-size: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 8px;
+  border-radius: 10px;
+  margin: 4px 0 0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    margin: 10px;
-    border-radius: 10px;
-    color: white;
-    height: max-content;
-
+.demo-log-in:hover {
+  border-color: #23e889;
+  background: rgba(35, 232, 137, 0.08);
 }
