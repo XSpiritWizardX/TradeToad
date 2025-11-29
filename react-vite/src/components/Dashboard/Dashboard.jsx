@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { fetchPortfolios } from "../../redux/portfolio";
+import { fetchPortfolios, updatePortfolio, createPortfolio } from "../../redux/portfolio";
 import { fetchPortfolioStocks } from "../../redux/portfolioStocks";
 import { fetchPortfolioCryptos } from "../../redux/portfolioCryptos";
 import { fetchStocks } from "../../redux/stocks";
@@ -37,7 +37,7 @@ function Dashboard() {
   const [holdingsUpdatedAt, setHoldingsUpdatedAt] = useState(null);
   const [chartExpanded, setChartExpanded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [chartType, setChartType] = useState("line"); // "candle" | "line"
+  const [chartType, setChartType] = useState("candle"); // "candle" | "line"
   const [timeframe, setTimeframe] = useState("LIVE");
   const [positionRows, setPositionRows] = useState([]);
   const [busySell, setBusySell] = useState(false);
@@ -300,10 +300,36 @@ function Dashboard() {
     }
   };
 
-  const handleDeposit = () => {
+  const handleDeposit = async () => {
     setBusyDeposit(true);
-    setStatus("Deposit coming soon.");
-    setTimeout(() => setBusyDeposit(false), 1200);
+    try {
+      let current = portfolioState?.portfolios?.[0];
+      if (!current) {
+        const name = `${user?.username || "Main"} Portfolio`;
+        current = await dispatch(createPortfolio({
+          name,
+          total_cash: 1000,
+          available_cash: 1000
+        }));
+        await dispatch(fetchPortfolios());
+        setStatus(`Created ${name} and deposited $1,000`);
+        return;
+      }
+      const id = current.id;
+      const available = Number(current.available_cash || 0);
+      const total = Number(current.total_cash || 0);
+      await dispatch(updatePortfolio(id, {
+        available_cash: Number((available + 1000).toFixed(2)),
+        total_cash: Number((total + 1000).toFixed(2)),
+      }));
+      await dispatch(fetchPortfolios());
+      setStatus("Deposited $1,000");
+    } catch (err) {
+      setStatus("Deposit failed.");
+      console.error(err);
+    } finally {
+      setBusyDeposit(false);
+    }
   };
 
   const handleSellAll = async (pos) => {

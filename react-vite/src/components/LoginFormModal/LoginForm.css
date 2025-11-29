@@ -1,6 +1,5 @@
 .login-container {
     width: 400px;
-    height: 230px;
     border-radius: 10px;
 }
 
@@ -31,12 +30,13 @@ width: 96%;
 }
 
 .login-form {
-  
+
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     margin: 10px;
     border-radius: 10px;
     color: white;
+    height: max-content;
 
 }

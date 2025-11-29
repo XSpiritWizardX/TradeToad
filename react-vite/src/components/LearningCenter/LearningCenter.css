@@ -1,0 +1,345 @@
+.learning-center {
+  min-height: 100vh;
+  padding: 32px 18px 48px;
+  background: radial-gradient(circle at 18% 18%, rgba(57, 118, 255, 0.14), transparent 32%),
+    radial-gradient(circle at 82% 10%, rgba(35, 232, 137, 0.16), transparent 26%),
+    #05080d;
+  color: #e6f1ff;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.learning-center p {
+  display: block;
+  margin: 0;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+
+.learning-center h1,
+.learning-center h2,
+.learning-center h3 {
+  color: #e6f1ff;
+  margin: 0;
+}
+
+.lc-hero {
+  max-width: 1200px;
+  margin: 0 auto 26px;
+  padding: 26px 26px 24px;
+  background: linear-gradient(135deg, rgba(8, 15, 24, 0.9), rgba(12, 22, 35, 0.94));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+}
+
+.lc-eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  color: #96b5d8;
+  margin-bottom: 6px;
+}
+
+.lc-title {
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.lc-subtitle {
+  margin: 0 0 16px;
+  color: #cbd5e1;
+  max-width: 760px;
+  line-height: 1.5;
+}
+
+.lc-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 10px 0 14px;
+}
+
+.lc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+  color: #e6f1ff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.16s ease;
+}
+
+.lc-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(35, 232, 137, 0.55);
+  box-shadow: 0 10px 24px rgba(35, 232, 137, 0.16);
+}
+
+.lc-btn.primary {
+  background: linear-gradient(130deg, #23e889, #18b86a);
+  border-color: #23e889;
+  color: #04151f;
+  box-shadow: 0 12px 32px rgba(35, 232, 137, 0.18);
+}
+
+.lc-btn.primary:hover {
+  filter: brightness(1.03);
+}
+
+.lc-btn.ghost {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.lc-btn.outline {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.lc-btn.text {
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  color: #23e889;
+  font-weight: 600;
+}
+
+.lc-meta-strip {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: #8ea6c3;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.lc-grid {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.lc-card {
+  background: linear-gradient(180deg, #0b1119, #0d1622);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lc-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lc-pill {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(35, 232, 137, 0.16);
+  color: #23e889;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.lc-level {
+  font-size: 13px;
+  color: #8ea6c3;
+}
+
+.lc-card-title {
+  font-size: 22px;
+  margin: 4px 0;
+}
+
+.lc-duration {
+  color: #9fb3c8;
+  margin: 0;
+}
+
+.lc-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #cbd5e1;
+}
+
+.lc-list li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 14px;
+}
+
+.lc-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #23e889;
+}
+
+.lc-list.dense {
+  gap: 6px;
+}
+
+.lc-panel {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  background: #0a0f16;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.42);
+}
+
+.lc-panel.small {
+  flex: 1;
+  min-width: 300px;
+}
+
+.lc-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.lc-lessons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.lc-lesson-card {
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(18, 24, 35, 0.9), rgba(9, 14, 22, 0.95));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.lc-lesson-card h3 {
+  margin: 6px 0 6px;
+  font-size: 18px;
+}
+
+.lc-lesson-card p {
+  margin: 0 0 8px;
+  color: #cdd5e6;
+}
+
+.lc-lesson-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #9fb3c8;
+  font-size: 13px;
+}
+
+.lc-chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lc-time {
+  color: #8ea6c3;
+}
+
+.lc-split {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.lc-resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px 0 6px;
+}
+
+.lc-resource {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.lc-resource-title {
+  margin: 0;
+  color: #e6f1ff;
+}
+
+.lc-resource span {
+  color: #9fb3c8;
+  font-size: 13px;
+}
+
+.lc-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-top: 4px;
+}
+
+.lc-dot.green {
+  background: #23e889;
+  box-shadow: 0 0 8px rgba(35, 232, 137, 0.5);
+}
+
+.lc-dot.yellow {
+  background: #f0c24b;
+  box-shadow: 0 0 8px rgba(240, 194, 75, 0.4);
+}
+
+.lc-dot.blue {
+  background: #5ab5ff;
+  box-shadow: 0 0 8px rgba(90, 181, 255, 0.4);
+}
+
+.lc-dot.gray {
+  background: #8ea6c3;
+  box-shadow: 0 0 8px rgba(142, 166, 195, 0.35);
+}
+
+@media (max-width: 720px) {
+  .lc-hero {
+    padding: 22px 18px;
+  }
+
+  .lc-panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lc-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .lc-card {
+    min-height: 0;
+  }
+}
