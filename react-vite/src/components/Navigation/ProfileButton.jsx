@@ -134,6 +134,18 @@ function ProfileButton() {
             className='profile-line'
             ></ln>
 
+              <NavLink
+              to='/nft-lab'
+              className="nav-link-dropdown"
+              >
+              NFT Trading Lab
+              </NavLink>
+
+              <br/>
+              <ln
+            className='profile-line'
+            ></ln>
+
               <OpenModalButton
                 buttonText="Create Portfolio"
                 // onItemClick={closeMenu}

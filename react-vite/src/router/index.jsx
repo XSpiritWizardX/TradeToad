@@ -8,6 +8,7 @@ import StockShow from '../components/StockShow/StockShow'
 import BlankPages from '../components/BlankPage/BlankPage';
 import LearningCenter from '../components/LearningCenter/LearningCenter'
 import TransferFunds from '../components/TransferFunds/TransferFunds';
+import NFTTradingLab from '../components/NFTTradingLab/NFTTradingLab';
 export const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
       {
         path:'/transfer',
         element:<TransferFunds/>
+      },
+      {
+        path:'/nft-lab',
+        element:<NFTTradingLab/>
       },
 
 

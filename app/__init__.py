@@ -19,6 +19,7 @@ from .api.crypto_routes import crypto_routes
 from .api.crypto_transaction_routes import crypto_transaction_routes
 from .api.portfolio_crypto_routes import portfolio_crypto_routes
 from .api.watchlist_crypto_routes import watchlist_crypto_routes
+from .api.opensea_routes import opensea_routes
 
 from .api.stock_routes import stock_routes
 from .api.stock_transaction_routes import stock_transaction_routes
@@ -61,6 +62,7 @@ app.register_blueprint(crypto_routes, url_prefix='/api/cryptos')
 app.register_blueprint(crypto_transaction_routes, url_prefix='/api/crypto_transactions')
 app.register_blueprint(portfolio_crypto_routes, url_prefix='/api/portfolio_cryptos')
 app.register_blueprint(watchlist_crypto_routes, url_prefix='/api/watchlist_cryptos')
+app.register_blueprint(opensea_routes, url_prefix='/api/opensea')
 
 app.register_blueprint(stock_routes, url_prefix='/api/stocks')
 app.register_blueprint(stock_transaction_routes, url_prefix='/api/stock_transactions')

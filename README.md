@@ -1,59 +1,36 @@
 # SCORECARD LINK
 https://docs.google.com/spreadsheets/d/1LEo8fvagS0C1CYbCv1TjlcTCVm0mepi0wzotv_KhjsM/edit?usp=sharing
 
-# Flask React Project
+# TradeToad
 
-This is the starter for the Flask React project.
+Full-stack trading simulator with an NFT lab. Flask API + React/Vite frontend.
 
-## Getting started
+## Quickstart
 
-1. Clone this repository (only this branch).
+Backend
+1) Install deps: `pipenv install -r requirements.txt`
+2) Create `.env` with at least:
+   - `SECRET_KEY=<secret>`
+   - `SQLALCHEMY_DATABASE_URI=sqlite:///dev.db` (or your DB URL)
+   - `OPENSEA_API_KEY=<your_opensea_key>` (for live OpenSea proxy; required for real data)
+   - `FLASK_ENV=development`
+3) Run: `pipenv shell && flask db upgrade && flask seed all && flask run`
 
-2. Install dependencies.
+Frontend (from `react-vite/`)
+1) Install deps: `npm install`
+2) (Optional) add `VITE_OPENSEA_API_KEY=<your_key>` if you want client-side calls in addition to the backend proxy.
+3) Start dev: `npm run dev` (or build: `npm run build`)
 
-   ```bash
-   pipenv install -r requirements.txt
-   ```
+## NFT / OpenSea Integration
+- Server proxy endpoints (hold your OpenSea key safely):
+  - `GET /api/opensea/collections/<slug>` — proxies OpenSea collection. Add `?sample=true` to return static data without hitting OpenSea.
+  - `GET /api/opensea/collections/<slug>/listings?limit=5` — proxies listings. `?sample=true` available.
+- Environment:
+  - Backend: `OPENSEA_API_KEY` (required for live data)
+  - Frontend: `VITE_OPENSEA_API_KEY` (optional if you prefer direct calls)
+- Frontend page: `/nft-lab` has slug input, fetch button, sample data button, and renders collection info + listings.
 
-3. Create a __.env__ file based on the example with proper settings for your
-   development environment.
-
-4. Make sure the SQLite3 database connection URL is in the __.env__ file.
-
-5. This starter organizes all tables inside the `flask_schema` schema, defined
-   by the `SCHEMA` environment variable.  Replace the value for
-   `SCHEMA` with a unique name, **making sure you use the snake_case
-   convention.**
-
-6. Get into your pipenv, migrate your database, seed your database, and run your
-   Flask app:
-
-   ```bash
-   pipenv shell
-   ```
-
-   ```bash
-   flask db upgrade
-   ```
-
-   ```bash
-   flask seed all
-   ```
-
-   ```bash
-   flask run
-   ```
-
-7. The React frontend has no styling applied. Copy the __.css__ files from your
-   Authenticate Me project into the corresponding locations in the
-   __react-vite__ folder to give your project a unique look.
-
-8. To run the React frontend in development, `cd` into the __react-vite__
-   directory and run `npm i` to install dependencies. Next, run `npm run build`
-   to create the `dist` folder. The starter has modified the `npm run build`
-   command to include the `--watch` flag. This flag will rebuild the __dist__
-   folder whenever you change your code, keeping the production version up to
-   date.
+## Deployment through Render.com
 
 ## Deployment through Render.com
 
@@ -876,63 +853,4 @@ add stock to watchlist
     ```
 
 
-
-
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
-add stuff to readme for a git commit
+Still in development...
