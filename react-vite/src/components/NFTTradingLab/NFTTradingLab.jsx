@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './NFTTradingLab.css';
 import { getCollection, getListingsByCollection, getCollections } from '../../api/opensea';
 
@@ -140,20 +140,24 @@ function NFTTradingLab() {
     }
   };
 
-  const fetchCollections = async (limit = 12, cursor = null, sample = false, orderBy = null) => {
+  const fetchCollections = useCallback(async (limit = 12, cursor = null, sample = false, orderBy = null) => {
     setIsLoading(true);
     setError('');
     try {
       const data = await getCollections({ limit, cursor, sample, orderBy });
       const list = data.collections || [];
-      setCollections(cursor ? [...collections, ...list] : list);
+      setCollections((prev) => (cursor ? [...prev, ...list] : list));
       setCollectionsCursor(data.next || null);
     } catch (err) {
       setError(err.message || 'Failed to fetch collections');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchCollections(12, null, false, 'one_day_volume');
+  }, [fetchCollections]);
 
   const showStats = Boolean(collection);
   const apiKeyMissing = !import.meta.env.VITE_OPENSEA_API_KEY;
@@ -162,7 +166,7 @@ function NFTTradingLab() {
     <div className="nft-lab">
       <header className="nft-lab__header">
         <div>
-          <p className="nft-kicker">On-chain sandbox</p>
+          <p className="nft-kicker">On-chain sandbox -- open sea connected</p>
           <h1 className="nft-title">NFT Trade Lab -- In Development</h1>
           <p className="nft-lede">
             Dashboard for everything NFTs—create drops, publish mint pages, and track activity. Buttons are wired next.
