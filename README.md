@@ -9,17 +9,20 @@ Full-stack trading simulator with an NFT lab. Flask API + React/Vite frontend.
 
 Backend
 1) Install deps: `pipenv install -r requirements.txt`
-2) Create `.env` with at least:
-   - `SECRET_KEY=<secret>`
-   - `SQLALCHEMY_DATABASE_URI=sqlite:///dev.db` (or your DB URL)
-   - `OPENSEA_API_KEY=<your_opensea_key>` (for live OpenSea proxy; required for real data)
-   - `FLASK_ENV=development`
+2) Copy `.env.example` to `.env` and fill secrets:
+   - `SECRET_KEY`, `DATABASE_URL` (or `SQLALCHEMY_DATABASE_URI`), `SCHEMA`
+   - `OPENSEA_API_KEY`, `POLYGON_API_KEY`
+   - `FLASK_ENV=development`, `FLASK_APP=app`
 3) Run: `pipenv shell && flask db upgrade && flask seed all && flask run`
 
 Frontend (from `react-vite/`)
 1) Install deps: `npm install`
 2) (Optional) add `VITE_OPENSEA_API_KEY=<your_key>` if you want client-side calls in addition to the backend proxy.
 3) Start dev: `npm run dev` (or build: `npm run build`)
+
+## Tests
+- Frontend: `cd react-vite && npm test` (uses Vitest + RTL; suites live in `testing/`).
+- Backend: `pytest backend_tests` (uses Flask test client fixtures; ensure `pipenv shell` + deps installed).
 
 ## NFT / OpenSea Integration
 - Server proxy endpoints (hold your OpenSea key safely):
@@ -29,8 +32,6 @@ Frontend (from `react-vite/`)
   - Backend: `OPENSEA_API_KEY` (required for live data)
   - Frontend: `VITE_OPENSEA_API_KEY` (optional if you prefer direct calls)
 - Frontend page: `/nft-lab` has slug input, fetch button, sample data button, and renders collection info + listings.
-
-## Deployment through Render.com
 
 ## Deployment through Render.com
 
@@ -119,8 +120,6 @@ main, always keeping it up to date.
 
 _________________________
 
-
-## API Documentation
 
 
 

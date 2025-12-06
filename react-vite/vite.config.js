@@ -3,7 +3,7 @@ import eslintPlugin from "vite-plugin-eslint";
 import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
-export default defineConfig((mode) => ({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     eslintPlugin({
@@ -16,5 +16,10 @@ export default defineConfig((mode) => ({
     proxy: {
       "/api": "http://127.0.0.1:8000",
     },
+  },
+  test: {
+    environment: "jsdom",
+    setupFiles: "./src/setupTests.js",
+    globals: true,
   },
 }));
